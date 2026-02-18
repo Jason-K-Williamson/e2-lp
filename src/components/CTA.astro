@@ -1,0 +1,89 @@
+---
+/**
+ * CTA Section — Primary conversion point.
+ * Formflow embed when URL configured, premium fallback otherwise.
+ */
+interface Props {
+  headline?: string;
+  subtext?: string;
+  formflowUrl?: string;
+}
+
+const {
+  headline = 'Ready to Turn Your List Into Revenue?',
+  subtext = "Book a free flow strategy call. We'll audit your current setup and show you exactly where you're leaving money on the table.",
+  formflowUrl = '',
+} = Astro.props;
+---
+
+<section id="cta" class="py-24 md:py-32 relative">
+  <!-- Background glow — builds toward the CTA -->
+  <div class="absolute inset-0">
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-[0.06]" style="background: radial-gradient(circle, var(--color-e2-accent) 0%, transparent 70%); filter: blur(100px);"></div>
+  </div>
+
+  <div class="section-container relative z-10">
+    <div class="max-w-3xl mx-auto">
+      <!-- Header -->
+      <div data-animate class="text-center mb-12">
+        <p class="text-xs uppercase tracking-[0.2em] text-e2-cta-bright font-medium mb-4">Book Your Call</p>
+        <h2 class="font-display text-[clamp(2rem,4vw,3.5rem)] font-bold text-e2-white mb-5 leading-tight">
+          {headline}
+        </h2>
+        <p class="text-e2-muted text-lg max-w-xl mx-auto leading-relaxed">
+          {subtext}
+        </p>
+      </div>
+
+      <!-- Formflow Embed / Fallback -->
+      <div data-animate class="rounded-2xl glass p-8 md:p-12">
+        {formflowUrl ? (
+          <iframe
+            src={formflowUrl}
+            loading="lazy"
+            class="w-full min-h-[400px] rounded-xl border-0"
+            title="Book a Strategy Call"
+          />
+        ) : (
+          <!-- Premium CTA fallback -->
+          <div class="text-center py-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-e2-accent/20 to-e2-cta/20 flex items-center justify-center text-3xl mx-auto mb-6">
+              🚀
+            </div>
+            <h3 class="font-display text-2xl font-bold text-e2-white mb-3">
+              Let's Build Your Revenue Machine
+            </h3>
+            <p class="text-e2-muted mb-8 max-w-md mx-auto leading-relaxed">
+              Drop your details and we'll send you a free flow audit within 24 hours.
+            </p>
+            <a
+              href="mailto:jason.w@e2.agency"
+              class="group inline-flex items-center gap-3 px-9 py-4.5 rounded-2xl font-semibold text-lg text-white bg-gradient-to-r from-e2-accent to-e2-accent-bright hover:brightness-110 transition-all duration-300 animate-glow hover:scale-[1.03]"
+            >
+              Get Your Free Audit
+              <svg class="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+
+            <!-- Micro trust signals -->
+            <div class="flex items-center justify-center gap-6 mt-8 text-xs text-e2-muted/50">
+              <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-e2-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Free audit
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-e2-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                No obligation
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-e2-green" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Reply in 24hrs
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

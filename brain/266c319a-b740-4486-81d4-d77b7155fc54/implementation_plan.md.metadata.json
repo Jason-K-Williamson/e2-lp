@@ -1,0 +1,5 @@
+{
+  "artifactType": "ARTIFACT_TYPE_IMPLEMENTATION_PLAN",
+  "summary": "Implementation plan for landing.e2.agency — an Astro 5 + React + Tailwind v4 + GSAP landing page platform. Covers tech stack decisions, project structure, component breakdown, Supabase cost considerations, Formflow integration, and verification plan.",
+  "updatedAt": "2026-02-18T00:04:49.215320500Z"
+}

@@ -1,0 +1,132 @@
+---
+/**
+ * Testimonials Section
+ * Redesigned as a masonry grid of glass cards.
+ * "Seamless" integration - no solid gray backgrounds.
+ */
+const testimonials = [
+  {
+    quote:
+      "Doubled our revenue growth to almost 40%... led to the busiest week in our company's history.",
+    author: "Fameez Haroon",
+    role: "Co-Founder, OTAA",
+    metric: "40% Revenue Growth",
+  },
+  {
+    quote:
+      "E2 is by far the best agency we've worked with as a multi 7-figure brand. They added 30-40% to our top line revenue.",
+    author: "Colin",
+    role: "Owner/CEO, 8-Figure Supplements Brand",
+    metric: "30-40% Top Line",
+  },
+  {
+    quote: "Grew EDM sales from 25% to 48% of total revenue. e2 is the 🐐.",
+    author: "Alice Robert",
+    role: "Founder, The Littl",
+    metric: "48% of Revenue",
+  },
+  {
+    quote:
+      "Our revenue from campaigns grew 3x while e2 was in charge. Absolute pleasure working with them.",
+    author: "Marina Kalenchyts",
+    role: "Brand Director, Wonderskin",
+    metric: "3x Campaign Revenue",
+  },
+];
+---
+
+<section class="py-32">
+  <div class="section-container">
+    <!-- Hero Testimonial (Davie) -->
+    <div class="mb-24">
+      <div
+        class="glass-panel rounded-[3rem] p-10 md:p-16 relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent pointer-events-none"
+        >
+        </div>
+
+        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <div
+              class="inline-block px-3 py-1 rounded-full bg-black/5 text-[10px] font-bold uppercase tracking-widest text-e2-black mb-6"
+            >
+              The $25M Case Study
+            </div>
+            <h3
+              class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-8 leading-[1.1]"
+            >
+              "Over $23 Million Generated With e2"
+            </h3>
+            <p class="text-xl text-gray-600 leading-relaxed mb-8">
+              "Teaming up with e2 for our SMS marketing at The Oodie has been an
+              absolute game-changer. They weren't just a service provider, but a
+              strategic partner."
+            </p>
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
+                <img
+                  src="/davie.jpg"
+                  alt="Davie Fogarty"
+                  class="w-full h-full object-cover"
+                  onerror="this.src='https://ui-avatars.com/api/?name=Davie+Fogarty&background=000&color=fff'"
+                />
+              </div>
+              <div>
+                <div class="font-bold text-e2-black">Davie Fogarty</div>
+                <div class="text-sm text-gray-500">
+                  Founder, The Oodie ($800M+)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Static Quote Block (replaces broken video) -->
+          <div
+            class="relative aspect-video rounded-2xl bg-e2-black overflow-hidden shadow-2xl flex flex-col items-center justify-center p-10 text-center"
+          >
+            <div class="text-5xl font-bold text-white leading-tight mb-6">
+              "$23M+<br />Generated"
+            </div>
+            <div class="text-blue-400 font-semibold text-lg mb-2">
+              The Oodie
+            </div>
+            <div class="text-gray-500 text-sm">
+              Australia's #1 DTC Brand — $800M+ Revenue
+            </div>
+            <div
+              class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="grid md:grid-cols-2 gap-6">
+      {
+        testimonials.map((t) => (
+          <div class="glass-panel p-10 rounded-[2rem] hover:bg-white/90 transition-colors duration-300">
+            <div class="text-3xl font-bold text-blue-600 mb-6 tracking-tight">
+              {t.metric}
+            </div>
+            <p class="text-lg text-gray-600 leading-relaxed mb-8">
+              "{t.quote}"
+            </p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-sm font-bold text-gray-400">
+                {t.author.charAt(0)}
+              </div>
+              <div class="text-sm">
+                <span class="font-bold text-e2-black block">{t.author}</span>
+                <span class="text-gray-400">{t.role}</span>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,26 @@
+# E2 Agency Landing Page Project (landing.e2.agency)
+
+## Phase 1: Project Setup
+- [ ] Scaffold Astro 5 project with React + Tailwind v4
+- [ ] Configure GSAP integration
+- [ ] Set up project structure (layouts, components, pages)
+- [ ] Configure Cloudflare Pages deployment settings
+
+## Phase 2: Supabase
+- [ ] Decide on Supabase project (new vs existing)
+- [ ] Set up lead capture table if needed
+
+## Phase 3: Core Landing Page
+- [ ] Build base layout (SEO, fonts, meta)
+- [ ] Build Hero section component
+- [ ] Build Social Proof / Testimonials component
+- [ ] Build Services / Offer section
+- [ ] Build CTA / Formflow embed section
+- [ ] Build Footer
+- [ ] Wire up first landing page (e2.agency offer)
+
+## Phase 4: Polish & Deploy
+- [ ] GSAP scroll animations
+- [ ] Mobile responsive pass
+- [ ] Lighthouse / CWV check
+- [ ] Deploy to Cloudflare Pages

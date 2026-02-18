@@ -1,0 +1,77 @@
+---
+/**
+ * Mechanism Section
+ * Redesigned to be a seamless flow of steps rather than a rigid timeline.
+ * Floating cards with subtle connection lines.
+ */
+const steps = [
+  {
+    title: 'We Audit Your Account & Find the Leaks',
+    description: 'Your Performance Strategist digs into your ESP, unit economics, and margins. We identify exactly where revenue is escaping — before we write a single word.',
+    icon: '🧠'
+  },
+  {
+    title: 'We Build Your Custom Flow Architecture',
+    description: 'Your Success Manager maps out all 6 flows against your product cycle and customer journey. No templates. Every flow is built for your brand.',
+    icon: '🗺️'
+  },
+  {
+    title: 'We Write Copy That Sounds Like Your Brand',
+    description: 'Our world-class direct response copywriters (zero AI) craft every email. Subject lines, body copy, CTAs — written to sell, not to sound clever.',
+    icon: '✍️'
+  },
+  {
+    title: 'We Design Emails That Convert',
+    description: 'Your Senior Designer builds on-brand templates that look premium and load fast. High-converting aesthetics — not generic Klaviyo defaults.',
+    icon: '🎨'
+  },
+  {
+    title: 'We Go Live — Hitting Primary Inbox From Day One',
+    description: 'Our Deliverability Expert sets up your DNS, DMARC, and sending infrastructure. You hit the Primary tab, not Promotions. Then we hand you the keys.',
+    icon: '🚀'
+  }
+];
+---
+
+<section id="mechanism" class="py-32 relative">
+  <div class="section-container">
+    <div class="max-w-3xl mx-auto text-center mb-24">
+      <h2 class="font-bold text-4xl md:text-5xl mb-6 text-e2-black tracking-tight text-balance">
+        How It Works —<br/>
+        <span class="text-gray-400">Your 5-Step Revenue Build</span>
+      </h2>
+      <p class="text-xl text-gray-500 leading-relaxed text-balance">
+        Why hire one specific generalist when you can have a specialized army?
+      </p>
+    </div>
+
+    <div class="relative">
+      <!-- subtle connection line -->
+      <div class="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gray-200 to-transparent"></div>
+
+      <div class="space-y-12 md:space-y-24">
+        {steps.map((step, i) => (
+          <div class={`relative flex items-center md:gap-16 ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+            
+            <!-- Icon Marker -->
+            <div class="absolute left-0 md:left-1/2 -translate-x-1/2 w-14 h-14 rounded-full bg-white border border-gray-100 shadow-lg shadow-gray-200/50 flex items-center justify-center text-2xl z-10">
+              {step.icon}
+            </div>
+
+            <!-- Content Card -->
+            <div class={`ml-20 md:ml-0 flex-1 ${i % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
+              <div class="glass-panel p-8 rounded-3xl inline-block text-left relative group hover:-translate-y-1 transition-transform duration-500">
+                <div class="text-xs font-bold text-blue-600 mb-2 uppercase tracking-widest">Step 0{i + 1}</div>
+                <h3 class="font-bold text-2xl text-e2-black mb-3">{step.title}</h3>
+                <p class="text-gray-500 leading-relaxed">{step.description}</p>
+              </div>
+            </div>
+            
+            <!-- Empty side for balance -->
+            <div class="hidden md:block flex-1"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

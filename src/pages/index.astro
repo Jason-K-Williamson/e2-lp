@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import SocialProof from "../components/SocialProof.astro";
+import Problem from "../components/Problem.astro";
+import Mechanism from "../components/Mechanism.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Offer from "../components/Offer.astro";
+import FAQ from "../components/FAQ.astro";
+import StickyNav from "../components/StickyNav.astro";
+import Footer from "../components/Footer.astro";
+import EmailGallery from "../components/EmailGallery.astro";
+
+const title = "e2 Agency — Flow Build-Outs That Print Revenue";
+const description =
+  "Stop paying retainers. Get your entire email & SMS revenue engine built in 7 days for a one-time fee. Trusted by The Oodie ($25M generated).";
+---
+
+<BaseLayout title={title} description={description}>
+  <StickyNav />
+
+  <!-- 1. The Hook & Promise -->
+  <Hero />
+
+  <!-- 2. Immediate Authority (Stats Strip) -->
+  <SocialProof />
+
+  <!-- 3. The Problem (Retainers suck) -->
+  <Problem />
+
+  <!-- 4. The Solution/Mechanism (e2 Architecture) -->
+  <Mechanism />
+
+  <!-- 4b. The Work — Email Design Gallery -->
+  <EmailGallery />
+
+  <!-- 5. Deep Social Proof (Davey Fogarty + Wall of Love) -->
+  <Testimonials />
+
+  <!-- 6. The Grand Slam Offer (Stack + Price + Guarantee) -->
+  <Offer />
+
+  <!-- 7. Objection Handling -->
+  <FAQ />
+
+  <!-- 8. Footer -->
+  <Footer />
+</BaseLayout>

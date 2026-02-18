@@ -1,0 +1,114 @@
+---
+/**
+ * EmailGallery — Horizontal scroll showcase of real EDM designs.
+ * "Show don't tell" proof of design quality.
+ */
+const emails = [
+    {
+        src: "/EDM Designs/GUd2IE7RNd8kuR9gPnNj8fltAb8 (1).webp",
+        brand: "Bruce Bolt",
+    },
+    { src: "/EDM Designs/JbK45xEjOAk88vICQf44eKk1s0.webp", brand: "Fleecies" },
+    {
+        src: "/EDM Designs/oShYWhim4oKihE9YZNXH24VM (1).webp",
+        brand: "Littl Swim",
+    },
+    {
+        src: "/EDM Designs/rsYRgbeOsnLv2FVnBFyCYbdH4s (1).webp",
+        brand: "Client",
+    },
+    { src: "/EDM Designs/xGuFniXIylZLMDF79d1O48Hw4.webp", brand: "Client" },
+    {
+        src: "/EDM Designs/ZwjybQiID0e6d9fZ0ZxuJOh97w (2).avif",
+        brand: "Client",
+    },
+    { src: "/EDM Designs/eAvHiRU6T7rGpmMlwxTJUCfSM.avif", brand: "Client" },
+];
+---
+
+<section class="py-24 overflow-hidden">
+    <div class="section-container mb-12">
+        <div class="max-w-3xl mx-auto text-center">
+            <p
+                class="text-sm font-bold uppercase tracking-widest text-blue-600 mb-4"
+            >
+                The Work
+            </p>
+            <h2
+                class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-5"
+            >
+                Emails That Stop the Scroll.<br />
+                <span class="text-gray-400"
+                    >Not Templates. Not AI. Real Design.</span
+                >
+            </h2>
+            <p class="text-xl text-gray-500">
+                Every email is built from scratch for your brand. Here's a
+                sample of what lands in your customers' inboxes.
+            </p>
+        </div>
+    </div>
+
+    <!-- Horizontal scroll strip -->
+    <div
+        class="flex gap-6 overflow-x-auto pb-6 px-6 md:px-12 snap-x snap-mandatory scrollbar-hide"
+        style="scroll-padding-left: 1.5rem;"
+    >
+        {
+            emails.map((email) => (
+                <div class="flex-shrink-0 snap-start w-[260px] md:w-[300px] group">
+                    <div class="rounded-2xl overflow-hidden shadow-lg shadow-gray-200/60 border border-gray-100 bg-white hover:shadow-xl hover:shadow-gray-300/40 transition-all duration-300 hover:-translate-y-1">
+                        <img
+                            src={email.src}
+                            alt={`${email.brand} email design by e2 Agency`}
+                            class="w-full object-cover object-top"
+                            style="max-height: 480px;"
+                            loading="lazy"
+                        />
+                        <div class="px-4 py-3 border-t border-gray-100">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                                {email.brand}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            ))
+        }
+
+        <!-- End card: CTA -->
+        <div
+            class="flex-shrink-0 snap-start w-[260px] md:w-[300px] flex items-center justify-center"
+        >
+            <div
+                class="rounded-2xl bg-e2-black text-white p-8 text-center h-full flex flex-col items-center justify-center min-h-[300px]"
+            >
+                <div class="text-4xl mb-4">✉️</div>
+                <p class="font-bold text-lg mb-2">Your brand.<br />Next.</p>
+                <p class="text-gray-400 text-sm mb-6">
+                    Every email built from scratch. No templates.
+                </p>
+                <a
+                    href="#offer"
+                    class="px-6 py-3 rounded-xl bg-white text-e2-black font-bold text-sm hover:scale-[1.02] transition-transform"
+                >
+                    See If You Qualify →
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll hint (mobile) -->
+    <p class="text-center text-xs text-gray-400 mt-4 md:hidden">
+        ← Swipe to see more →
+    </p>
+</section>
+
+<style>
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+</style>

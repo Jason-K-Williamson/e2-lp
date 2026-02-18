@@ -1,0 +1,160 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage = "/og-default.jpg" } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!--
+      PERFORMANCE: Self-hosted fonts — zero external DNS lookups.
+      Preload only the critical display weight (Syne 800 for hero headline).
+      DM Sans loads via @font-face in CSS with font-display:swap — no FOIT.
+    -->
+    <link
+      rel="preload"
+      href="/fonts/DMSans-400.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/DMSans-700.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <style is:global>
+      @import "../styles/global.css";
+    </style>
+  </head>
+  <body class="min-h-screen overflow-x-hidden">
+    <slot />
+
+    <!--
+      GSAP: Astro processes this import at build time.
+      Tree-shakes to only ScrollTrigger + core.
+      Deferred by browser since it's a module script.
+    -->
+    <script>
+      import { gsap } from "gsap";
+      import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Wait for DOM, then animate all [data-animate] elements
+      // Stagger by index for a cascading reveal effect
+      document.addEventListener("DOMContentLoaded", () => {
+        const elements = document.querySelectorAll("[data-animate]");
+        elements.forEach((el, i) => {
+          gsap.to(el, {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            delay: i * 0.08,
+            ease: "expo.out",
+            force3D: true, // GPU-composited for 60fps
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          });
+        });
+
+        // Parallax on hero glow orbs
+        const orbs = document.querySelectorAll("[data-parallax]");
+        orbs.forEach((orb) => {
+          const speed = parseFloat(
+            (orb as HTMLElement).dataset.parallax || "0.5",
+          );
+          gsap.to(orb, {
+            y: () => window.innerHeight * speed * -0.3,
+            ease: "none",
+            scrollTrigger: {
+              trigger: orb,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          });
+        });
+
+        // Counter animation for stat numbers
+        const counters = document.querySelectorAll("[data-counter]");
+        counters.forEach((counter) => {
+          const target = (counter as HTMLElement).dataset.counter || "";
+          const el = counter as HTMLElement;
+
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 85%",
+            once: true,
+            onEnter: () => {
+              // Parse the target value
+              const prefix = target.match(/^[^0-9]*/)?.[0] || "";
+              const suffix = target.match(/[^0-9]*$/)?.[0] || "";
+              const numStr = target.replace(/[^0-9.]/g, "");
+              const num = parseFloat(numStr);
+
+              if (isNaN(num)) {
+                el.textContent = target;
+                return;
+              }
+
+              const obj = { val: 0 };
+              gsap.to(obj, {
+                val: num,
+                duration: 1.8,
+                ease: "power2.out",
+                onUpdate: () => {
+                  const current =
+                    num >= 100
+                      ? Math.round(obj.val)
+                      : obj.val.toFixed(num < 10 ? 0 : 0);
+                  el.textContent = prefix + current + suffix;
+                },
+                onComplete: () => {
+                  el.textContent = target; // Exact final value
+                },
+              });
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

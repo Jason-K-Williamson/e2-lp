@@ -1,0 +1,62 @@
+---
+const faqs = [
+  {
+    q: "What if the flows don't perform?",
+    a: "We have never had a client not see a revenue lift. But if after 90 days your automated revenue hasn't increased, we will rebuild any underperforming flow at no charge. We only win when you win.",
+  },
+  {
+    q: "Why a one-time fee instead of a retainer?",
+    a: "Retainers incentivize agencies to work slowly. We build systems. Once the system is built, it runs forever. You shouldn't pay rent on a house you own.",
+  },
+  {
+    q: "Do you work with Mailchimp/Omnisend/ActiveCampaign?",
+    a: "We specialize in Klaviyo for Email and Postscript for SMS. If you are on another platform, we handle the migration as part of the build.",
+  },
+  {
+    q: "How long does the build take?",
+    a: "Typically 7-14 days from kickoff to launch. We move fast because we have a proven architecture.",
+  },
+  {
+    q: "What do I need to provide?",
+    a: "Just access to your ESP and Shopify. We handle strategy, copy, design, and implementation. We might ask for brand assets if you have them.",
+  },
+];
+---
+
+<section class="py-24">
+  <div class="section-container max-w-2xl">
+    <h2
+      class="font-bold text-3xl text-center text-e2-black mb-16 tracking-tight"
+    >
+      Common Questions
+    </h2>
+
+    <div class="space-y-4">
+      {
+        faqs.map((faq, i) => (
+          <details class="group p-6 rounded-2xl bg-white border border-gray-100 open:shadow-lg open:shadow-gray-200/20 transition-all duration-300">
+            <summary class="flex justify-between items-center font-bold text-lg cursor-pointer list-none text-gray-800">
+              {faq.q}
+              <span class="transition-transform group-open:rotate-180 text-gray-400">
+                <svg
+                  class="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </span>
+            </summary>
+            <div class="mt-4 text-gray-500 leading-relaxed">{faq.a}</div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>

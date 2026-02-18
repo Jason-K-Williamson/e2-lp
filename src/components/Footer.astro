@@ -1,0 +1,34 @@
+---
+/**
+ * Minimal footer — brand, links, legal.
+ * No external resources. Pure HTML.
+ */
+const year = new Date().getFullYear();
+---
+
+<footer class="py-14 border-t border-e2-border/20">
+  <div class="section-container">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <!-- Brand -->
+      <div class="flex items-center gap-2.5">
+        <span class="font-display text-xl font-bold text-e2-white tracking-tight">e2</span>
+        <span class="text-e2-muted/60 text-xs uppercase tracking-[0.1em]">Agency</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex items-center gap-8 text-sm text-e2-muted/60">
+        <a href="https://e2.agency" class="hover:text-e2-white transition-colors duration-300" rel="noopener">
+          e2.agency
+        </a>
+        <a href="https://getformflow.io" class="hover:text-e2-white transition-colors duration-300" rel="noopener">
+          Formflow
+        </a>
+      </div>
+
+      <!-- Copyright -->
+      <p class="text-xs text-e2-muted/40">
+        © {year} e2 Agency
+      </p>
+    </div>
+  </div>
+</footer>

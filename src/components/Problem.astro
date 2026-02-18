@@ -1,0 +1,71 @@
+---
+/**
+ * The Problem — "The Agency Trap"
+ * Redesigned to be "Seamless" — no jarring black blocks.
+ * Uses a large floating glass card comparison.
+ */
+---
+
+<section class="py-32 relative">
+  <div class="section-container">
+    <div class="max-w-3xl mx-auto text-center mb-16">
+      <h2 class="font-bold text-4xl md:text-5xl mb-6 text-e2-black tracking-tight text-balance">
+        The "Hope Marketing" Trap is Killing Your Margins
+      </h2>
+      <p class="text-xl text-gray-500 leading-relaxed text-balance">
+        You're spending thousands on ads, but your backend is leaking profit. High CPAs. Low CVR. <br>
+        Most agencies just "post and pray." You need a system.
+      </p>
+    </div>
+
+    <!-- Comparison Grid -->
+    <div class="grid md:grid-cols-2 gap-6 relative">
+      
+      <!-- The Pain (Current State) -->
+      <div class="p-10 rounded-[2.5rem] bg-gray-50 border border-gray-100/50 hover:bg-white hover:shadow-xl hover:shadow-gray-200/20 transition-all duration-300">
+        <div class="w-12 h-12 rounded-2xl bg-white border border-gray-100 shadow-sm flex items-center justify-center text-2xl mb-8">
+          📉
+        </div>
+        <h3 class="font-bold text-2xl mb-6 text-gray-900">The "Agency" Trap</h3>
+        <ul class="space-y-4">
+          {[
+            'Generic "Best Practice" Flows',
+            'Copy that sounds like AI',
+            'Zero focus on Unit Economics',
+            'CPA keeps rising, LTV stays flat'
+          ].map(item => (
+            <li class="flex items-start gap-3 text-gray-500">
+              <svg class="w-5 h-5 text-red-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- The Solution (e2) -->
+      <div class="p-10 rounded-[2.5rem] bg-white border border-gray-100 shadow-2xl shadow-blue-900/5 relative overflow-hidden group">
+        <!-- Subtle gradient bleed -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50/50 rounded-full blur-[80px] -mr-32 -mt-32 pointer-events-none"></div>
+
+        <div class="w-12 h-12 rounded-2xl bg-black text-white flex items-center justify-center text-2xl mb-8 shadow-lg relative z-10">
+          🚀
+        </div>
+        <h3 class="font-bold text-2xl mb-6 text-e2-black relative z-10">The e2 Revenue Engine</h3>
+        <ul class="space-y-4 relative z-10">
+          {[
+            'Strategy by 8-Figure Founders',
+            'Real World-Class Copywriters (No AI)',
+            'Deliverability & DNS Experts',
+            'Data-Driven optimization for PROFIT'
+          ].map(item => (
+            <li class="flex items-start gap-3 text-gray-800 font-medium">
+              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>

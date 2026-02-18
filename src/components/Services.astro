@@ -1,0 +1,84 @@
+---
+/**
+ * Services / What You Get — Glass cards with icon containers and hover reveals.
+ */
+const services = [
+  {
+    icon: '📧',
+    title: 'Welcome Flow',
+    description: 'Turn new subscribers into first-time buyers within 72 hours.',
+    tag: 'Core',
+  },
+  {
+    icon: '🛒',
+    title: 'Abandoned Cart',
+    description: 'Recover lost revenue with a high-converting recovery sequence.',
+    tag: 'Core',
+  },
+  {
+    icon: '🔄',
+    title: 'Post-Purchase',
+    description: 'Drive repeat purchases and increase LTV on autopilot.',
+    tag: 'Growth',
+  },
+  {
+    icon: '💀',
+    title: 'Winback Flow',
+    description: 'Re-engage lapsed customers before they churn for good.',
+    tag: 'Retention',
+  },
+  {
+    icon: '🎯',
+    title: 'Browse Abandon',
+    description: 'Convert window shoppers into paying customers.',
+    tag: 'Growth',
+  },
+  {
+    icon: '⭐',
+    title: 'Sunset Flow',
+    description: 'Clean your list and boost deliverability with smart sunsets.',
+    tag: 'Health',
+  },
+];
+---
+
+<section class="py-24 md:py-32 relative">
+  <!-- Subtle mesh blob -->
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-[0.03]" style="background: radial-gradient(circle, var(--color-e2-accent) 0%, transparent 70%); filter: blur(100px);"></div>
+
+  <div class="section-container relative z-10">
+    <!-- Section Header -->
+    <div data-animate class="text-center max-w-2xl mx-auto mb-20">
+      <p class="text-xs uppercase tracking-[0.2em] text-e2-accent-bright font-medium mb-4">What You Get</p>
+      <h2 class="font-display text-[clamp(2rem,4vw,3.5rem)] font-bold text-e2-white mb-5 leading-tight">
+        Flows That <span class="gradient-text">Actually Convert</span>
+      </h2>
+      <p class="text-e2-muted text-lg leading-relaxed">
+        Every flow is custom-built for your brand, your audience, and your revenue goals. No templates. No cookie-cutter setups.
+      </p>
+    </div>
+
+    <!-- Services Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+      {services.map((service) => (
+        <div
+          data-animate
+          class="group relative p-7 rounded-2xl glass hover:border-e2-accent/20 transition-all duration-500 hover:-translate-y-1"
+        >
+          <!-- Tag -->
+          <span class="absolute top-5 right-5 text-[10px] uppercase tracking-[0.15em] text-e2-muted/60 font-medium">{service.tag}</span>
+
+          <!-- Icon with background -->
+          <div class="w-12 h-12 rounded-xl bg-e2-border/30 flex items-center justify-center text-2xl mb-5 group-hover:bg-e2-accent/10 transition-colors duration-500">
+            {service.icon}
+          </div>
+
+          <h3 class="font-display font-bold text-lg text-e2-white mb-2.5 group-hover:text-e2-accent-bright transition-colors duration-300">
+            {service.title}
+          </h3>
+          <p class="text-e2-muted text-sm leading-relaxed">{service.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

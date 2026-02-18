@@ -1,0 +1,87 @@
+# landing.e2.agency — Landing Page & Offers Platform
+
+A dedicated Astro 5 project for building high-converting landing pages for e2 Agency. Deployed to `landing.e2.agency` via Cloudflare Pages. Each landing page/offer gets its own route, built with reusable CRO-optimized components.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Supabase Cost**: Your e2.agency org is on a **paid plan** — a new project will cost **$10/month**. For just landing page lead capture, we have two options:
+> 1. **Reuse an existing project** (e.g. add a `landing_leads` table to AgencyOS or another project) — **$0 extra**
+> 2. **Create a new dedicated project** — **$10/month**
+>
+> Which do you prefer? For now I'll plan around option 1 (reuse existing) since you mentioned wanting a free plan.
+
+> [!NOTE]
+> **Formflow Integration**: We'll embed Formflow (`getformflow.io`) via iframe/script embed for all lead capture forms. This means Supabase may not even be needed initially if Formflow handles all form submissions.
+
+## Tech Stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | **Astro 5** (SSG, zero-JS by default) |
+| Interactive | **React** (via `@astrojs/react` islands) |
+| Styling | **Tailwind CSS v4** |
+| Animations | **GSAP + ScrollTrigger** |
+| Forms | **Formflow** (getformflow.io embed) |
+| Backend | **Supabase** (optional, for analytics/leads) |
+| Deployment | **Cloudflare Pages** |
+| Domain | `landing.e2.agency` |
+
+## Proposed Changes
+
+### Project Scaffold
+
+#### [NEW] `C:\Users\Admin\.gemini\antigravity\scratch\e2-landing\`
+
+Astro 5 project initialized with:
+- `@astrojs/react` — React island components
+- `@astrojs/tailwind` or Tailwind v4 native — styling
+- `gsap` — animations
+- Configured for static output (SSG) for Cloudflare Pages
+
+### Project Structure
+
+```
+e2-landing/
+├── src/
+│   ├── layouts/
+│   │   └── BaseLayout.astro        # HTML shell, fonts, meta, GSAP init
+│   ├── components/
+│   │   ├── Hero.astro              # Above-the-fold hero with headline + CTA
+│   │   ├── SocialProof.astro       # Logos, testimonials, stats
+│   │   ├── Services.astro          # What e2 offers
+│   │   ├── CTA.astro               # Formflow embed + call-to-action
+│   │   └── Footer.astro            # Minimal footer
+│   ├── islands/
+│   │   └── FormflowEmbed.tsx       # React component for Formflow embed
+│   └── pages/
+│       └── index.astro             # First landing page
+├── public/
+│   └── fonts/                      # Self-hosted premium fonts
+├── astro.config.mjs
+├── tailwind.config.ts
+├── package.json
+└── tsconfig.json
+```
+
+### First Landing Page (index.astro)
+
+The initial landing page for e2 Agency — a high-converting agency offer page with:
+- **Hero**: Bold headline, subtext, gradient background, animated CTA button
+- **Social Proof**: Client logos, revenue stats, testimonial cards
+- **Services**: What e2 does (email marketing, retention, CRO)
+- **CTA Section**: Formflow embed for booking a call / getting an audit
+- **Footer**: Minimal with links
+
+## Verification Plan
+
+### Automated
+- `npm run build` — Astro static build succeeds with zero errors
+- Lighthouse CLI audit targeting 95+ performance score
+
+### Manual
+- Open dev server in browser, verify all sections render correctly
+- Verify Formflow embed loads and is interactive
+- Test mobile responsiveness at 375px, 768px, 1024px breakpoints
+- Verify GSAP scroll animations trigger correctly
+- User deploys to Cloudflare Pages and confirms `landing.e2.agency` resolves
