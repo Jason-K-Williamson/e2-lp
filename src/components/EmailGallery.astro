@@ -5,24 +5,47 @@
  */
 const emails = [
     {
-        src: "/EDM Designs/GUd2IE7RNd8kuR9gPnNj8fltAb8 (1).webp",
+        src: "/EDM Designs/bruce-bolt.webp",
         brand: "Bruce Bolt",
+        w: 480,
+        h: 3857,
     },
-    { src: "/EDM Designs/JbK45xEjOAk88vICQf44eKk1s0.webp", brand: "Fleecies" },
     {
-        src: "/EDM Designs/oShYWhim4oKihE9YZNXH24VM (1).webp",
+        src: "/EDM Designs/fleecies.webp",
+        brand: "Fleecies",
+        w: 478,
+        h: 2634,
+    },
+    {
+        src: "/EDM Designs/littl-swim.webp",
         brand: "Littl Swim",
+        w: 458,
+        h: 4109,
     },
     {
-        src: "/EDM Designs/rsYRgbeOsnLv2FVnBFyCYbdH4s (1).webp",
+        src: "/EDM Designs/client-1.webp",
         brand: "Client",
+        w: 479,
+        h: 3618,
     },
-    { src: "/EDM Designs/xGuFniXIylZLMDF79d1O48Hw4.webp", brand: "Client" },
     {
-        src: "/EDM Designs/ZwjybQiID0e6d9fZ0ZxuJOh97w (2).avif",
+        src: "/EDM Designs/client-2.webp",
         brand: "Client",
+        w: 378,
+        h: 2096,
     },
-    { src: "/EDM Designs/eAvHiRU6T7rGpmMlwxTJUCfSM.avif", brand: "Client" },
+    {
+        src: "/EDM Designs/client-3.avif",
+        brand: "Client",
+        w: 581,
+        h: 4096,
+    },
+    {
+        src: "/EDM Designs/client-4.avif",
+        brand: "Client",
+        w: 527,
+        h: 4096,
+    },
 ];
 ---
 
@@ -64,6 +87,8 @@ const emails = [
                             class="w-full object-cover object-top"
                             style="max-height: 480px;"
                             loading="lazy"
+                            width={email.w}
+                            height={email.h}
                         />
                         <div class="px-4 py-3 border-t border-gray-100">
                             <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">

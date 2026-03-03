@@ -183,11 +183,24 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
           });
         };
 
+        // Yield to browser first paint, then register animations
+        // requestIdleCallback is safe here — GSAP uses ScrollTrigger so
+        // animations only play once elements enter the viewport anyway.
+        const scheduleAnimations = () => {
+          if ("requestIdleCallback" in window) {
+            (window as any).requestIdleCallback(runAnimations, {
+              timeout: 1000,
+            });
+          } else {
+            setTimeout(runAnimations, 0);
+          }
+        };
+
         // Fire immediately if DOM already ready, else wait
         if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", runAnimations);
+          document.addEventListener("DOMContentLoaded", scheduleAnimations);
         } else {
-          runAnimations();
+          scheduleAnimations();
         }
       } catch (e) {
         // GSAP blocked (e.g. Cloudflare SES lockdown) — reveal all content immediately

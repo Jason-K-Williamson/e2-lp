@@ -72,7 +72,7 @@ const editProps = (field: string) =>
                     <span class="relative flex h-2 w-2">
                         <span
                             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"
-                        ></span>
+                            style="will-change: transform;"></span>
                         <span
                             class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"
                         ></span>
@@ -103,8 +103,7 @@ const editProps = (field: string) =>
                     class="w-full"
                 >
                 </div>
-                <script is:inline src="https://myformflow.io/embed/widget.js"
-                ></script>
+                <!-- widget.js loaded lazily via IntersectionObserver — not render-blocking -->
             </div>
 
             <!-- Micro-copy guarantee strip -->
@@ -192,7 +191,17 @@ const editProps = (field: string) =>
 <script is:inline>
     (function () {
         var embed = null;
-        var isEngaged = false; // true after first CTA click
+        var isEngaged = false;
+        var widgetLoaded = false;
+
+        function loadWidget() {
+            if (widgetLoaded) return;
+            widgetLoaded = true;
+            var s = document.createElement("script");
+            s.src = "https://myformflow.io/embed/widget.js";
+            s.async = true;
+            document.body.appendChild(s);
+        }
 
         function centerEmbed() {
             if (!embed || !isEngaged) return;
@@ -207,7 +216,25 @@ const editProps = (field: string) =>
 
         document.addEventListener("DOMContentLoaded", function () {
             embed = document.getElementById("formflow-embed");
-            if (!embed) return;
+            var section = document.getElementById("qualify");
+            if (!embed || !section) return;
+
+            // Lazy-load the widget when the form section is ~300px away
+            if ("IntersectionObserver" in window) {
+                var io = new IntersectionObserver(
+                    function (entries, obs) {
+                        if (entries[0].isIntersecting) {
+                            loadWidget();
+                            obs.disconnect();
+                        }
+                    },
+                    { rootMargin: "300px" }
+                );
+                io.observe(section);
+            } else {
+                // Fallback for old browsers
+                loadWidget();
+            }
 
             // Watch for size changes (step transitions change widget height)
             if ("ResizeObserver" in window) {
@@ -217,13 +244,15 @@ const editProps = (field: string) =>
                 ro.observe(embed);
             }
 
-            // Initial center on any #qualify link click
+            // Center on any #qualify link click
             document
                 .querySelectorAll('a[href="#qualify"]')
                 .forEach(function (link) {
                     link.addEventListener("click", function (e) {
                         e.preventDefault();
                         isEngaged = true;
+                        // Ensure widget is loaded immediately if user clicks CTA
+                        loadWidget();
                         centerEmbed();
                     });
                 });

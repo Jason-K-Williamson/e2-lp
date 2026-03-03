@@ -145,6 +145,17 @@ h6 {
   backface-visibility: hidden;
 }
 
+/*
+ * LCP FIX: The hero headline MUST be visible on first paint.
+ * Lighthouse reports NO_LCP when the LCP candidate starts at opacity:0.
+ * This override ensures h1#hero-headline bypasses the fade-in initial state.
+ */
+#hero-headline[data-animate] {
+  opacity: 1;
+  transform: none;
+  will-change: auto;
+}
+
 /* ─── Admin inline editing ─────────────────────────────────────────────── */
 body[data-is-admin="1"] [data-field]:hover,
 body[data-is-admin="1"] [data-list-field]:hover {
