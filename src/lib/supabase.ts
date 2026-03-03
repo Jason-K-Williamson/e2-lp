@@ -3,7 +3,14 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Fallback to placeholder strings so createClient never throws at module load.
+// When env vars aren't set, all DB calls will fail quietly and pages render
+// from DEFAULT_VARIANT. Set PUBLIC_SUPABASE_URL + PUBLIC_SUPABASE_ANON_KEY
+// in Cloudflare Pages → Settings → Environment Variables to restore live data.
+export const supabase = createClient(
+  supabaseUrl ?? 'https://placeholder.supabase.co',
+  supabaseAnonKey ?? 'placeholder-anon-key'
+);
 
 export interface OfferCard {
   icon: string;
