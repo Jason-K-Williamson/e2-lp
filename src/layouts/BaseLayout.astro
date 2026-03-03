@@ -58,6 +58,13 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     />
     <link
       rel="preload"
+      href="/fonts/DMSans-500.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
       href="/fonts/DMSans-700.woff2"
       as="font"
       type="font/woff2"
@@ -75,7 +82,9 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     class="min-h-screen overflow-x-hidden"
     data-variant-id={variantId ?? ""}
   >
-    <slot />
+    <main>
+      <slot />
+    </main>
 
     {
       isAdmin && (
