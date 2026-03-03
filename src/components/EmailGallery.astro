@@ -1,6 +1,6 @@
 ---
 /**
- * EmailGallery — Horizontal scroll showcase of real EDM designs.
+ * EmailGallery , Horizontal scroll showcase of real EDM designs.
  * "Show don't tell" proof of design quality.
  */
 const emails = [
@@ -101,6 +101,58 @@ const emails = [
     <p class="text-center text-xs text-gray-400 mt-4 md:hidden">
         ← Swipe to see more →
     </p>
+
+    <!-- Figma Showcase Embed -->
+    <div class="section-container mt-20">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <p
+                class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3"
+            >
+                Full Design Showcase
+            </p>
+            <h3
+                class="font-bold text-3xl md:text-4xl text-e2-black tracking-tight mb-4"
+            >
+                200+ Emails. Browse Every One.
+            </h3>
+            <p class="text-gray-500 text-lg">
+                Click and explore the exact designs we've built for clients —
+                live, interactive, scrollable.
+            </p>
+        </div>
+
+        <!-- Lazy-loaded Figma iframe wrapper -->
+        <div
+            id="figma-embed-wrapper"
+            class="relative rounded-3xl overflow-hidden border border-gray-200 shadow-2xl shadow-gray-200/60 bg-gray-50"
+            style="padding-top: 62.5%;"
+        >
+            <!-- Placeholder shown while iframe loads -->
+            <div
+                id="figma-placeholder"
+                class="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-gray-50"
+            >
+                <div class="w-16 h-16 rounded-2xl bg-gray-200 animate-pulse">
+                </div>
+                <p class="text-sm text-gray-400 font-medium animate-pulse">
+                    Loading design showcase…
+                </p>
+            </div>
+
+            <!-- iframe injected by IntersectionObserver -->
+            <iframe
+                id="figma-embed"
+                data-src="https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/design/ZOquuBK1IV1SWNip9akgsQ/Showcase-Emails?node-id=0-1&t=47GZRz1Isi2grklv-1"
+                class="absolute inset-0 w-full h-full opacity-0 transition-opacity duration-500"
+                style="border: none;"
+                allowfullscreen
+                title="e2 Agency — Email Design Showcase"></iframe>
+        </div>
+
+        <p class="text-center text-xs text-gray-400 mt-4">
+            Interactive Figma showcase · click to explore all designs
+        </p>
+    </div>
 </section>
 
 <style>
@@ -112,3 +164,50 @@ const emails = [
         display: none;
     }
 </style>
+
+<script>
+    // Load Figma as soon as visitor reaches the Problem section —
+    // it'll be fully loaded by the time they scroll to EmailGallery.
+    const iframe = document.getElementById(
+        "figma-embed"
+    ) as HTMLIFrameElement | null;
+    const placeholder = document.getElementById("figma-placeholder");
+
+    const loadFigma = () => {
+        if (iframe && !iframe.src) {
+            iframe.src = iframe.dataset.src ?? "";
+            iframe.onload = () => {
+                iframe.classList.remove("opacity-0");
+                placeholder?.classList.add("hidden");
+            };
+        }
+    };
+
+    // Trigger: Problems section enters viewport
+    const trigger = document.getElementById("problem-section");
+    if (trigger && iframe) {
+        new IntersectionObserver(
+            (entries, obs) => {
+                if (entries[0].isIntersecting) {
+                    loadFigma();
+                    obs.disconnect();
+                }
+            },
+            { rootMargin: "0px" }
+        ).observe(trigger);
+    } else {
+        // Fallback: load when the embed wrapper itself is near
+        const wrapper = document.getElementById("figma-embed-wrapper");
+        if (wrapper) {
+            new IntersectionObserver(
+                (entries, obs) => {
+                    if (entries[0].isIntersecting) {
+                        loadFigma();
+                        obs.disconnect();
+                    }
+                },
+                { rootMargin: "400px" }
+            ).observe(wrapper);
+        }
+    }
+</script>

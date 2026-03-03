@@ -1,0 +1,118 @@
+---
+/**
+ * BunnyVideo — Facade pattern for Bunny.net embeds
+ *
+ * Zero Bunny network requests on page load.
+ * Shows a styled thumbnail placeholder; injects the iframe on hover.
+ *
+ * Props:
+ *   libraryId  — Bunny stream library ID (e.g. "609841")
+ *   videoId    — Bunny video GUID
+ *   title      — Video title shown on the thumbnail
+ *   subtitle   — Optional subtitle / duration line
+ *   author     — Person shown in bottom bar (optional)
+ *   authorRole — Their role / company (optional)
+ */
+
+interface Props {
+  libraryId: string;
+  videoId: string;
+  title?: string;
+  subtitle?: string;
+  author?: string;
+  authorRole?: string;
+  class?: string;
+}
+
+const {
+  libraryId,
+  videoId,
+  title = "Watch the video",
+  subtitle,
+  author,
+  authorRole,
+  class: className = "",
+} = Astro.props;
+
+const uid = `bunny-${videoId.slice(0, 8)}`;
+const embedSrc = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=1&loop=false&muted=false&preload=false&responsive=true`;
+---
+
+<div
+  id={uid}
+  class={`bunny-facade relative rounded-2xl overflow-hidden cursor-pointer group ${className}`}
+  style="aspect-ratio: 16/9;"
+  data-src={embedSrc}
+>
+  <!-- Thumbnail placeholder — dark cinematic -->
+  <div class="bunny-thumb absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-black flex flex-col items-center justify-center transition-opacity duration-300">
+    <!-- Subtle texture overlay -->
+    <div
+      class="absolute inset-0 opacity-30"
+      style="background-image: radial-gradient(circle at 25% 25%, rgba(99,102,241,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139,92,246,0.15) 0%, transparent 50%);"
+    ></div>
+
+    <!-- Play button -->
+    <div class="relative z-10 flex flex-col items-center gap-5">
+      <div class="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-xl">
+        <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+      <div class="text-center px-6">
+        <p class="text-white font-bold text-base mb-1 text-balance">{title}</p>
+        {subtitle && <p class="text-gray-400 text-sm">{subtitle}</p>}
+      </div>
+    </div>
+
+    <!-- Bottom bar (author) -->
+    {author && (
+      <div class="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/80 to-transparent flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 flex items-center justify-center text-white text-xs font-black flex-shrink-0">
+          {author.charAt(0)}
+        </div>
+        <div class="text-left">
+          <p class="text-white text-xs font-bold leading-tight">{author}</p>
+          {authorRole && <p class="text-gray-400 text-xs">{authorRole}</p>}
+        </div>
+        <!-- Hover hint -->
+        <span class="ml-auto text-xs text-gray-500 group-hover:text-gray-300 transition-colors duration-200">Hover to play</span>
+      </div>
+    )}
+  </div>
+
+  <!-- iframe slot — empty until hover -->
+  <div class="bunny-player absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>(".bunny-facade").forEach((facade) => {
+    const src = facade.dataset.src!;
+    const thumb = facade.querySelector<HTMLElement>(".bunny-thumb")!;
+    const player = facade.querySelector<HTMLElement>(".bunny-player")!;
+    let loaded = false;
+
+    const load = () => {
+      if (loaded) return;
+      loaded = true;
+
+      const iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.allow = "accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;";
+      iframe.allowFullscreen = true;
+      iframe.style.cssText = "border:0;position:absolute;top:0;left:0;width:100%;height:100%;";
+
+      player.appendChild(iframe);
+      player.style.opacity = "1";
+      player.style.pointerEvents = "auto";
+      thumb.style.opacity = "0";
+      thumb.style.pointerEvents = "none";
+    };
+
+    // Hover to load
+    facade.addEventListener("mouseenter", load);
+
+    // Also click for mobile / touch
+    facade.addEventListener("click", load);
+  });
+</script>

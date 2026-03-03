@@ -70,6 +70,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+  background-color: var(--color-e2-white);
 }
 
 body {
@@ -141,4 +143,20 @@ h6 {
   /* GPU-composited layer */
   will-change: opacity, transform;
   backface-visibility: hidden;
+}
+
+/* ─── Admin inline editing ─────────────────────────────────────────────── */
+body[data-is-admin="1"] [data-field]:hover,
+body[data-is-admin="1"] [data-list-field]:hover {
+  outline: 1.5px dashed rgba(59, 130, 246, 0.55);
+  outline-offset: 3px;
+  border-radius: 3px;
+  cursor: text;
+}
+
+body[data-is-admin="1"] [data-field]:focus,
+body[data-is-admin="1"] [data-list-field]:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.7);
+  outline-offset: 3px;
+  border-radius: 3px;
 }

@@ -1,0 +1,1719 @@
+# The Top 0.1% Meta Ads Framework for the Andromeda Era
+## Complete SOP: Strategy to Execution
+
+---
+
+## **OVERVIEW**
+
+This is the complete system for building, testing, and scaling Meta ad campaigns that leverage Andromeda's retrieval engine. This framework solves the Entity ID clustering problem while maximizing creative diversity and campaign efficiency.
+
+**What makes this top 0.1%:**
+- Solves Andromeda's semantic similarity penalties
+- Generates 7-15 distinct Entity IDs per AdSet (not 1-3 clusters)
+- Systematic creative generation (not random guessing)
+- Efficient budget allocation through consolidation
+- Scales from $10K/month to $10M/month
+
+---
+
+## **PART 1: STRATEGIC FOUNDATION (Pre-Creative Planning)**
+
+### **Step 1.1: Define JTBD (Job To Be Done)**
+
+**What it is:** The outcome/transformation your customer wants to achieve.
+
+**How to find it:**
+- Customer interviews: "What are you trying to accomplish?"
+- Review analysis: What do customers say the product helped them do?
+- Competitor positioning: What transformation do they promise?
+
+**Examples:**
+- Get more leads
+- Lose weight
+- Increase customer LTV
+- Sleep better
+- Improve dating confidence
+- Scale revenue profitably
+
+**Output:** One clear JTBD statement
+
+---
+
+### **Step 1.2: Identify TAMs (Total Addressable Market Segments)**
+
+**What it is:** The different persona types who have this JTBD.
+
+**How to find them:**
+- Existing customer segments
+- Different use cases for your product
+- Different industries/roles with same problem
+- Different life stages with same goal
+
+**Guidelines:**
+- Aim for 3-7 distinct personas
+- Each should be meaningfully different (not just "men 25-34" vs "men 35-44")
+- Different enough to require different messaging
+
+**Examples:**
+
+*JTBD: Lose weight*
+- TAM 1: Lifters (gym-goers who lift weights)
+- TAM 2: Dads (fathers, busy, family-focused)
+- TAM 3: White collar workers (desk job professionals)
+- TAM 4: Bachelors (single men, dating-focused)
+- TAM 5: Ex-athletes (used to be fit, let themselves go)
+
+*JTBD: Get more leads*
+- TAM 1: Agency owners
+- TAM 2: Real estate agents
+- TAM 3: Mortgage brokers
+- TAM 4: Insurance agents
+- TAM 5: SaaS founders
+
+**Output:** 3-7 distinct persona segments
+
+---
+
+### **Step 1.3: Define the Problem**
+
+**What it is:** The obstacle preventing them from achieving the JTBD.
+
+**How to find it:**
+- What's blocking the JTBD?
+- What have they tried that didn't work?
+- What's the root cause of their frustration?
+
+**Guidelines:**
+- Should be specific enough to be relatable
+- Broad enough to apply across multiple TAMs
+- Should be something they're actively experiencing
+
+**Examples:**
+
+*JTBD: Lose weight → Problem: Beer belly won't go away*
+*JTBD: Get more leads → Problem: Lead gen costs too high / quality too low*
+*JTBD: Increase LTV → Problem: One-time buyers never return*
+
+**Output:** 1 clear problem statement per AdSet you'll test
+
+---
+
+### **Step 1.4: Generate UMOPs (Unique Manifestations Of Problem)**
+
+**What it is:** The specific, visceral ways the problem shows up in their life that create emotional urgency.
+
+**How to generate them:**
+- Customer language: How do they describe the pain?
+- Consequence mapping: What happens because of this problem?
+- Emotional impact: How does it make them feel?
+- Different dimensions: Financial, emotional, social, physical, time-based
+
+**Guidelines:**
+- Aim for 5-7 UMOPs per Problem
+- Each should feel distinctly different
+- Use concrete, specific language (not abstract)
+- Should trigger immediate recognition: "That's ME"
+
+**Examples:**
+
+*Problem: Beer belly*
+- UMOP 1: Your wife hates your beer belly
+- UMOP 2: Your shirt doesn't fit because of your beer belly
+- UMOP 3: You can't put on your socks without struggling
+- UMOP 4: You can't keep up with your kids
+- UMOP 5: Your dating confidence is tanking
+- UMOP 6: Your performance in the gym is declining
+- UMOP 7: Your health markers are getting worse
+
+*Problem: Lead gen costs too high*
+- UMOP 1: Spending $200+ per lead on Google Ads
+- UMOP 2: Forms getting filled by bots and tire-kickers
+- UMOP 3: Sales team wasting time on unqualified leads
+- UMOP 4: Can't scale campaigns profitably
+- UMOP 5: Competitors outbidding you on paid channels
+- UMOP 6: Organic reach dying on social media
+- UMOP 7: Paying for leads that never convert
+
+**Output:** 5-7 distinct UMOP statements per Problem
+
+---
+
+### **Step 1.5: Define UMOS (Unique Mechanism Of Solution)**
+
+**What it is:** How your product/service uniquely solves the problem in a way that's different from competitors.
+
+**How to define it:**
+- What's the mechanism that makes your solution work?
+- Why does your approach succeed where others fail?
+- What's the "secret" or unique methodology?
+
+**Guidelines:**
+- Should explain WHY your solution works
+- Should differentiate from obvious alternatives
+- Should be defensible/believable
+
+**Examples:**
+
+*Problem: Beer belly → UMOS: Targets visceral fat through hormonal regulation (not just calorie deficit)*
+
+*Problem: Lead costs too high → UMOS: AI-powered qualification flows that pre-qualify before you pay*
+
+*Problem: Low repeat purchase → UMOS: Product-tier-specific win-back flows (not generic templates)*
+
+**Output:** 1 clear UMOS statement
+
+---
+
+### **Step 1.6: Craft the Offer**
+
+**What it is:** The de-risked, compelling way for them to get the solution.
+
+**Framework (Hormozi-style):**
+- What they get (the thing)
+- How fast they get it (speed/convenience)
+- Guarantee/risk reversal (how it's de-risked)
+- Urgency/scarcity (why now)
+
+**Examples:**
+
+*Beer belly product:*
+- 30-day Beer Belly Buster protocol
+- Visible belly reduction or full refund
+- First 100 customers get bonus meal plan
+- Guaranteed delivery in 3 days
+
+*Lead gen tool:*
+- 14-day trial with full platform access
+- 50% more qualified leads or we refund setup fee
+- Done-for-you implementation included
+- Lock in founding member pricing (expires Friday)
+
+*Email/SMS agency:*
+- Rebuild your entire flow architecture in 30 days
+- No strategy calls, no homework for you
+- 40%+ increase in repeat purchase rate in 90 days or refund setup fee
+- We guarantee first improved flow live within 7 days
+
+**Output:** 1 complete offer structure
+
+---
+
+### **Step 1.7: Create the Strategic Matrix**
+
+**What it is:** The complete picture before you create any ads.
+
+**Template:**
+
+```
+JTBD: [Desired outcome]
+
+TAMs:
+1. [Persona 1]
+2. [Persona 2]
+3. [Persona 3]
+4. [Persona 4]
+5. [Persona 5]
+
+Problem: [The obstacle]
+
+UMOPs:
+1. [Specific manifestation 1]
+2. [Specific manifestation 2]
+3. [Specific manifestation 3]
+4. [Specific manifestation 4]
+5. [Specific manifestation 5]
+6. [Specific manifestation 6]
+7. [Specific manifestation 7]
+
+UMOS: [Your unique mechanism]
+
+Offer: [De-risked offer structure]
+```
+
+**Output:** Completed strategic matrix (your blueprint for creative production)
+
+---
+
+## **PART 2: CREATIVE PRODUCTION (Stage 1 - Initial Testing)**
+
+### **Step 2.1: Generate TAM × UMOP Combinations**
+
+**What it is:** Cross your TAMs with your UMOPs to create distinct creative concepts.
+
+**How to do it:**
+
+Create a matrix:
+
+|  | UMOP 1 | UMOP 2 | UMOP 3 | UMOP 4 | UMOP 5 | UMOP 6 | UMOP 7 |
+|---|---|---|---|---|---|---|---|
+| **TAM 1** | Combo A | Combo B | Combo C | Combo D | Combo E | Combo F | Combo G |
+| **TAM 2** | Combo H | Combo I | Combo J | Combo K | Combo L | Combo M | Combo N |
+| **TAM 3** | Combo O | Combo P | Combo Q | Combo R | Combo S | Combo T | Combo U |
+| **TAM 4** | Combo V | Combo W | Combo X | Combo Y | Combo Z | Combo AA | Combo AB |
+| **TAM 5** | Combo AC | Combo AD | Combo AE | Combo AF | Combo AG | Combo AH | Combo AI |
+
+**This gives you up to 35 possible combinations.**
+
+**Select 7-10 highest-potential combinations for testing.**
+
+**Selection criteria:**
+- Spread across multiple TAMs (don't pick all from TAM 1)
+- Spread across multiple UMOPs (don't pick all UMOP 1)
+- Choose combinations that feel most compelling/urgent
+- Prioritize combinations with clear visual differentiation
+
+**Example: Beer Belly Product**
+
+Selected combinations:
+1. Lifters + "Wife hates your beer belly"
+2. Dads + "Wife hates your beer belly"
+3. Lifters + "Shirt doesn't fit"
+4. Dads + "Can't keep up with kids"
+5. Bachelors + "Dating confidence tanking"
+6. Ex-athletes + "Performance declining"
+7. Professionals + "Health markers getting worse"
+
+**Output:** 7-10 selected TAM × UMOP combinations
+
+---
+
+### **Step 2.2: Write Static Ad Copy (Hook + Body + CTA)**
+
+**What it is:** Create the copy for each TAM × UMOP combination as a static image ad.
+
+**Structure:**
+
+**Hook (first 1-2 lines):**
+- Calls out the TAM
+- References the UMOP
+- Pattern interrupt
+
+**Body (2-4 lines):**
+- Explains the problem mechanism (light version of UMOS)
+- Why typical solutions don't work
+- What's different about your approach
+
+**CTA (last line):**
+- Clear action
+- Reference the offer
+- Create urgency
+
+**Example Templates:**
+
+*Ad 1: Lifters + "Wife hates your beer belly"*
+
+```
+Hook: "Lifting 4x per week but your wife still comments on your gut?"
+
+Body: "You're building muscle but visceral belly fat is hormonal, not caloric. Cutting calories tanks your lifts. You need to target the mechanism."
+
+CTA: "Try the 30-day Beer Belly Buster protocol. Visible reduction or full refund. →"
+```
+
+*Ad 2: Dads + "Can't keep up with kids"*
+
+```
+Hook: "Getting winded playing with your kids?"
+
+Body: "That beer belly isn't just aesthetics—it's crushing your cardiovascular capacity and energy. You can't dad-mode on low energy."
+
+CTA: "Get your energy back in 30 days or we refund you. First 100 get free meal plan. →"
+```
+
+**Guidelines:**
+- Use conversational language (how they'd talk to a friend)
+- Keep it concise (static ads = scannable)
+- Don't oversell in Stage 1 (you're testing resonance, not closing)
+- Focus on the UMOP (that's what creates urgency)
+
+**Output:** 7-10 pieces of static ad copy
+
+---
+
+### **Step 2.3: Design Static Images**
+
+**What it is:** Create simple, scroll-stopping static images for each ad.
+
+**Design requirements:**
+
+**Visual diversity is CRITICAL for Entity ID separation:**
+- Different people in the image (different TAMs = different faces)
+- Different settings (gym vs. home vs. office vs. beach)
+- Different color palettes (avoid all looking the same)
+- Different composition styles (close-up vs. wide shot vs. split screen)
+
+**Design guidelines:**
+- Bold, readable text overlay (hook should be visible)
+- High-contrast colors
+- Clear focal point
+- Mobile-first (most will see on phone)
+- Product visible but not dominant
+
+**Production options:**
+- Canva templates (fast, cheap)
+- Freelance designer on Fiverr/Upwork ($10-50/image)
+- AI tools like Midjourney/DALL-E for backgrounds + Canva for text
+- UGC creator photos + text overlay
+
+**Stage 1 budget:** $0-500 total for 7-10 static images
+
+**Output:** 7-10 static image ads ready to upload
+
+---
+
+### **Step 2.4: Set Up ABO Testing Campaign**
+
+**What it is:** Create your Ad Set Budget Optimization campaign to test which TAM × UMOP combinations resonate.
+
+**Campaign structure:**
+
+```
+Campaign: Testing - [Product Name] - [Problem]
+├─ Budget: ABO (Ad Set Budget Optimization)
+├─ Objective: Sales / Conversions / Leads (depending on your business)
+└─ AdSet 1: [Problem Name] (e.g., "Beer Belly Problem")
+    ├─ Budget: $50-100/day (adjust based on total budget)
+    ├─ Targeting: Broad (Country-level, 18-65+, All genders unless product-specific)
+    ├─ Placements: Advantage+ Placements
+    ├─ Creative: 7-10 static ads (TAM × UMOP combinations)
+    └─ Ad names: Clear labels (e.g., "Lifters-Wife", "Dads-Kids", "Bachelors-Dating")
+```
+
+**Targeting settings:**
+- **Location:** Your target country (e.g., United States)
+- **Age:** Broad (18-65+ unless product has clear age limit)
+- **Gender:** All (unless product is gender-specific)
+- **Detailed Targeting:** LEAVE BLANK (Andromeda handles this)
+- **Advantage+ Audience:** ON
+- **Placements:** Advantage+ (let Meta choose)
+
+**Budget guidelines:**
+- Minimum $40-50 per ad for meaningful signal
+- If testing 10 ads, need ~$400-500/day AdSet budget
+- Or test fewer ads (7 ads × $50 = $350/day)
+- Run for 7-10 days minimum
+
+**Naming convention:**
+```
+Campaign: TEST - Beer Belly - Dec 2024
+AdSet: Beer Belly Problem
+Ads:
+  - BB-Lifters-Wife-Static
+  - BB-Dads-Wife-Static
+  - BB-Lifters-Shirt-Static
+  - BB-Dads-Kids-Static
+  - BB-Bachelors-Dating-Static
+  - BB-ExAth-Perf-Static
+  - BB-Prof-Health-Static
+```
+
+**Output:** Live ABO campaign with 7-10 ads testing
+
+---
+
+### **Step 2.5: Monitor and Identify Winners (7-10 Days)**
+
+**What it is:** Let the campaign run and identify which TAM × UMOP combinations are working.
+
+**Metrics to track:**
+
+**Primary metric (conversion-focused):**
+- Cost per purchase (CPP) or Cost per lead (CPL)
+- Number of conversions
+- ROAS (if ecommerce)
+
+**Secondary metrics (engagement signals):**
+- CTR (Click-through rate)
+- CPC (Cost per click)
+- Add to cart rate (if ecommerce)
+- Landing page conversion rate
+
+**Winner criteria:**
+
+**Hard rule:**
+- 10+ conversions at or below target CPA
+- OR 50+ link clicks if you're seeing strong on-site behavior but slower conversions
+
+**Soft signals (if conversion volume is low):**
+- Top 3 ads by CTR
+- Top 3 ads by engagement rate
+- Ads with positive ROAS trend
+
+**Loser criteria:**
+- Spent 2x target CPA with 0 conversions = KILL
+- Bottom 3 performers after 7 days = PAUSE
+- High spend, low engagement (CTR <1%) = PAUSE
+
+**What you're learning:**
+- Which TAMs respond best (e.g., "Dads crush, Bachelors don't")
+- Which UMOPs resonate (e.g., "Wife comments" > "Shirt fit")
+- Which TAM × UMOP combos are winners
+
+**Example results after 7 days:**
+
+| Ad | TAM | UMOP | Spend | Conversions | CPA | Status |
+|---|---|---|---|---|---|---|
+| 1 | Lifters | Wife | $350 | 12 | $29 | ✅ WINNER |
+| 2 | Dads | Wife | $280 | 8 | $35 | ✅ WINNER |
+| 3 | Lifters | Shirt | $320 | 2 | $160 | ❌ PAUSE |
+| 4 | Dads | Kids | $400 | 15 | $27 | ✅ WINNER (BEST) |
+| 5 | Bachelors | Dating | $180 | 1 | $180 | ❌ KILL |
+| 6 | Ex-Ath | Perf | $290 | 7 | $41 | ⚠️ WATCH |
+| 7 | Prof | Health | $380 | 11 | $35 | ✅ WINNER |
+
+**Winners: Ads 1, 2, 4, 7** (move to Stage 2 and ASC)
+
+**Output:** 2-4 validated TAM × UMOP combinations
+
+---
+
+## **PART 3: CREATIVE EXPANSION (Stage 2 - Format & Awareness Diversification)**
+
+### **Step 3.1: Expand Winning Combinations with Format Diversity**
+
+**What it is:** Take your 2-4 winning TAM × UMOP combinations and produce multiple format variations.
+
+**Why this works now (but didn't work in Stage 1):**
+- You validated the TAM × UMOP combo works
+- Now you're adding format diversity on a PROVEN concept
+- Different formats = additional Entity IDs even with same message
+- Andromeda can test which format works best for this specific combo
+
+**Format types to produce:**
+
+**1. UGC (User-Generated Content) style**
+- Real person (or actor) talking to camera
+- iPhone/authentic feel
+- Testimonial or personal story
+- 15-30 seconds
+
+**2. Testimonial/Social Proof**
+- Customer testimonial (text + photo)
+- Before/after results
+- Case study format
+- Can be static or video
+
+**3. Product Demo/Explainer**
+- How it works
+- Mechanism explanation
+- Feature showcase
+- 30-60 seconds
+
+**4. Unboxing/Review**
+- Product unboxing experience
+- First impressions
+- Value demonstration
+- 20-40 seconds
+
+**5. Founder Story/Authority**
+- Why you created this
+- Your expertise/credentials
+- Mission-driven angle
+- 30-45 seconds
+
+**6. Comparison/VSL (Video Sales Letter)**
+- Your solution vs. alternatives
+- "Why X doesn't work, but Y does"
+- Longer format (60-90 seconds)
+- More educational
+
+**Production volume:**
+For each winning TAM × UMOP combo, produce **3-5 format variations**
+
+**Example: "Dads + Can't keep up with kids" (the BEST performer)**
+
+- Format 1: UGC - Dad testimonial talking about energy improvement
+- Format 2: Testimonial static - Before/after photo with quote
+- Format 3: Demo video - Showing how Beer Belly Buster works
+- Format 4: Comparison - "Why cutting calories failed vs. hormonal approach"
+- Format 5: Founder story - "I created this after watching my dad struggle"
+
+**Output:** 3-5 new format variations per winning combo = 9-20 total new ads
+
+---
+
+### **Step 3.2: Layer in Awareness Stage Variations**
+
+**What it is:** For your winning combos, create versions targeting different awareness stages.
+
+**The 5 awareness stages:**
+
+**1. Unaware (Problem Unaware)**
+- They don't know they have the problem
+- Focus: Surface the problem
+- Hook: Question or observation that reveals problem
+- Example: "Why do you get winded playing with your kids?"
+
+**2. Problem Aware**
+- They know they have the problem
+- Focus: Agitate the problem
+- Hook: Acknowledge the pain directly
+- Example: "Can't keep up with your kids because of your beer belly?"
+
+**3. Solution Aware**
+- They know solutions exist but not which one
+- Focus: Educate on mechanism, differentiate your approach
+- Hook: "Here's why cutting calories didn't work"
+- Example: "You've tried cutting calories but the belly stays. Here's why..."
+
+**4. Product Aware**
+- They know your product exists
+- Focus: Overcome objections, comparison, proof
+- Hook: Direct product mention
+- Example: "Beer Belly Buster vs. generic fat burners: here's the difference"
+
+**5. Most Aware**
+- They're ready to buy, just need final push
+- Focus: Offer, urgency, guarantee
+- Hook: Direct CTA with offer
+- Example: "30-day Beer Belly protocol. 50% off ends Friday. Full refund if no results."
+
+**How to apply this:**
+
+Take your winning TAM × UMOP + Format combinations and create awareness variations:
+
+**Example: "Dads + Can't keep up with kids" + UGC format**
+
+- Unaware version: "Why am I so tired all the time?" (doesn't mention beer belly yet)
+- Problem Aware version: "I couldn't play soccer with my son without getting winded" (direct problem)
+- Solution Aware version: "I tried cutting carbs, running more—nothing worked until..." (mechanism reveal)
+- Product Aware version: "After 30 days of Beer Belly Buster, I'm back to full-court basketball with my kids"
+- Most Aware version: "Beer Belly Buster. 30 days. 50% off for dads. Money-back guarantee."
+
+**Production note:**
+You don't need to create all 5 awareness stages for every format. Prioritize:
+- Problem Aware (most ads should be here)
+- Solution Aware (2nd most)
+- Most Aware (for retargeting or high-intent)
+- Unaware (1-2 tests for cold traffic)
+- Product Aware (if you have brand recognition)
+
+**Output:** 2-3 awareness stage variations per format = 6-15 additional ads per winning combo
+
+---
+
+### **Step 3.3: Production Workflow**
+
+**What it is:** How to actually produce 15-30 new ads efficiently.
+
+**Option 1: In-house with AI tools (Fastest, Cheapest)**
+- Script writing: ChatGPT/Claude
+- Voiceover: ElevenLabs
+- Video editing: CapCut, Descript
+- Visuals: Canva, Midjourney
+- Cost: $50-200 for all 15-30 ads
+- Timeline: 2-3 days
+
+**Option 2: UGC creators (Best quality/authenticity)**
+- Hire 2-3 UGC creators on platforms like:
+  - Billo
+  - Insense  
+  - Twirl
+  - Upwork (search "UGC creator")
+- Provide them with scripts for each TAM × UMOP combo
+- Cost: $150-300 per creator (gets you 3-5 videos each)
+- Total: $450-900 for 15-30 videos
+- Timeline: 5-10 days
+
+**Option 3: Hybrid (Best balance)**
+- UGC creators for testimonial/talking head content
+- AI tools for explainer/demo/comparison content
+- Static designs for social proof/before-after
+- Cost: $300-500 total
+- Timeline: 3-7 days
+
+**Creative brief template for UGC creators:**
+
+```
+BRIEF: [Product Name] - [TAM] + [UMOP] - [Format]
+
+TARGET PERSONA: [Description of TAM]
+Example: "You're a dad, 35-50 years old, used to be fit but let yourself go. You have young kids (5-12 years old)."
+
+SCENARIO/UMOP: [The specific pain point]
+Example: "You're getting winded playing with your kids. You want to wrestle, play soccer, run around—but your belly and low energy stop you."
+
+KEY MESSAGE: [What this ad should communicate]
+Example: "Beer Belly Buster targets the hormonal cause of visceral fat, not just calories. You'll have more energy and lose the gut without tanking your strength."
+
+TONE: [How it should feel]
+Example: "Real, authentic, slightly frustrated but hopeful. Not overly sales-y."
+
+SCRIPT/TALKING POINTS:
+[Provide either a word-for-word script OR key points to cover]
+
+Example:
+"Hook: I couldn't make it through a soccer game with my 8-year-old without getting winded.
+Body: I tried cutting calories but I'd just get tired and hangry. My buddy told me about Beer Belly Buster—targets the hormonal issue, not just calories.
+CTA: 30 days in, I'm playing full-court basketball again. Check it out."
+
+LENGTH: 20-30 seconds
+
+VISUAL NOTES:
+[Any specific shots or settings]
+Example: "Casual, at home or at a park. Show you in a t-shirt (belly slightly visible but not emphasizing it). Authentic iPhone quality, not polished."
+```
+
+**Output:** 15-30 new format + awareness variations produced
+
+---
+
+### **Step 3.4: Launch Creative Expansion Ads**
+
+**What it is:** Add the new format/awareness ads to your campaign structure.
+
+**Two approaches:**
+
+**Approach A: Add to existing ABO AdSet (simpler)**
+- Keep the same AdSet from Stage 1
+- Pause the losers
+- Add the new 15-30 ads alongside the 2-4 winners
+- Let them compete for budget
+
+**Approach B: Create new "Expansion" AdSet (cleaner data)**
+- Create AdSet 2 in the same campaign
+- Call it "Beer Belly - Expansion"
+- Put all 15-30 new ads here
+- Same targeting (Broad, Advantage+)
+- Equal budget to Stage 1 AdSet
+
+**Recommended: Approach B** (cleaner performance tracking)
+
+**What you're testing:**
+- Which formats perform best (UGC vs. Demo vs. Testimonial)
+- Which awareness stages convert best
+- Which TAM × UMOP × Format × Awareness combos are the ultimate winners
+
+**Budget:**
+- $50-100/day per AdSet
+- Run for another 7-10 days
+- Total testing budget by now: ~$5K-10K over 14-20 days
+
+**Graduation criteria (same as before):**
+- 10+ conversions at target CPA = move to ASC
+- Strong engagement + early conversions = watch closely
+- Poor performance = pause
+
+**Output:** Expanded creative library with 20-40 tested ads
+
+---
+
+## **PART 4: CONCEPT MATCHING (Stage 3 - Landing Page Optimization)**
+
+### **Step 4.1: Identify Top Performing TAM × UMOP Combinations**
+
+**What it is:** Look at your cumulative data from Stage 1 + Stage 2 and identify which TAM × UMOP combinations are driving the most conversions.
+
+**Analysis:**
+
+Look at performance by **concept** (not just individual ad):
+
+**Example results:**
+
+| Concept (TAM × UMOP) | Total Spend | Total Conv | Avg CPA | Winner? |
+|---|---|---|---|---|
+| Dads + Can't keep up with kids | $1,200 | 42 | $29 | ✅ #1 |
+| Lifters + Wife hates belly | $890 | 28 | $32 | ✅ #2 |
+| Professionals + Health markers | $780 | 19 | $41 | ✅ #3 |
+| Dads + Wife hates belly | $650 | 12 | $54 | ⚠️ OK |
+| Ex-athletes + Performance | $420 | 6 | $70 | ❌ Weak |
+
+**Key insight:**
+"Dads + Can't keep up with kids" is the DOMINANT winner across formats and awareness stages.
+
+**Output:** Ranked list of top 2-3 TAM × UMOP combinations
+
+---
+
+### **Step 4.2: Clone and Customize Landing Pages**
+
+**What it is:** Create landing page variants matched to your top-performing TAM × UMOP combinations.
+
+**Why this matters:**
+- Message match from ad → landing page increases conversion rate
+- Same generic landing page for all traffic = leaving money on table
+- Personalization increases trust and reduces friction
+
+**How to do it:**
+
+**Step 1: Duplicate your existing landing page**
+- Use your landing page builder (Unbounce, Leadpages, Webflow, etc.)
+- Create 2-3 copies
+
+**Step 2: Customize each copy for the specific TAM × UMOP**
+
+**Elements to change:**
+
+**Headline:**
+- Generic: "Lose Your Beer Belly in 30 Days"
+- Matched: "Dads: Get Your Energy Back and Keep Up With Your Kids"
+
+**Subheadline:**
+- Generic: "Our proven system targets visceral fat"
+- Matched: "You can't dad-mode on low energy. Target the hormonal cause of belly fat—without killing your strength or energy."
+
+**Hero image/video:**
+- Generic: Product shot
+- Matched: Dad playing with kids, before/after of a dad, testimonial from a dad
+
+**Social proof:**
+- Generic: "5,000 customers"
+- Matched: "1,200+ dads got their energy back"
+
+**Testimonials:**
+- Generic: Mix of everyone
+- Matched: Only dad testimonials, specifically mentioning kid-related wins
+
+**CTA:**
+- Generic: "Buy Now"
+- Matched: "Get Your Energy Back - 30 Day Guarantee"
+
+**Body copy:**
+- Use the TAM's language
+- Reference the UMOP throughout
+- Tell stories relevant to that TAM
+
+**Example comparison:**
+
+**Generic landing page:**
+```
+Headline: Lose Your Beer Belly Fast
+Subhead: Our proven formula targets stubborn belly fat
+Hero: Product bottle
+CTA: Order Now
+```
+
+**Matched landing page (Dads + Can't keep up with kids):**
+```
+Headline: Dads: Stop Getting Winded Playing With Your Kids
+Subhead: Your beer belly isn't just about looks—it's crushing your energy and cardiovascular capacity. Target the hormonal cause without tanking your strength.
+Hero: Video of dad playing soccer with son
+CTA: Get Your Energy Back - 50% Off
+Testimonials: "I can finally play full-court basketball with my kids again" - Mike, dad of 3
+```
+
+**Step 3: Set up URL parameters for tracking**
+
+```
+Landing Page A (Generic): yoursite.com/beer-belly
+Landing Page B (Dads-Kids): yoursite.com/beer-belly?concept=dads-kids
+Landing Page C (Lifters-Wife): yoursite.com/beer-belly?concept=lifters-wife
+```
+
+**Step 4: Update ads to point to matched landing pages**
+
+Go into Ads Manager:
+- All "Dads + Kids" ads → point to Landing Page B
+- All "Lifters + Wife" ads → point to Landing Page C
+- Everything else → Landing Page A (generic)
+
+**Output:** 2-3 concept-matched landing pages live and connected to ads
+
+---
+
+### **Step 4.3: Test and Optimize Landing Pages**
+
+**What it is:** Run A/B tests to validate that concept-matched pages actually convert better.
+
+**Testing setup:**
+
+**Week 1-2: Baseline**
+- Run all ads to generic landing page
+- Track conversion rate
+
+**Week 3-4: Matched**
+- Run ads to concept-matched landing pages
+- Track conversion rate
+
+**Metrics to compare:**
+- Landing page conversion rate (purchases / visitors)
+- Overall ROAS
+- CPA
+
+**Expected lift:**
+- Well-matched landing pages typically improve conversion rate by 15-40%
+- Example: If generic LP converts at 3%, matched LP might convert at 4-5%
+
+**Optimization tips:**
+- Test different headlines
+- Test different hero images/videos
+- Test CTA copy
+- Test page length (short vs. long)
+- Use heatmaps (Hotjar, Clarity) to see where people drop off
+
+**Output:** Validated concept-matched landing pages with measurable lift
+
+---
+
+## **PART 5: SCALING (ASC - Advantage+ Shopping Campaign)**
+
+### **Step 5.1: Set Up ASC Campaign**
+
+**What it is:** Meta's fully automated campaign type designed specifically for Andromeda.
+
+**When to launch ASC:**
+- After you have 15-40 proven winning ads
+- After 2-4 weeks of testing
+- When you're ready to scale budget
+
+**Campaign structure:**
+
+```
+Campaign: ASC - [Product Name] - Scaling
+├─ Campaign Type: Advantage+ Shopping Campaign
+├─ Budget: Start with 2-3x your testing budget, scale from there
+├─ Objective: Sales (automatic)
+└─ ONE Campaign = Meta handles everything
+    ├─ Ads: 15-40 winning creatives
+    ├─ Targeting: Automatic (Meta decides)
+    ├─ Placements: Automatic
+    ├─ Budget allocation: Automatic
+    └─ Creative rotation: Automatic
+```
+
+**Setup steps:**
+
+**1. Create new campaign**
+- Campaign objective: Sales (for ecommerce) or choose appropriate objective
+- Campaign type: Advantage+ Shopping Campaign
+- If ASC isn't available (non-ecommerce), use standard CBO with Advantage+ features enabled
+
+**2. Campaign settings**
+- Budget: $300-500/day (scale based on testing learnings)
+- Bid strategy: Highest volume OR Cost cap at 1.5x your target CPA
+- Campaign spending limit: Optional (set a monthly cap if needed)
+
+**3. Add winning creatives**
+- Upload all 15-40 winners from Stage 1 + Stage 2
+- Use clear naming convention
+
+**Example ad names in ASC:**
+```
+WINNER-Dads-Kids-UGC-ProbAware
+WINNER-Dads-Kids-Testimonial-SolAware
+WINNER-Lifters-Wife-Static-ProbAware
+WINNER-Lifters-Wife-Demo-SolAware
+WINNER-Prof-Health-UGC-ProdAware
+[etc. for all 15-40 ads]
+```
+
+**4. Set up Creative Diversification (if available)**
+- Meta may show an option to "enable creative diversification"
+- Turn this ON
+- This helps Andromeda understand these are distinct concepts
+
+**5. Configure tracking**
+- Pixel/Conversions API must be set up correctly
+- Event: Purchase (or Lead, depending on business model)
+- Make sure you're tracking all conversion events
+
+**6. Launch**
+
+**Output:** Live ASC campaign with 15-40 winning ads
+
+---
+
+### **Step 5.2: Initial Monitoring (First 7 Days)**
+
+**What it is:** Watch closely as ASC learns and stabilizes.
+
+**What to expect:**
+
+**Days 1-3: Chaos**
+- CPA will be all over the place
+- Meta is exploring
+- Don't panic, don't turn off
+
+**Days 4-7: Learning phase**
+- Campaign status will show "Learning"
+- Performance starts to stabilize
+- Still expect some volatility
+
+**Days 8-14: Exiting learning phase**
+- Need 50+ conversions per week to exit learning
+- Performance should stabilize at or below target CPA
+- Creative rotation becomes apparent (some ads get 80% of budget)
+
+**What to watch:**
+
+**Daily checks:**
+- Spend pacing (is it spending the budget?)
+- CPA trend (going up or down?)
+- Any creative getting 0 delivery (might be Entity ID collision)
+
+**Weekly review:**
+- Which ads are getting majority of spend?
+- Which ads have best CPA?
+- Any ads with good engagement but no conversions? (might need landing page tweaks)
+- Overall ROAS vs. target
+
+**What NOT to do:**
+- Don't pause ads in the first 7 days (let Meta learn)
+- Don't change budget dramatically (max 20% increase per day)
+- Don't add new ads during learning phase
+- Don't turn campaign off and on
+
+**Output:** Stable ASC campaign exiting learning phase
+
+---
+
+### **Step 5.3: Ongoing Optimization (Weekly)**
+
+**What it is:** Regular maintenance to keep performance strong.
+
+**Weekly tasks:**
+
+**1. Refresh creative (every 10-14 days)**
+
+**Why:** Creative fatigue accelerates under Andromeda. Top ads can burn out in 2-4 weeks.
+
+**How:**
+- Identify ads that have been running 14+ days with declining CTR
+- Pause fatigued ads (or they'll drag down overall CPA)
+- Add 3-5 new creative variations from your testing pipeline
+- Variations should be new TAM × UMOP combinations OR new formats/awareness stages
+
+**Example refresh:**
+```
+Week 3: Pause 5 ads showing fatigue (CTR dropped 40%+, CPA up 50%+)
+Week 3: Add 5 new ads:
+  - New TAM × UMOP: "Bachelors + First date anxiety"
+  - New format: Founder story for "Dads + Kids"
+  - New awareness: Most Aware version of "Lifters + Wife"
+```
+
+**2. Budget scaling**
+
+**If CPA is at or below target:**
+- Increase budget by 20% per day
+- Example: $500/day → $600/day → $720/day → etc.
+- Scale until CPA rises above target, then hold
+
+**If CPA is above target:**
+- Don't cut budget (it can make things worse)
+- Instead, add more diverse creative
+- Consider bid cap strategy
+- Check landing page (might need optimization)
+
+**3. Performance analysis**
+
+**Questions to ask:**
+- Which TAM × UMOP combinations are winning in ASC?
+- Which formats perform best (UGC vs static vs demo)?
+- Which awareness stages convert best?
+- Are there any TAM × UMOP combos we haven't tested yet?
+
+**Use these insights to guide next round of testing**
+
+**4. Add new winners from testing**
+
+If your ABO testing campaign is still running:
+- Identify new winners (10+ conversions at target CPA)
+- Add them to ASC
+- This keeps your creative library fresh
+
+**Monthly tasks:**
+
+**1. Audit Entity ID diversity**
+- Look at your active ads in ASC
+- Are they semantically diverse? (different TAMs, UMOPs, formats?)
+- If 40 ads are all slight variations of one concept → problem
+- Retire similar ads, add more diverse concepts
+
+**2. Concept matching review**
+- Check landing page conversion rates
+- Is one concept-matched page crushing the others?
+- Consider retiring weaker concepts and doubling down on winners
+
+**3. Expand to new problems**
+- If Beer Belly problem is saturated, test new problems:
+  - Problem 2: Low energy
+  - Problem 3: Poor sleep
+  - Problem 4: Muscle loss
+- Use same TAMs, new UMOPs for each problem
+
+**Output:** Consistently optimized ASC campaign scaling profitably
+
+---
+
+## **PART 6: ADVANCED STRATEGIES (Top 0.1% Moves)**
+
+### **Strategy 6.1: Problem Surfing**
+
+**What it is:** Riding waves of acute, timely pain that's already top-of-mind.
+
+**Examples:**
+- Klaviyo raised prices 30% → "Klaviyo just raised prices. Here's how to offset the increase..."
+- iOS update killed attribution → "Can't track ROAS anymore? Email fills the gap..."
+- Recession fears → "Customers buying less frequently? Retention flows become critical..."
+- Competitor went out of business → "If you were using [Competitor], here's your migration path..."
+
+**How to execute:**
+
+**Step 1: Identify trending problems**
+- Industry news
+- Reddit/Twitter complaints
+- Customer support tickets
+- Competitor issues
+
+**Step 2: Speed to market**
+- Create 3-5 static ads addressing the timely problem
+- Launch within 24-48 hours
+- Use urgency in copy: "This week only..."
+
+**Step 3: Ride the wave**
+- These campaigns have short lifespans (1-4 weeks)
+- High urgency = higher conversion rates
+- Don't over-invest in production (static ads are fine)
+
+**Output:** Opportunistic campaigns that capitalize on timely pain
+
+---
+
+### **Strategy 6.2: Challenger Brand Positioning**
+
+**What it is:** Positioning your brand against a dominant competitor or category norm.
+
+**Examples:**
+- "Why [Big Brand] doesn't work for [specific TAM]"
+- "The [category] industry doesn't want you to know this"
+- "We left [Big Brand] to build what should have existed"
+
+**Frameworks:**
+
+**1. David vs. Goliath**
+- "The big brands optimize for shelf life, not results"
+- "We're not owned by [Parent Company], so we can actually tell you the truth"
+
+**2. Category Rebel**
+- "Most [category] companies do X. We do Y because..."
+- "The [category] industry is broken. Here's why."
+
+**3. Switcher Campaign**
+- "Made the switch from [Competitor] to us? Here's what to expect..."
+- "Why 2,000 [Competitor] customers switched this month"
+
+**How to execute:**
+- Use in Solution Aware and Product Aware stages
+- Back up claims with proof/data
+- Don't trash competitors (compare, don't attack)
+- Focus on WHY your approach is better, not why theirs sucks
+
+**Output:** Differentiated positioning that attracts dissatisfied competitor customers
+
+---
+
+### **Strategy 6.3: Seasonal + Event-Based Campaigns**
+
+**What it is:** Aligning UMOPs with seasonal or life events.
+
+**Examples:**
+
+**For Beer Belly product:**
+- Q1: "New Year's resolution failing already?"
+- Q2: "Beach body deadline is 8 weeks away"
+- Q3: "Back-to-school: show up to parent pickup with confidence"
+- Q4: "Don't let holiday eating undo your progress"
+
+**For B2B:**
+- January: "New budget just dropped. Here's how to spend it wisely..."
+- Q4: "Use-it-or-lose-it budget season. We can deploy in 30 days."
+- Tax season: "Maximize your deductions with [service]"
+
+**How to execute:**
+- Plan 60-90 days ahead
+- Create seasonal UMOP variations
+- Keep same TAMs and Problem
+- Adjust creative and offer to match the moment
+
+**Output:** Timely campaigns that leverage external urgency
+
+---
+
+### **Strategy 6.4: Retargeting Layer**
+
+**What it is:** Separate campaign for people who engaged but didn't convert.
+
+**Structure:**
+
+```
+Campaign: Retargeting - [Product Name]
+├─ Budget: CBO, 10-20% of prospecting budget
+├─ Objective: Sales/Conversions
+└─ AdSet 1: Engaged, No Purchase
+    ├─ Targeting: Custom audience
+      - Visited site in last 30 days
+      - Did NOT purchase
+      - Engaged with ads or content
+    ├─ Creative: 8-12 ads
+      - Most Aware stage (direct offer, urgency)
+      - Testimonials/social proof (overcome objections)
+      - FAQ/objection handlers
+      - Different format from prospecting (if they saw UGC, show them demo)
+    └─ Offer: Often stronger than cold traffic
+      - Extra discount
+      - Bonus included
+      - Shorter urgency window
+```
+
+**Creative strategy for retargeting:**
+- Don't repeat the same ads they already saw
+- Address objections directly: "Too expensive?", "Not sure it works?", "Need proof?"
+- Use stronger urgency: "This is your last chance for 50% off"
+- Testimonials and case studies (build trust)
+
+**Output:** Separate retargeting campaign converting warm traffic
+
+---
+
+### **Strategy 6.5: Creative Rotation System**
+
+**What it is:** Systematic process for keeping creative fresh without manual work.
+
+**The system:**
+
+**1. Creative Pipeline**
+```
+Stage 1: In Production (2-3 weeks ahead)
+  ├─ New TAM × UMOP combinations being scripted
+  ├─ UGC creators filming
+  └─ Designers creating statics
+
+Stage 2: In Testing (Current week)
+  ├─ ABO campaign testing 7-10 new concepts
+  └─ Monitoring for winners
+
+Stage 3: In Scaling (ASC)
+  ├─ 15-40 proven winners live
+  └─ Monitoring for fatigue
+
+Stage 4: Retired
+  ├─ Fatigued ads (archived)
+  └─ Data saved for learning
+```
+
+**2. Weekly cadence**
+```
+Monday:
+- Review ASC performance
+- Identify fatigued ads (CTR down 40%+, CPA up 50%+)
+- Identify new winners from testing
+
+Tuesday:
+- Pause fatigued ads in ASC
+- Add new winners from testing to ASC
+- Plan next week's creative production
+
+Wednesday-Thursday:
+- Produce new creative (scripts, UGC briefs, designs)
+- Set up new tests in ABO campaign
+
+Friday:
+- Launch new tests
+- Scale budget in ASC if performance is strong
+- Plan next week's concepts
+```
+
+**3. Creative library management**
+
+Use a spreadsheet or tool like Notion/Airtable:
+
+| Ad Name | TAM | UMOP | Format | Awareness | Status | Launch Date | Conversions | CPA | Notes |
+|---|---|---|---|---|---|---|---|---|---|
+| BB-Dads-Kids-UGC-1 | Dads | Can't keep up | UGC | Problem | Live in ASC | 12/1 | 42 | $29 | Top performer |
+| BB-Lifters-Wife-Static-1 | Lifters | Wife hates | Static | Problem | Paused (fatigue) | 11/15 | 28 | $32 → $54 | Retired 12/15 |
+
+**Output:** Systematic creative refresh process that keeps ASC performing
+
+---
+
+## **PART 7: REPORTING & ANALYSIS**
+
+### **Step 7.1: Key Metrics Dashboard**
+
+**What to track:**
+
+**Campaign-level metrics:**
+- Daily spend
+- Daily conversions
+- CPA or CPL
+- ROAS (if ecommerce)
+- Daily revenue
+- Budget pacing (% of budget spent)
+
+**Creative-level metrics:**
+- Impressions by ad
+- CTR by ad
+- Conversions by ad
+- CPA by ad
+- Days live
+- Creative fatigue signals (CTR declining over time)
+
+**Concept-level metrics (roll-up):**
+- Performance by TAM (Dads vs. Lifters vs. Bachelors)
+- Performance by UMOP (Wife vs. Kids vs. Health)
+- Performance by Format (UGC vs. Static vs. Demo)
+- Performance by Awareness stage (Problem Aware vs. Solution Aware)
+
+**Landing page metrics:**
+- Conversion rate by page variant
+- Bounce rate
+- Time on page
+- Form abandonment (if applicable)
+
+**Tools:**
+- Meta Ads Manager (native reporting)
+- Google Analytics or similar (landing page tracking)
+- Google Sheets or Looker Studio (custom dashboards)
+- Triple Whale, Northbeam, or Hyros (if you need advanced attribution)
+
+---
+
+### **Step 7.2: Weekly Review Template**
+
+**What it is:** Structured review to make data-driven decisions.
+
+**Template:**
+
+```
+WEEK OF: [Date]
+
+1. OVERALL PERFORMANCE
+   - Total spend: $X
+   - Total conversions: X
+   - Average CPA: $X
+   - Target CPA: $X
+   - Status: [On target / Above target / Below target]
+   - ROAS: X (if applicable)
+
+2. ASC PERFORMANCE
+   - Active ads: X
+   - Top 5 performers (by conversions):
+     1. [Ad name] - X conversions at $X CPA
+     2. [Ad name] - X conversions at $X CPA
+     3. ...
+   - Ads showing fatigue (consider pausing):
+     - [Ad name] - CTR down X%, CPA up X%
+   - New ads added this week: X
+   - Ads paused this week: X
+
+3. TESTING PERFORMANCE (ABO)
+   - Active tests: X concepts
+   - New winners identified:
+     - [TAM × UMOP] - X conversions at $X CPA → Move to ASC
+   - Tests to kill:
+     - [TAM × UMOP] - Poor performance → Pause
+
+4. CONCEPT INSIGHTS
+   - Best performing TAM: [Persona]
+   - Best performing UMOP: [Pain point]
+   - Best performing Format: [UGC / Static / Demo]
+   - Best performing Awareness stage: [Problem / Solution / Product]
+
+5. LANDING PAGE PERFORMANCE
+   - Overall LP conversion rate: X%
+   - Best performing variant: [Concept-matched page]
+   - Worst performing variant: [Generic or specific]
+   - Tests to run: [Ideas for improvement]
+
+6. ACTIONS FOR NEXT WEEK
+   - [ ] Pause X fatigued ads in ASC
+   - [ ] Add X new winners to ASC
+   - [ ] Launch X new concept tests in ABO
+   - [ ] Produce X new creative variations
+   - [ ] Increase/decrease budget by X%
+   - [ ] Test new landing page headline for [concept]
+
+7. CREATIVE PRODUCTION PIPELINE
+   - In production: [X concepts, ETA]
+   - In testing: [X concepts]
+   - Ready to scale: [X concepts]
+
+8. NOTES / OBSERVATIONS
+   - [Any trends, insights, hypotheses]
+```
+
+---
+
+### **Step 7.3: Monthly Strategic Review**
+
+**What it is:** Higher-level review to inform strategy for next month.
+
+**Questions to answer:**
+
+**1. What's working?**
+- Which TAMs are most profitable?
+- Which Problems/UMOPs resonate most?
+- Which creative formats/styles perform best?
+- Are we reaching our target ROAS/CPA goals?
+
+**2. What's not working?**
+- Which TAMs are underperforming?
+- Which Problems/UMOPs failed to gain traction?
+- Are there creative types we should stop producing?
+- Where are we losing efficiency?
+
+**3. What should we double down on?**
+- Winning TAM × UMOP combinations to expand
+- Successful formats to produce more of
+- Landing pages to iterate on
+
+**4. What should we test next?**
+- New TAMs to explore
+- New Problems to address
+- New UMOPs within existing problems
+- New formats or awareness stages
+
+**5. Budget allocation**
+- Should we increase overall budget?
+- Should we shift budget between testing vs. scaling?
+- Are we over/under-investing in creative production?
+
+**Output:** Strategic plan for next month's testing and scaling
+
+---
+
+## **PART 8: SCALING BEYOND $100K/MONTH**
+
+### **Step 8.1: Multi-Product Expansion**
+
+**What it is:** Once one product/problem is scaling successfully, replicate the framework for other products.
+
+**Structure:**
+
+```
+Campaign 1: ASC - Product A (Beer Belly)
+  └─ 30-40 winning ads
+
+Campaign 2: ASC - Product B (Low Energy)
+  └─ 30-40 winning ads
+
+Campaign 3: ASC - Product C (Poor Sleep)
+  └─ 30-40 winning ads
+
+Campaign 4: Testing - All Products (ABO)
+  ├─ AdSet 1: Product A - New concepts
+  ├─ AdSet 2: Product B - New concepts
+  └─ AdSet 3: Product C - New concepts
+```
+
+**Each product gets:**
+- Its own JTBD
+- Its own set of TAMs (may overlap)
+- Its own Problems and UMOPs
+- Its own ASC campaign
+- Shared testing campaign (efficiency)
+
+---
+
+### **Step 8.2: Geographic Expansion**
+
+**What it is:** Scaling to new countries/regions.
+
+**Approach:**
+
+**1. Test new geo in separate campaign**
+```
+Campaign: ASC - [Product] - [Country]
+├─ Take top 15-20 winners from primary market
+├─ Launch in new geo
+├─ Monitor for 14 days
+└─ Scale if CPA is acceptable
+```
+
+**2. Localize creative (if needed)**
+- Translate copy
+- Use local testimonials
+- Adjust imagery for cultural relevance
+- Modify offer/pricing for local market
+
+**3. Separate landing pages per geo**
+- Different currencies
+- Different social proof
+- Different urgency mechanisms
+
+---
+
+### **Step 8.3: Team Structure at Scale**
+
+**What it is:** How to organize as you grow.
+
+**Team roles:**
+
+**1. Strategist (you or agency lead)**
+- Define TAMs, JTBDs, Problems, UMOPs
+- Analyze performance data
+- Decide what to test next
+- Budget allocation decisions
+
+**2. Copywriter**
+- Write ad copy for all TAM × UMOP combinations
+- Write landing page copy
+- Create UGC scripts
+- Maintain brand voice
+
+**3. Creative Producer**
+- Manage UGC creator relationships
+- Edit videos
+- Design static ads
+- Ensure visual diversity
+
+**4. Media Buyer**
+- Set up campaigns in Ads Manager
+- Monitor daily performance
+- Pause/add ads based on data
+- Scale budgets
+- Handle technical troubleshooting
+
+**5. Analyst (part-time or shared)**
+- Build dashboards
+- Weekly/monthly reports
+- Identify trends
+- Forecast performance
+
+**At $100K/month spend:** 2-3 people (Strategist + Creative Producer + Media Buyer, with Strategist doing Copywriting)
+
+**At $500K/month spend:** 4-5 people (add dedicated Copywriter and Analyst)
+
+**At $1M+/month spend:** 6-8 people (multiple creatives, dedicated analyst, QA specialist)
+
+---
+
+## **PART 9: TROUBLESHOOTING GUIDE**
+
+### **Problem: CPA is too high**
+
+**Possible causes:**
+- Not enough creative diversity (Entity ID clustering)
+- Creative fatigue (ads have been running too long)
+- Landing page conversion rate is low
+- Targeting too narrow (even with "broad," check if Advantage+ is on)
+- Offer isn't strong enough
+- Wrong awareness stage (too early/late for audience)
+
+**Solutions:**
+- Add 5-10 new ads with different TAM × UMOP combos
+- Pause ads that have been running 14+ days with declining CTR
+- A/B test landing page headline, CTA, or hero image
+- Ensure Advantage+ Audience is enabled
+- Test stronger guarantee or better price point
+- Test different awareness stages (more Problem Aware vs. Solution Aware)
+
+---
+
+### **Problem: Ads aren't spending budget**
+
+**Possible causes:**
+- Learning phase (first 7 days)
+- Bid strategy too restrictive (Cost Cap set too low)
+- Creative quality score is low (rejected or low engagement)
+- Audience is too small (if you manually set detailed targeting)
+- Pixel isn't firing properly (conversion tracking broken)
+
+**Solutions:**
+- Wait 7 days for learning phase to complete
+- Switch to Highest Volume bid strategy temporarily
+- Check ad quality and engagement (CTR >1%, positive comments)
+- Remove any detailed targeting, go fully broad
+- Test pixel with Facebook Pixel Helper extension
+
+---
+
+### **Problem: Ads get great engagement but no conversions**
+
+**Possible causes:**
+- Wrong audience (people clicking for entertainment, not buying intent)
+- Landing page is broken or confusing
+- Price/offer is misaligned with ad promise
+- Product-market fit issue
+
+**Solutions:**
+- Review who's engaging (use Audience Insights)
+- Check landing page with heatmaps (Hotjar)
+- A/B test different offers
+- May need to revisit product positioning
+
+---
+
+### **Problem: One ad is getting 80%+ of budget**
+
+**Possible causes:**
+- Normal behavior in ASC (Meta consolidates to winners)
+- That ad is genuinely the best performer
+- Other ads may have Entity ID collision with it
+
+**Is this a problem?**
+- If the ad is performing at target CPA → Not a problem
+- If the ad is fatiguing (CTR declining) → Problem, need to rotate
+
+**Solutions:**
+- Let it ride if performance is strong
+- Have backup ads ready for when it fatigues
+- Test new TAM × UMOP combinations to diversify
+
+---
+
+### **Problem: ASC is in "Learning Limited"**
+
+**Possible causes:**
+- Not generating 50+ conversions per week
+- Budget is too low for conversion volume
+- Conversion event is too deep in funnel
+
+**Solutions:**
+- Increase budget (more spend = more conversions = exit learning)
+- Optimize for higher-funnel event temporarily (Add to Cart instead of Purchase)
+- Consolidate multiple campaigns into one (more data in one place)
+
+---
+
+### **Problem: Creative fatigue happening too fast (ads die in 1-2 weeks)**
+
+**Possible causes:**
+- Frequency too high (showing same ad too many times)
+- Audience is small (saturating quickly)
+- Creative isn't unique enough (Entity ID collision with existing ads)
+
+**Solutions:**
+- Expand to broader geo or additional countries
+- Ensure Advantage+ Audience is on (broader reach)
+- Produce more semantically diverse creative (different TAMs, UMOPs, formats)
+- Increase creative production cadence (refresh every 7-10 days instead of 14)
+
+---
+
+## **PART 10: CHECKLIST & QUICK REFERENCE**
+
+### **Strategic Foundation Checklist**
+
+- [ ] JTBD defined
+- [ ] 3-7 TAMs identified
+- [ ] 1-3 Problems defined
+- [ ] 5-7 UMOPs per Problem
+- [ ] UMOS clearly articulated
+- [ ] Offer structured (value + speed + guarantee + urgency)
+- [ ] Strategic matrix documented
+
+---
+
+### **Stage 1: Initial Testing Checklist**
+
+- [ ] 7-10 TAM × UMOP combinations selected
+- [ ] Static ad copy written for each
+- [ ] Static images designed (visual diversity!)
+- [ ] ABO campaign created
+- [ ] Broad targeting (Advantage+ enabled)
+- [ ] Budget: $50-100/day per AdSet
+- [ ] Ads launched
+- [ ] Tracking set up (Pixel, Conversions API)
+- [ ] Run for 7-10 days
+- [ ] Winners identified (10+ conversions at target CPA)
+
+---
+
+### **Stage 2: Creative Expansion Checklist**
+
+- [ ] 2-4 winning TAM × UMOP combinations identified
+- [ ] 3-5 format variations per winner produced
+  - [ ] UGC
+  - [ ] Testimonial
+  - [ ] Demo/Explainer
+  - [ ] Unboxing/Review
+  - [ ] Founder story or comparison
+- [ ] 2-3 awareness stage variations per format
+- [ ] 15-30 new ads produced
+- [ ] Added to campaign (existing or new AdSet)
+- [ ] Run for 7-10 days
+- [ ] New winners identified
+
+---
+
+### **Stage 3: Concept Matching Checklist**
+
+- [ ] Top 2-3 TAM × UMOP combinations identified
+- [ ] Landing pages cloned
+- [ ] Headlines customized per concept
+- [ ] Hero images/videos customized
+- [ ] Social proof customized (testimonials from that TAM)
+- [ ] CTA customized
+- [ ] URL parameters set up for tracking
+- [ ] Ads updated to point to matched pages
+- [ ] A/B test running
+- [ ] Conversion rate lift validated
+
+---
+
+### **ASC Launch Checklist**
+
+- [ ] 15-40 proven winners ready
+- [ ] ASC campaign created
+- [ ] Budget set ($300-500/day to start)
+- [ ] All winning ads uploaded
+- [ ] Clear naming convention used
+- [ ] Advantage+ features enabled
+- [ ] Tracking verified
+- [ ] Campaign launched
+- [ ] 7-day learning phase monitored
+- [ ] 50+ conversions per week to exit learning
+- [ ] Weekly optimization process in place
+
+---
+
+### **Weekly Maintenance Checklist**
+
+- [ ] Review ASC performance
+- [ ] Identify fatigued ads (CTR down 40%+, CPA up 50%+)
+- [ ] Pause fatigued ads
+- [ ] Add new winners from testing
+- [ ] Scale budget if CPA is at/below target (20% increases)
+- [ ] Launch new concept tests in ABO
+- [ ] Produce 3-5 new creative variations
+- [ ] Update weekly performance report
+
+---
+
+### **Quick Reference: The Formula**
+
+```
+JTBD → TAMs → Problem → UMOP → UMOS → Offer
+
+AdSet = Problem
+Ads = TAMs × UMOPs (7-10 combinations)
+Winners → Format expansion → ASC
+
+ASC = 15-40 winners spanning:
+  - Multiple TAMs
+  - Multiple UMOPs
+  - Multiple Formats
+  - Multiple Awareness stages
+```
+
+---
+
+## **FINAL NOTES**
+
+This is the complete, end-to-end system for building Meta ad campaigns that work with Andromeda's retrieval engine, not against it.
+
+**The key breakthroughs:**
+1. Mix TAMs × UMOPs within AdSets (not separate AdSets per TAM)
+2. This solves Entity ID clustering
+3. Stage 1 validates concepts, Stage 2 expands winners, Stage 3 matches landing pages
+4. ASC consolidates all winners for Meta to optimize
+5. Systematic creative refresh keeps performance strong
+
+**This is top 0.1% because:**
+- Most advertisers don't understand Entity IDs
+- Most advertisers don't systematically generate creative diversity
+- Most advertisers over-complicate campaign structure
+- Most advertisers don't have a creative refresh process
+
+**You now have a repeatable system to:**
+- Generate dozens of distinct creative concepts
+- Test efficiently
+- Scale profitably
+- Keep creative fresh
+- Optimize continuously
+
+Execute this framework and you'll be operating at a level that 99.9% of advertisers never reach.
+
+Now go build it.

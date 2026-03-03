@@ -1,15 +1,25 @@
 ---
+import VisualEditor from "../components/VisualEditor.astro";
+
 interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  variantId?: string;
 }
 
-const { title, description, ogImage = "/og-default.jpg" } = Astro.props;
+const {
+  title,
+  description,
+  ogImage = "/og-default.jpg",
+  variantId,
+} = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const isAdmin = !!(Astro.locals as any).isAdmin;
+const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
 ---
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -61,8 +71,17 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       @import "../styles/global.css";
     </style>
   </head>
-  <body class="min-h-screen overflow-x-hidden">
+  <body
+    class="min-h-screen overflow-x-hidden"
+    data-variant-id={variantId ?? ""}
+  >
     <slot />
+
+    {
+      isAdmin && (
+        <VisualEditor variantId={variantId ?? ""} adminPass={adminPass} />
+      )
+    }
 
     <!--
       GSAP: Astro processes this import at build time.
@@ -70,91 +89,113 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
       Deferred by browser since it's a module script.
     -->
     <script>
-      import { gsap } from "gsap";
-      import { ScrollTrigger } from "gsap/ScrollTrigger";
+      // Fallback: reveal content if GSAP never fires (in < 3s)
+      (function () {
+        var t = setTimeout(function () {
+          document.querySelectorAll("[data-animate]").forEach(function (el) {
+            (el as HTMLElement).style.opacity = "1";
+            (el as HTMLElement).style.transform = "none";
+          });
+        }, 3000);
+        (window as any).__gsapFallbackTimer = t;
+      })();
+    </script>
+    <script>
+      try {
+        const { gsap } = await import("gsap");
+        const { ScrollTrigger } = await import("gsap/ScrollTrigger");
 
-      gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger);
 
-      // Wait for DOM, then animate all [data-animate] elements
-      // Stagger by index for a cascading reveal effect
-      document.addEventListener("DOMContentLoaded", () => {
-        const elements = document.querySelectorAll("[data-animate]");
-        elements.forEach((el, i) => {
-          gsap.to(el, {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            delay: i * 0.08,
-            ease: "expo.out",
-            force3D: true, // GPU-composited for 60fps
-            scrollTrigger: {
+        // Cancel fallback timer — GSAP loaded fine
+        if ((window as any).__gsapFallbackTimer)
+          clearTimeout((window as any).__gsapFallbackTimer);
+
+        // ── Fix: fire immediately if DOMContentLoaded already fired ──────────
+        const runAnimations = () => {
+          const elements = document.querySelectorAll("[data-animate]");
+          elements.forEach((el, i) => {
+            gsap.to(el, {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              delay: i * 0.08,
+              ease: "expo.out",
+              force3D: true,
+              scrollTrigger: {
+                trigger: el,
+                start: "top 90%",
+                toggleActions: "play none none none",
+              },
+            });
+          });
+
+          const orbs = document.querySelectorAll("[data-parallax]");
+          orbs.forEach((orb) => {
+            const speed = parseFloat(
+              (orb as HTMLElement).dataset.parallax || "0.5"
+            );
+            gsap.to(orb, {
+              y: () => window.innerHeight * speed * -0.3,
+              ease: "none",
+              scrollTrigger: {
+                trigger: orb,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 1,
+              },
+            });
+          });
+
+          const counters = document.querySelectorAll("[data-counter]");
+          counters.forEach((counter) => {
+            const target = (counter as HTMLElement).dataset.counter || "";
+            const el = counter as HTMLElement;
+            ScrollTrigger.create({
               trigger: el,
-              start: "top 90%",
-              toggleActions: "play none none none",
-            },
+              start: "top 85%",
+              once: true,
+              onEnter: () => {
+                const prefix = target.match(/^[^0-9]*/)?.[0] || "";
+                const suffix = target.match(/[^0-9]*$/)?.[0] || "";
+                const num = parseFloat(target.replace(/[^0-9.]/g, ""));
+                if (isNaN(num)) {
+                  el.textContent = target;
+                  return;
+                }
+                const obj = { val: 0 };
+                gsap.to(obj, {
+                  val: num,
+                  duration: 1.8,
+                  ease: "power2.out",
+                  onUpdate: () => {
+                    el.textContent =
+                      prefix +
+                      (num >= 100 ? Math.round(obj.val) : obj.val.toFixed(0)) +
+                      suffix;
+                  },
+                  onComplete: () => {
+                    el.textContent = target;
+                  },
+                });
+              },
+            });
           });
+        };
+
+        // Fire immediately if DOM already ready, else wait
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", runAnimations);
+        } else {
+          runAnimations();
+        }
+      } catch (e) {
+        // GSAP blocked (e.g. Cloudflare SES lockdown) — reveal all content immediately
+        document.querySelectorAll("[data-animate]").forEach((el) => {
+          (el as HTMLElement).style.opacity = "1";
+          (el as HTMLElement).style.transform = "none";
         });
-
-        // Parallax on hero glow orbs
-        const orbs = document.querySelectorAll("[data-parallax]");
-        orbs.forEach((orb) => {
-          const speed = parseFloat(
-            (orb as HTMLElement).dataset.parallax || "0.5",
-          );
-          gsap.to(orb, {
-            y: () => window.innerHeight * speed * -0.3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: orb,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          });
-        });
-
-        // Counter animation for stat numbers
-        const counters = document.querySelectorAll("[data-counter]");
-        counters.forEach((counter) => {
-          const target = (counter as HTMLElement).dataset.counter || "";
-          const el = counter as HTMLElement;
-
-          ScrollTrigger.create({
-            trigger: el,
-            start: "top 85%",
-            once: true,
-            onEnter: () => {
-              // Parse the target value
-              const prefix = target.match(/^[^0-9]*/)?.[0] || "";
-              const suffix = target.match(/[^0-9]*$/)?.[0] || "";
-              const numStr = target.replace(/[^0-9.]/g, "");
-              const num = parseFloat(numStr);
-
-              if (isNaN(num)) {
-                el.textContent = target;
-                return;
-              }
-
-              const obj = { val: 0 };
-              gsap.to(obj, {
-                val: num,
-                duration: 1.8,
-                ease: "power2.out",
-                onUpdate: () => {
-                  const current =
-                    num >= 100
-                      ? Math.round(obj.val)
-                      : obj.val.toFixed(num < 10 ? 0 : 0);
-                  el.textContent = prefix + current + suffix;
-                },
-                onComplete: () => {
-                  el.textContent = target; // Exact final value
-                },
-              });
-            },
-          });
-        });
-      });
+      }
     </script>
   </body>
 </html>

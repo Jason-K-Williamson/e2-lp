@@ -1,0 +1,232 @@
+---
+/**
+ * Final CTA + GetFormFlow Embed
+ * Per 2026 playbook:
+ * - Punchy testimonial quote addressing #1 objection
+ * - Urgency (spots / intake)
+ * - Multi-step form embed (GetFormFlow). NOT a redirect to a standalone URL.
+ * - Micro-copy: no contracts, results guaranteed
+ */
+import { DEFAULT_VARIANT } from "../lib/supabase";
+
+interface Props {
+    heading?: string;
+    subheading?: string;
+}
+
+const {
+    heading = DEFAULT_VARIANT.finalcta_heading,
+    subheading = DEFAULT_VARIANT.finalcta_subheading,
+} = Astro.props;
+
+const isAdmin = !!(Astro.locals as any).isAdmin;
+const editProps = (field: string) =>
+    isAdmin
+        ? {
+              contenteditable: "false",
+              "data-field": field,
+              spellcheck: false as const,
+          }
+        : {};
+---
+
+<section class="py-32 relative overflow-hidden bg-white">
+    <!-- Subtle ambient glow -->
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none"
+    >
+    </div>
+
+    <div class="section-container relative z-10">
+        <!-- Objection-handling testimonial quote , above form -->
+        <div class="max-w-2xl mx-auto text-center mb-16">
+            <blockquote
+                class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-6 italic"
+            >
+                "I was skeptical after being burned by two agencies. e2
+                delivered $214K in new email revenue in our first 60 days."
+            </blockquote>
+            <div class="flex items-center justify-center gap-3">
+                <div
+                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold text-sm"
+                >
+                    C
+                </div>
+                <div class="text-left">
+                    <div class="text-gray-900 font-bold text-sm">Colin</div>
+                    <div class="text-gray-500 text-xs">
+                        Owner / CEO, 8-Figure Supplement Brand
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main CTA block -->
+        <div class="max-w-2xl mx-auto">
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <!-- Urgency badge -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest mb-6"
+                >
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"
+                        ></span>
+                        <span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"
+                        ></span>
+                    </span>
+                    March Intake. 2 Spots Remaining
+                </div>
+
+                <h2
+                    class="font-bold text-4xl md:text-5xl text-gray-900 tracking-tight mb-4"
+                    {...editProps('finalcta_heading')}
+                >
+                    {heading}
+                </h2>
+                <p
+                    class="text-gray-500 text-lg leading-relaxed"
+                    {...editProps('finalcta_subheading')}
+                >
+                    {subheading}
+                </p>
+            </div>
+
+            <!-- GetFormFlow Embed -->
+            <!-- Scroll anchor sits just above the form -->
+            <div id="qualify" class="w-full max-w-2xl mx-auto">
+                <div
+                    id="formflow-embed"
+                    data-form-id="669116a60dc0431e247ef7a5"
+                    class="w-full"
+                >
+                </div>
+                <script is:inline src="https://myformflow.io/embed/widget.js"
+                ></script>
+            </div>
+
+            <!-- Micro-copy guarantee strip -->
+            <div
+                class="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-gray-600"
+            >
+                <div class="flex items-center gap-1.5">
+                    <svg
+                        class="w-4 h-4 text-green-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                        ></path>
+                    </svg>
+                    <span>No contracts</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <svg
+                        class="w-4 h-4 text-green-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Results guaranteed</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <svg
+                        class="w-4 h-4 text-green-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                        ></path>
+                    </svg>
+                    <span>You own everything we build</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <svg
+                        class="w-4 h-4 text-green-500"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        ></path>
+                    </svg>
+                    <span>Live in 7 days</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Force the GetFormFlow widget to be centered and constrained */
+    #formflow-embed > * {
+        max-width: 600px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        display: block !important;
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        var embed = null;
+        var isEngaged = false; // true after first CTA click
+
+        function centerEmbed() {
+            if (!embed || !isEngaged) return;
+            var rect = embed.getBoundingClientRect();
+            var embedMidY = rect.top + window.scrollY + rect.height / 2;
+            var targetScrollY = embedMidY - window.innerHeight / 2;
+            window.scrollTo({
+                top: Math.max(0, targetScrollY),
+                behavior: "smooth",
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            embed = document.getElementById("formflow-embed");
+            if (!embed) return;
+
+            // Watch for size changes (step transitions change widget height)
+            if ("ResizeObserver" in window) {
+                var ro = new ResizeObserver(function () {
+                    centerEmbed();
+                });
+                ro.observe(embed);
+            }
+
+            // Initial center on any #qualify link click
+            document
+                .querySelectorAll('a[href="#qualify"]')
+                .forEach(function (link) {
+                    link.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        isEngaged = true;
+                        centerEmbed();
+                    });
+                });
+        });
+    })();
+</script>

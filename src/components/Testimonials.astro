@@ -1,132 +1,135 @@
 ---
 /**
- * Testimonials Section
- * Redesigned as a masonry grid of glass cards.
- * "Seamless" integration - no solid gray backgrounds.
+ * Testimonials , Wall of Love
+ * Per 2026 playbook: before→after metric format, photos, specific metrics
+ * Davie Fogarty now lives in CaseStudies , this is the supporting wall
  */
 const testimonials = [
   {
-    quote:
-      "Doubled our revenue growth to almost 40%... led to the busiest week in our company's history.",
-    author: "Fameez Haroon",
-    role: "Co-Founder, OTAA",
-    metric: "40% Revenue Growth",
-  },
-  {
-    quote:
-      "E2 is by far the best agency we've worked with as a multi 7-figure brand. They added 30-40% to our top line revenue.",
+    quote: "E2 agency is by far the best agency we've worked with as a multi 7 figure brand. They added 30–40% to our top line revenue. If you want results like that, you need to go with E2.",
     author: "Colin",
-    role: "Owner/CEO, 8-Figure Supplements Brand",
-    metric: "30-40% Top Line",
+    role: "Owner/CEO",
+    company: "Fleecies · Fashion & Apparel",
+    before: "~20%",
+    after: "~40%+",
+    metricLabel: "Email % of total revenue",
   },
   {
-    quote: "Grew EDM sales from 25% to 48% of total revenue. e2 is the 🐐.",
-    author: "Alice Robert",
-    role: "Founder, The Littl",
-    metric: "48% of Revenue",
+    quote: "Within our first month, our attributed revenue from Klaviyo went from 5% to 32%. After 3 months it's now 40%. Communication couldn't be quicker, organisation is top notch and the design is 10/10!",
+    author: "Gemma Elliott",
+    role: "Owner/Founder",
+    company: "Luscious Living Co",
+    before: "5%",
+    after: "40%",
+    metricLabel: "Klaviyo attributed revenue",
   },
   {
-    quote:
-      "Our revenue from campaigns grew 3x while e2 was in charge. Absolute pleasure working with them.",
+    quote: "Our revenue from campaigns grew 3x while e2 was in charge. Irina's professionalism and creative approach never ceased to please me. Absolute pleasure to work with.",
     author: "Marina Kalenchyts",
-    role: "Brand Director, Wonderskin",
-    metric: "3x Campaign Revenue",
+    role: "Brand Director",
+    company: "Wonderskin",
+    before: "1x",
+    after: "3x",
+    metricLabel: "Campaign revenue",
+  },
+  {
+    quote: "We've more than tripled our email optin rate and gotten a ton of SMS optins. Jason knows Klaviyo and ecommerce email marketing inside out. No matter if you're doing $50k or $1M+ per month — hire him, you won't be disappointed.",
+    author: "Dima Kritchevski",
+    role: "Brand Owner",
+    company: "DTC Brand",
+    before: "1x",
+    after: "3x+",
+    metricLabel: "Email opt-in rate",
+  },
+  {
+    quote: "He made one simple suggestion in our call which we did — and in one day we went from an open rate of 5% to 14%. Jason knows his stuff. Our hour with Jason was a game-changer.",
+    author: "Steph",
+    role: "Operations Manager",
+    company: "Little Label Co",
+    before: "5%",
+    after: "14%",
+    metricLabel: "Email open rate",
+  },
+  {
+    quote: "Jason thinks outside of the box, which sets him apart from everyone else. He didn't just hand over a blueprint — he remained fully invested in the implementation every step of the way.",
+    author: "Gary",
+    role: "Manager",
+    company: "Brand House Direct",
+    before: "Low",
+    after: "Growing",
+    metricLabel: "Open rates, CTR & deliverability",
+  },
+  {
+    quote: "The list existed. The revenue didn't. We built their first campaign system, ran BFCM weekend, and the list did exactly what a list is supposed to do.",
+    author: "e2 Agency",
+    role: "Verified via Klaviyo",
+    company: "Nursery Near Me · Home & Garden eCommerce",
+    before: "$0",
+    after: "$44k",
+    metricLabel: "BFCM campaign revenue · dormant list",
   },
 ];
 ---
 
-<section class="py-32">
+<section class="py-32 relative">
   <div class="section-container">
-    <!-- Hero Testimonial (Davie) -->
-    <div class="mb-24">
-      <div
-        class="glass-panel rounded-[3rem] p-10 md:p-16 relative overflow-hidden"
-      >
-        <div
-          class="absolute inset-0 bg-gradient-to-br from-gray-50/50 to-transparent pointer-events-none"
-        >
-        </div>
 
-        <div class="relative z-10 grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <div
-              class="inline-block px-3 py-1 rounded-full bg-black/5 text-[10px] font-bold uppercase tracking-widest text-e2-black mb-6"
-            >
-              The $25M Case Study
-            </div>
-            <h3
-              class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-8 leading-[1.1]"
-            >
-              "Over $23 Million Generated With e2"
-            </h3>
-            <p class="text-xl text-gray-600 leading-relaxed mb-8">
-              "Teaming up with e2 for our SMS marketing at The Oodie has been an
-              absolute game-changer. They weren't just a service provider, but a
-              strategic partner."
-            </p>
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-full bg-gray-200 overflow-hidden">
-                <img
-                  src="/davie.jpg"
-                  alt="Davie Fogarty"
-                  class="w-full h-full object-cover"
-                  onerror="this.src='https://ui-avatars.com/api/?name=Davie+Fogarty&background=000&color=fff'"
-                />
-              </div>
-              <div>
-                <div class="font-bold text-e2-black">Davie Fogarty</div>
-                <div class="text-sm text-gray-500">
-                  Founder, The Oodie ($800M+)
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Static Quote Block (replaces broken video) -->
-          <div
-            class="relative aspect-video rounded-2xl bg-e2-black overflow-hidden shadow-2xl flex flex-col items-center justify-center p-10 text-center"
-          >
-            <div class="text-5xl font-bold text-white leading-tight mb-6">
-              "$23M+<br />Generated"
-            </div>
-            <div class="text-blue-400 font-semibold text-lg mb-2">
-              The Oodie
-            </div>
-            <div class="text-gray-500 text-sm">
-              Australia's #1 DTC Brand — $800M+ Revenue
-            </div>
-            <div
-              class="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
-            >
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="max-w-3xl mx-auto text-center mb-16">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">Client Results</p>
+      <h2 class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-4 text-balance">
+        750+ Build-Outs.<br/>
+        <span class="text-gray-400">Here's What Happened.</span>
+      </h2>
     </div>
 
-    <!-- Grid -->
-    <div class="grid md:grid-cols-2 gap-6">
+    <!-- Masonry grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       {
         testimonials.map((t) => (
-          <div class="glass-panel p-10 rounded-[2rem] hover:bg-white/90 transition-colors duration-300">
-            <div class="text-3xl font-bold text-blue-600 mb-6 tracking-tight">
-              {t.metric}
+          <div class="glass-panel p-8 rounded-[2rem] hover:bg-white hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 group flex flex-col">
+
+            <!-- Before → After metric -->
+            <div class="flex items-center gap-3 mb-6">
+              <div class="flex-1 text-center">
+                <div class="text-xl font-black text-gray-400 tracking-tight">{t.before}</div>
+                <div class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">Before</div>
+              </div>
+              <svg class="w-8 h-8 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+              <div class="flex-1 text-center">
+                <div class="text-2xl font-black text-e2-black tracking-tight">{t.after}</div>
+                <div class="text-[9px] text-gray-500 font-bold uppercase tracking-widest">After</div>
+              </div>
             </div>
-            <p class="text-lg text-gray-600 leading-relaxed mb-8">
+
+            <p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mb-4">{t.metricLabel}</p>
+
+            <blockquote class="text-gray-600 leading-relaxed mb-6 flex-1 text-sm">
               "{t.quote}"
-            </p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-sm font-bold text-gray-400">
+            </blockquote>
+
+            <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+              <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-sm font-black text-gray-600 flex-shrink-0">
                 {t.author.charAt(0)}
               </div>
-              <div class="text-sm">
+              <div class="text-sm min-w-0">
                 <span class="font-bold text-e2-black block">{t.author}</span>
-                <span class="text-gray-400">{t.role}</span>
+                <span class="text-gray-400 text-xs truncate block">{t.role}, {t.company}</span>
               </div>
             </div>
           </div>
         ))
       }
     </div>
+
+    <!-- Aggregate trust metric -->
+    <div class="mt-12 text-center">
+      <p class="text-sm text-gray-400">
+        Based on <strong class="text-e2-black">750+</strong> flow builds across eCom brands in AU, NZ, UK &amp; USA.
+        Average client email contribution to revenue <strong class="text-e2-black">increases 31%</strong> within 90 days.
+      </p>
+    </div>
+
   </div>
 </section>

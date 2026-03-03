@@ -1,45 +1,85 @@
 ---
-const faqs = [
+/**
+ * FAQ — Objection Handling
+ * Accepts per-variant FAQ from the AI generator.
+ * Falls back to the default 8 questions if none provided.
+ */
+interface FaqItem {
+  q: string;
+  a: string;
+}
+
+interface Props {
+  faqs?: FaqItem[];
+}
+
+const DEFAULT_FAQS: FaqItem[] = [
   {
     q: "What if the flows don't perform?",
-    a: "We have never had a client not see a revenue lift. But if after 90 days your automated revenue hasn't increased, we will rebuild any underperforming flow at no charge. We only win when you win.",
+    a: "We have never had a client not see a revenue lift. But if after 90 days your automated email revenue hasn't increased materially, we rebuild every underperforming flow at no charge. No questions asked. We only win when you win.",
+  },
+  {
+    q: "I've been burned by agencies before. How is this different?",
+    a: "We get this more than any other question. The difference is structural: retainer agencies are incentivised to take their time. We build a finished system, hand you the keys, and walk away. You pay once. There's no reason for us to drag it out. Our reputation lives and dies on results, not on keeping you on a monthly invoice.",
+  },
+  {
+    q: "Will this work for my brand's niche?",
+    a: "We specialise in eCom and supplement brands doing $500K–$50M+ per year in revenue. If you're in that range, the answer is almost certainly yes. The flow architecture and psychology are consistent across product categories. What matters is your list size and monthly revenue, not your specific product.",
+  },
+  {
+    q: "What size brand is this right for?",
+    a: "Our sweet spot is brands doing $500K–$50M per year. Below $500K/year, you likely don't have the list size to justify the investment. During your strategy call, we'll tell you honestly if you're a fit.",
   },
   {
     q: "Why a one-time fee instead of a retainer?",
-    a: "Retainers incentivize agencies to work slowly. We build systems. Once the system is built, it runs forever. You shouldn't pay rent on a house you own.",
-  },
-  {
-    q: "Do you work with Mailchimp/Omnisend/ActiveCampaign?",
-    a: "We specialize in Klaviyo for Email and Postscript for SMS. If you are on another platform, we handle the migration as part of the build.",
+    a: "Retainers incentivise agencies to work slowly and keep deliverables vague. We build a system. Once the system is built and live, it runs forever — compounding revenue every month without you paying rent on it.",
   },
   {
     q: "How long does the build take?",
-    a: "Typically 7-14 days from kickoff to launch. We move fast because we have a proven architecture.",
+    a: "Typically 7–14 days from kickoff to your first flow going live. All 6 flows are usually live within 3 weeks. We'll give you a specific timeline during your strategy call.",
+  },
+  {
+    q: "Do you work with Klaviyo?",
+    a: "We specialise in Klaviyo for email and Postscript for SMS. If you're on another platform, we handle the full migration as part of the build — including list hygiene, suppression setup, and deliverability configuration.",
   },
   {
     q: "What do I need to provide?",
-    a: "Just access to your ESP and Shopify. We handle strategy, copy, design, and implementation. We might ask for brand assets if you have them.",
+    a: "Access to your ESP and Shopify (or other ecom platform), brand guidelines if you have them, and 45 minutes for the kickoff call. That's it. We handle strategy, copywriting, design, Klaviyo setup, deliverability, and DNS.",
   },
 ];
+
+const { faqs: propFaqs } = Astro.props;
+
+// Use provided FAQs if they're a valid non-empty array, otherwise fall back
+const faqs: FaqItem[] =
+  Array.isArray(propFaqs) && propFaqs.length > 0 ? propFaqs : DEFAULT_FAQS;
 ---
 
-<section class="py-24">
-  <div class="section-container max-w-2xl">
-    <h2
-      class="font-bold text-3xl text-center text-e2-black mb-16 tracking-tight"
-    >
-      Common Questions
-    </h2>
+<section class="py-32 relative overflow-hidden">
+  <div class="section-container max-w-3xl">
+    <div class="text-center mb-16">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">
+        FAQ
+      </p>
+      <h2
+        class="font-bold text-4xl md:text-5xl text-center text-e2-black tracking-tight mb-4"
+      >
+        Common Questions
+      </h2>
+      <p class="text-gray-500 text-lg">
+        The things every serious brand asks before booking.
+      </p>
+    </div>
 
-    <div class="space-y-4">
+    <div class="space-y-3">
       {
-        faqs.map((faq, i) => (
-          <details class="group p-6 rounded-2xl bg-white border border-gray-100 open:shadow-lg open:shadow-gray-200/20 transition-all duration-300">
-            <summary class="flex justify-between items-center font-bold text-lg cursor-pointer list-none text-gray-800">
-              {faq.q}
-              <span class="transition-transform group-open:rotate-180 text-gray-400">
+        faqs.map((faq) => (
+          <details class="group rounded-2xl bg-white border border-gray-100 overflow-hidden open:shadow-lg open:shadow-gray-200/30 transition-all duration-300">
+            <summary class="flex justify-between items-center gap-4 font-bold text-lg cursor-pointer list-none text-gray-900 p-6 hover:text-e2-black">
+              <span>{faq.q}</span>
+              <span class="flex-shrink-0 w-8 h-8 rounded-full bg-gray-100 group-open:bg-gray-900 transition-colors duration-300 flex items-center justify-center">
                 <svg
-                  class="w-5 h-5"
+                  class="w-4 h-4 text-gray-600 group-open:text-white transition-all duration-300 group-open:rotate-180"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -47,16 +87,33 @@ const faqs = [
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    stroke-width="2"
+                    stroke-width="2.5"
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
               </span>
             </summary>
-            <div class="mt-4 text-gray-500 leading-relaxed">{faq.a}</div>
+            <div class="px-6 pb-6 text-gray-500 leading-relaxed text-base border-t border-gray-50 pt-4">
+              {faq.a}
+            </div>
           </details>
         ))
       }
+    </div>
+
+    <!-- Still have questions CTA -->
+    <div
+      class="mt-12 text-center p-8 rounded-3xl bg-gray-50 border border-gray-100"
+    >
+      <p class="text-gray-600 font-medium mb-4">
+        Still have a specific question?
+      </p>
+      <a
+        href="#qualify"
+        class="inline-flex items-center gap-2 px-7 py-3.5 bg-e2-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform duration-300"
+      >
+        Ask us on your strategy call →
+      </a>
     </div>
   </div>
 </section>

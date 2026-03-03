@@ -1,24 +1,56 @@
 ---
-const headline = "Stop Burning Cash on Traffic That Doesn't Convert";
-const subheadline =
-  "We've generated $220M+ for DTC brands using 6 automated flows. Most clients see 30–40% more revenue within 7 days of going live.";
+import { DEFAULT_VARIANT } from "../lib/supabase";
+
+interface Props {
+  badge?: string;
+  headline?: string;
+  subheadline?: string;
+  ctaPrimary?: string;
+  ctaSecondary?: string;
+}
+
+const {
+  badge = DEFAULT_VARIANT.hero_badge,
+  headline = DEFAULT_VARIANT.hero_headline,
+  subheadline = DEFAULT_VARIANT.hero_subheadline,
+  ctaPrimary = DEFAULT_VARIANT.hero_cta_primary,
+  ctaSecondary = DEFAULT_VARIANT.hero_cta_secondary,
+} = Astro.props;
+
+const isAdmin = !!(Astro.locals as any).isAdmin;
+
+const editProps = (field: string) =>
+  isAdmin
+    ? {
+        contenteditable: "false",
+        "data-field": field,
+        spellcheck: false as const,
+      }
+    : {};
 ---
 
-<section class="relative min-h-[95vh] flex flex-col justify-center pt-32 pb-20">
-  <!-- Ambient Background: lightweight radial gradient (no GPU blur) -->
-  <div
-    class="absolute top-0 inset-x-0 h-[100vh] pointer-events-none"
-    style="background: radial-gradient(ellipse 80% 60% at 50% 30%, rgba(219,234,254,0.3) 0%, transparent 70%);"
-  >
+<section
+  class="relative min-h-screen flex flex-col justify-center pt-16 pb-24 overflow-hidden"
+>
+  <!-- Multi-layer ambient background -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div
+      style="background: radial-gradient(ellipse 90% 70% at 50% 20%, rgba(219,234,254,0.35) 0%, transparent 65%);position:absolute;inset:0;"
+    >
+    </div>
+    <div
+      style="background: radial-gradient(ellipse 50% 50% at 80% 80%, rgba(233,213,255,0.15) 0%, transparent 60%);position:absolute;inset:0;"
+    >
+    </div>
   </div>
 
   <div
     class="section-container relative z-10 flex flex-col items-center text-center"
   >
-    <!-- Badge: Ultra subtle glass pill -->
+    <!-- Badge -->
     <div
       data-animate
-      class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200/60 bg-white/50 backdrop-blur-md text-xs font-semibold text-gray-800 mb-10 shadow-sm"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-xs font-bold text-gray-900 mb-8 shadow-sm tracking-wide"
     >
       <span class="relative flex h-2 w-2">
         <span
@@ -27,76 +59,192 @@ const subheadline =
         <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"
         ></span>
       </span>
-      2 Spots Left — February Intake Closes Friday
+      <span {...editProps("hero_badge")}>{badge}</span>
     </div>
 
-    <!-- Typography: Massive, tight, clean -->
+    <!-- Headline -->
     <h1
       data-animate
-      class="max-w-4xl font-bold text-[clamp(3.5rem,8vw,5.5rem)] leading-[0.95] tracking-tight text-e2-black mb-10 text-balance"
+      class="max-w-3xl font-bold text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.05] tracking-tight text-e2-black mb-5 text-balance"
+      {...editProps("hero_headline")}
     >
       {headline}
     </h1>
 
+    <!-- Subheadline -->
     <p
       data-animate
-      class="text-xl md:text-2xl text-gray-500 max-w-2xl mx-auto mb-12 leading-relaxed font-normal text-balance"
+      class="text-base md:text-lg text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed font-normal text-balance"
+      {...editProps("hero_subheadline")}
     >
       {subheadline}
     </p>
 
-    <!-- Buttons -->
+    <!-- CTA Group -->
     <div
       data-animate
-      class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
+      class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-4"
     >
       <a
-        href="#offer"
-        class="w-full sm:w-auto px-8 py-4 bg-e2-black text-white rounded-full font-semibold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-xl shadow-black/5"
+        href="#qualify"
+        id="hero-cta-primary"
+        class="group w-full sm:w-auto px-9 py-4 bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden"
+        {...editProps("hero_cta_primary")}
       >
-        See If You Qualify →
+        <span class="relative z-10">{ctaPrimary}</span>
+        <span
+          class="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        ></span>
       </a>
       <a
-        href="#mechanism"
-        class="w-full sm:w-auto px-8 py-4 bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-gray-50 transition-colors duration-300"
+        href="#how-it-works"
+        class="w-full sm:w-auto px-7 py-4 bg-white/80 backdrop-blur-sm text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-white hover:shadow-lg transition-all duration-300"
+        {...editProps("hero_cta_secondary")}
       >
-        How It Works
+        {ctaSecondary}
       </a>
     </div>
 
-    <!-- Trust -->
+    <!-- Micro-copy trust line -->
+    <p
+      data-animate
+      class="text-xs text-gray-400 font-medium mb-16 tracking-wide"
+    >
+      No obligation &nbsp;·&nbsp; 30 minutes &nbsp;·&nbsp; Custom growth plan
+    </p>
+
+    <!-- VSL Placeholder -->
     <div
       data-animate
-      class="mt-16 pt-8 border-t border-gray-100 w-full max-w-lg"
+      class="w-full max-w-3xl relative rounded-3xl overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer"
+      id="vsl-player"
+      role="button"
+      aria-label="Watch our case study video"
     >
+      <!-- Dark cinematic background -->
+      <div
+        class="aspect-video bg-gradient-to-br from-gray-950 via-gray-900 to-black flex flex-col items-center justify-center relative"
+      >
+        <!-- Subtle texture overlay -->
+        <div
+          class="absolute inset-0 opacity-30"
+          style="background-image: radial-gradient(circle at 25% 25%, rgba(99,102,241,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139,92,246,0.15) 0%, transparent 50%);"
+        >
+        </div>
+
+        <!-- Floating stat chips -->
+        <div
+          class="absolute top-6 left-6 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/10 text-white/80 text-xs font-semibold"
+        >
+          $220M+ Generated
+        </div>
+        <div
+          class="absolute top-6 right-6 px-3 py-1.5 rounded-full bg-green-500/20 backdrop-blur border border-green-500/30 text-green-400 text-xs font-semibold"
+        >
+          ● Live client results
+        </div>
+
+        <!-- Play button -->
+        <div class="relative z-10 flex flex-col items-center gap-6">
+          <div
+            class="w-20 h-20 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-xl"
+          >
+            <svg
+              class="w-8 h-8 text-white ml-1"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M8 5v14l11-7z"></path>
+            </svg>
+          </div>
+          <div class="text-center">
+            <p class="text-white font-bold text-lg mb-1">
+              How We Built $25M in SMS Revenue for The Oodie
+            </p>
+            <p class="text-gray-400 text-sm">
+              Davie Fogarty, Founder · Watch the full story
+            </p>
+          </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div
+          class="absolute bottom-0 left-0 right-0 px-6 py-4 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-between"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 flex items-center justify-center text-white text-xs font-black flex-shrink-0"
+            >
+              D
+            </div>
+            <div class="text-left">
+              <p class="text-white text-xs font-bold">Davie Fogarty</p>
+              <p class="text-gray-400 text-xs">Founder, The Oodie ($800M+)</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5">
+            {
+              [1, 2, 3, 4, 5].map(() => (
+                <svg
+                  class="w-3.5 h-3.5 text-yellow-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))
+            }
+            <span class="text-gray-400 text-xs ml-1"
+              >5,000+ verified reviews</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Below VSL social proof row -->
+    <div data-animate class="mt-10 w-full max-w-2xl">
       <p
         class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold mb-4 text-center"
       >
-        Trusted By
+        Trusted By Australia & NZ's Leading DTC Brands
       </p>
       <div
-        class="flex items-center justify-center flex-wrap gap-x-8 gap-y-3 opacity-50 grayscale hover:grayscale-0 transition-all duration-500"
+        class="flex items-center justify-center flex-wrap gap-x-7 gap-y-2 opacity-40 hover:opacity-70 transition-opacity duration-500 grayscale"
       >
-        <!-- Simple text representation for logos to keep it clean if no SVGs -->
-        <span class="font-bold font-display text-gray-800 text-sm"
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
           >THE OODIE</span
         >
-        <span class="font-bold font-display text-gray-800 text-sm">TWOSVGE</span
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
+          >TWOSGE</span
         >
-        <span class="font-bold font-display text-gray-800 text-sm">OTAA</span>
-        <span class="font-bold font-display text-gray-800 text-sm"
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
+          >OTAA</span
+        >
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
           >BOGEY BROS</span
         >
-        <span class="font-bold font-display text-gray-800 text-sm"
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
           >CALMING BLANKETS</span
         >
-        <span class="font-bold font-display text-gray-800 text-sm"
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
           >ELITE SUPPLEMENTS</span
         >
-        <span class="font-bold font-display text-gray-800 text-sm"
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
           >CANVAS CULTURES</span
         >
-        <span class="text-xs text-gray-400 font-semibold">+ 750 more</span>
+        <span
+          class="font-black font-display text-gray-800 text-sm tracking-tight"
+          >CANDY CLAWS</span
+        >
+        <span class="text-xs text-gray-400 font-bold">+ 743 more</span>
       </div>
     </div>
   </div>

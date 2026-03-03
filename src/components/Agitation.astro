@@ -1,0 +1,157 @@
+---
+import { DEFAULT_VARIANT } from "../lib/supabase";
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  painPoints?: string[];
+  gainPoints?: string[];
+  agitationBody?: string;
+  stakesBody?: string;
+  trapLabel?: string;
+  beforeLabel?: string;
+}
+
+const {
+  heading = DEFAULT_VARIANT.prob_heading,
+  subheading = DEFAULT_VARIANT.prob_subheading,
+  painPoints = DEFAULT_VARIANT.prob_pain_points,
+  gainPoints = DEFAULT_VARIANT.prob_gain_points,
+  agitationBody = DEFAULT_VARIANT.prob_agitation_body,
+  stakesBody = DEFAULT_VARIANT.prob_stakes_body,
+  trapLabel = DEFAULT_VARIANT.prob_trap_label,
+  beforeLabel = DEFAULT_VARIANT.prob_before_label,
+} = Astro.props;
+
+const isAdmin = !!(Astro.locals as any).isAdmin;
+
+const editProps = (field: string) =>
+  isAdmin
+    ? {
+        contenteditable: "false",
+        "data-field": field,
+        spellcheck: false as const,
+      }
+    : {};
+
+const listItemProps = (listField: string) =>
+  isAdmin
+    ? {
+        contenteditable: "false",
+        "data-list-field": listField,
+        spellcheck: false as const,
+      }
+    : {};
+---
+
+<section class="py-24 relative overflow-hidden">
+  <!-- Subtle background texture -->
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-white via-gray-50/50 to-white pointer-events-none"
+  >
+  </div>
+
+  <div class="section-container relative z-10 max-w-3xl mx-auto">
+    <!-- Section Label -->
+    <div class="text-center mb-10">
+      <p class="text-xs font-bold uppercase tracking-widest text-red-500 mb-4">
+        The Cost of Inaction
+      </p>
+    </div>
+
+    <!-- Agitation paragraph -->
+    <p
+      class="text-xl text-gray-700 leading-relaxed text-center mb-14"
+      {...editProps("prob_agitation_body")}
+    >
+      {agitationBody}
+    </p>
+
+    <!-- Stakes / Failure Section — StoryBrand requirement -->
+    <div class="mb-14">
+      <div
+        class="rounded-3xl border border-red-100 bg-red-50/50 p-8 md:p-10 flex gap-6 items-start"
+      >
+        <div
+          class="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-2xl shrink-0"
+        >
+          ⏳
+        </div>
+        <div>
+          <h3 class="font-bold text-xl text-gray-900 mb-3">
+            The Cost of Waiting
+          </h3>
+          <p
+            class="text-gray-600 leading-relaxed"
+            {...editProps("prob_stakes_body")}
+          >
+            {stakesBody}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- S4 Mechanism Bridge: Transition from pain to proprietary system -->
+    <div class="mb-12 mt-2">
+      <div
+        class="rounded-3xl bg-gray-950 border border-white/10 p-8 md:p-12 text-white relative overflow-hidden"
+      >
+        <div
+          class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[80px] -mr-32 -mt-32 pointer-events-none"
+        >
+        </div>
+        <div class="relative z-10">
+          <p
+            class="text-xs font-bold uppercase tracking-widest text-blue-400 mb-4"
+          >
+            The Solution
+          </p>
+          <h3
+            class="font-black text-2xl md:text-3xl text-white mb-4 tracking-tight leading-tight"
+          >
+            The e2 Revenue Engine
+          </h3>
+          <p class="text-gray-300 text-lg leading-relaxed mb-8">
+            We built a 90-day framework specifically for DTC brands. Flows,
+            campaigns, segmentation, and deliverability — all handled by a
+            dedicated team that works <em>inside</em> your brand, not alongside it.
+            14-day build time. Then we run it.
+          </p>
+          <div class="grid grid-cols-3 gap-4 text-center">
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+              <div class="text-3xl font-black text-white">14</div>
+              <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">
+                Day build
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+              <div class="text-3xl font-black text-white">90</div>
+              <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">
+                Day results
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4">
+              <div class="text-3xl font-black text-blue-400">35%+</div>
+              <div class="text-xs text-gray-500 uppercase tracking-wide mt-1">
+                Target attribution
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bridge CTA -->
+    <div class="text-center">
+      <a
+        href="#qualify"
+        class="inline-flex items-center gap-2 px-8 py-4 bg-e2-black text-white rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-xl shadow-black/10"
+      >
+        See If You Qualify →
+      </a>
+      <p class="text-xs text-gray-400 mt-3">
+        No obligation · 30 minutes · Custom growth plan
+      </p>
+    </div>
+  </div>
+</section>

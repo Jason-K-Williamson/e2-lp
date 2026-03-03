@@ -1,11 +1,79 @@
 ---
 /**
- * The Offer — Mafia Offer breakdown (Hormozi-style)
- * Every deliverable named, categorised, and justified.
+ * The Offer - Mafia Offer breakdown (Hormozi-style)
+ * Entire section is AI-generated from offer_cards jsonb + offer_* fields.
+ * Color classes are explicit strings (not dynamic) for Tailwind purge safety.
+ * All card titles, descriptions, and item names/descs are tagged with
+ * data-field="offer_cards.{cardIdx}.{key}" so the visual editor can
+ * reconstruct the JSONB on save.
  */
+import { DEFAULT_VARIANT, type OfferCard } from "../lib/supabase";
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  summaryTitle?: string;
+  summaryBody?: string;
+  cards?: OfferCard[];
+}
+
+const {
+  heading = DEFAULT_VARIANT.offer_heading,
+  subheading = DEFAULT_VARIANT.offer_subheading,
+  summaryTitle = DEFAULT_VARIANT.offer_summary_title,
+  summaryBody = DEFAULT_VARIANT.offer_summary_body,
+  cards = DEFAULT_VARIANT.offer_cards as OfferCard[],
+} = Astro.props;
+
+const isAdmin = !!(Astro.locals as any).isAdmin;
+const editProps = (field: string) =>
+  isAdmin
+    ? {
+        contenteditable: "false",
+        "data-field": field,
+        spellcheck: false as const,
+      }
+    : {};
+
+// Tailwind colour map — explicit classes so purge keeps them
+const colourMap: Record<string, { bg: string; text: string; dot: string }> = {
+  blue: {
+    bg: "bg-blue-600",
+    text: "text-blue-600",
+    dot: "bg-blue-100 text-blue-600",
+  },
+  indigo: {
+    bg: "bg-indigo-600",
+    text: "text-indigo-600",
+    dot: "bg-indigo-100 text-indigo-600",
+  },
+  violet: {
+    bg: "bg-violet-600",
+    text: "text-violet-600",
+    dot: "bg-violet-100 text-violet-600",
+  },
+  emerald: {
+    bg: "bg-emerald-600",
+    text: "text-emerald-600",
+    dot: "bg-emerald-100 text-emerald-600",
+  },
+};
 ---
 
 <section id="offer" class="py-32 relative bg-white">
+  {
+    /* Side-channel: VisualEditor reads this to reconstruct offer_cards JSONB on save */
+  }
+  {
+    isAdmin && (
+      <script
+        id="ve-offer-cards-meta"
+        type="application/json"
+        set:html={JSON.stringify(cards)}
+      />
+    )
+  }
+
   <div class="section-container">
     <!-- Header -->
     <div class="max-w-3xl mx-auto text-center mb-16">
@@ -14,238 +82,79 @@
       </p>
       <h2
         class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-6"
+        {...editProps("offer_heading")}
       >
-        The Full Revenue Engine.<br />
+        {heading}<br />
         <span class="text-gray-400">Built Once. Yours Forever.</span>
       </h2>
-      <p class="text-xl text-gray-500">
-        Most agencies give you a retainer and a vague promise.<br />
-        We hand you a complete, battle-tested email & SMS machine — and walk away.
+      <p class="text-xl text-gray-500" {...editProps("offer_subheading")}>
+        {subheading}
       </p>
     </div>
 
-    <!-- Deliverable Cards -->
+    <!-- Deliverable Cards — fully rendered from offer_cards DB field -->
     <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-6 mb-12">
-      <!-- Card 1: Revenue Flows -->
-      <div class="rounded-3xl border border-gray-100 bg-gray-50 p-8 shadow-sm">
-        <div class="flex items-center gap-3 mb-5">
-          <div
-            class="w-10 h-10 rounded-2xl bg-blue-600 flex items-center justify-center text-white text-lg"
-          >
-            ⚡
-          </div>
-          <div>
-            <p
-              class="text-xs font-bold uppercase tracking-widest text-blue-600"
-            >
-              Block 1
-            </p>
-            <h3 class="font-bold text-lg text-e2-black">
-              4 Core Revenue Flows
-            </h3>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mb-5">
-          The four flows that account for 80% of automated revenue in every DTC
-          brand. Built, tested, live.
-        </p>
-        <ul class="space-y-3">
-          {
-            [
-              [
-                "Welcome Series",
-                "Converts cold subscribers into first-time buyers within 7 days.",
-              ],
-              [
-                "Abandoned Checkout",
-                "Recovers buyers who were seconds away from purchasing.",
-              ],
-              [
-                "Added to Cart",
-                "Catches high-intent browsers before they leave.",
-              ],
-              [
-                "Browse Abandonment",
-                "Re-engages window shoppers with the right message at the right time.",
-              ],
-            ].map(([name, desc]) => (
-              <li class="flex gap-3">
-                <div class="mt-0.5 w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs flex-shrink-0">
-                  ✓
+      {
+        cards.map((card, ci) => {
+          const c = colourMap[card.color] ?? colourMap.blue;
+          return (
+            <div class="rounded-3xl border border-gray-100 bg-gray-50 p-8 shadow-sm">
+              <div class="flex items-center gap-3 mb-5">
+                <div
+                  class={`w-10 h-10 rounded-2xl ${c.bg} flex items-center justify-center text-white text-lg`}
+                >
+                  {card.icon}
                 </div>
                 <div>
-                  <span class="font-semibold text-e2-black text-sm">
-                    {name}
-                  </span>
-                  <p class="text-xs text-gray-400 mt-0.5">{desc}</p>
+                  <p
+                    class={`text-xs font-bold uppercase tracking-widest ${c.text}`}
+                    {...editProps(`offer_cards.${ci}.block`)}
+                  >
+                    {card.block}
+                  </p>
+                  <h3
+                    class="font-bold text-lg text-e2-black"
+                    {...editProps(`offer_cards.${ci}.title`)}
+                  >
+                    {card.title}
+                  </h3>
                 </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Card 2: Nurture + Consumable -->
-      <div class="rounded-3xl border border-gray-100 bg-gray-50 p-8 shadow-sm">
-        <div class="flex items-center gap-3 mb-5">
-          <div
-            class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-white text-lg"
-          >
-            🔁
-          </div>
-          <div>
-            <p
-              class="text-xs font-bold uppercase tracking-widest text-indigo-600"
-            >
-              Block 2
-            </p>
-            <h3 class="font-bold text-lg text-e2-black">
-              Nurture + Consumable Flow
-            </h3>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mb-5">
-          Turn one-time buyers into repeat customers — automatically.
-        </p>
-        <ul class="space-y-3">
-          {
-            [
-              [
-                "Nurture Sequence",
-                "Builds trust, educates, and primes your list to buy again. Runs on autopilot after every purchase.",
-              ],
-              [
-                "Consumable Replenishment Flow",
-                "Timed to your product's use cycle. If they ordered an energy drink 3 weeks ago, we remind them before they run out — not after. Drives reorders without a single manual send.",
-              ],
-            ].map(([name, desc]) => (
-              <li class="flex gap-3">
-                <div class="mt-0.5 w-5 h-5 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs flex-shrink-0">
-                  ✓
-                </div>
-                <div>
-                  <span class="font-semibold text-e2-black text-sm">
-                    {name}
-                  </span>
-                  <p class="text-xs text-gray-400 mt-0.5">{desc}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Card 3: The Team -->
-      <div class="rounded-3xl border border-gray-100 bg-gray-50 p-8 shadow-sm">
-        <div class="flex items-center gap-3 mb-5">
-          <div
-            class="w-10 h-10 rounded-2xl bg-violet-600 flex items-center justify-center text-white text-lg"
-          >
-            🎯
-          </div>
-          <div>
-            <p
-              class="text-xs font-bold uppercase tracking-widest text-violet-600"
-            >
-              Block 3
-            </p>
-            <h3 class="font-bold text-lg text-e2-black">The Team Behind It</h3>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mb-5">
-          You don't get a junior VA. You get a full senior team.
-        </p>
-        <ul class="space-y-3">
-          {
-            [
-              [
-                "Dedicated Performance Strategist",
-                "Owns your account. Accountable to your numbers.",
-              ],
-              [
-                "World-Class Copywriter (Zero AI)",
-                "Human-written copy that sounds like your brand, not a chatbot.",
-              ],
-              [
-                "Senior Graphic Designer",
-                "On-brand email design that converts.",
-              ],
-              [
-                "Klaviyo Technical Specialist",
-                "Handles all setup, segmentation, and deliverability.",
-              ],
-            ].map(([name, desc]) => (
-              <li class="flex gap-3">
-                <div class="mt-0.5 w-5 h-5 rounded-full bg-violet-100 text-violet-600 flex items-center justify-center text-xs flex-shrink-0">
-                  ✓
-                </div>
-                <div>
-                  <span class="font-semibold text-e2-black text-sm">
-                    {name}
-                  </span>
-                  <p class="text-xs text-gray-400 mt-0.5">{desc}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-
-      <!-- Card 4: The Guarantee Stack -->
-      <div class="rounded-3xl border border-gray-100 bg-gray-50 p-8 shadow-sm">
-        <div class="flex items-center gap-3 mb-5">
-          <div
-            class="w-10 h-10 rounded-2xl bg-emerald-600 flex items-center justify-center text-white text-lg"
-          >
-            🛡️
-          </div>
-          <div>
-            <p
-              class="text-xs font-bold uppercase tracking-widest text-emerald-600"
-            >
-              Block 4
-            </p>
-            <h3 class="font-bold text-lg text-e2-black">The Risk Reversal</h3>
-          </div>
-        </div>
-        <p class="text-sm text-gray-500 mb-5">
-          We only win when you win. Here's how we back that up.
-        </p>
-        <ul class="space-y-3">
-          {
-            [
-              [
-                "Full IP Ownership",
-                "Every flow, every email, every asset — yours. Forever.",
-              ],
-              [
-                "No Monthly Retainer",
-                "One flat fee. No ongoing invoices. No lock-in.",
-              ],
-              [
-                "Deliverability & DNS Audit",
-                "We fix your sending reputation before we send a single email.",
-              ],
-              [
-                "Profit-First A/B Testing",
-                "We test to increase revenue, not open rates.",
-              ],
-            ].map(([name, desc]) => (
-              <li class="flex gap-3">
-                <div class="mt-0.5 w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs flex-shrink-0">
-                  ✓
-                </div>
-                <div>
-                  <span class="font-semibold text-e2-black text-sm">
-                    {name}
-                  </span>
-                  <p class="text-xs text-gray-400 mt-0.5">{desc}</p>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
+              </div>
+              <p
+                class="text-sm text-gray-500 mb-5"
+                {...editProps(`offer_cards.${ci}.desc`)}
+              >
+                {card.desc}
+              </p>
+              <ul class="space-y-3">
+                {card.items.map((item, ii) => (
+                  <li class="flex gap-3">
+                    <div
+                      class={`mt-0.5 w-5 h-5 rounded-full ${c.dot} flex items-center justify-center text-xs flex-shrink-0`}
+                    >
+                      ✓
+                    </div>
+                    <div>
+                      <span
+                        class="font-semibold text-e2-black text-sm"
+                        {...editProps(`offer_cards.${ci}.items.${ii}.name`)}
+                      >
+                        {item.name}
+                      </span>
+                      <p
+                        class="text-xs text-gray-400 mt-0.5"
+                        {...editProps(`offer_cards.${ci}.items.${ii}.desc`)}
+                      >
+                        {item.desc}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      }
     </div>
 
     <!-- Total Value Summary + CTA -->
@@ -255,29 +164,31 @@
       <p class="text-sm font-bold uppercase tracking-widest text-blue-400 mb-3">
         The Mafia Offer
       </p>
-      <h3 class="text-3xl font-bold mb-3 tracking-tight">
-        6 Flows. A Full Senior Team.<br />One Flat Fee. Yours to Keep.
+      <h3
+        class="text-3xl font-bold mb-3 tracking-tight"
+        {...editProps("offer_summary_title")}
+      >
+        {summaryTitle}
       </h3>
-      <p class="text-gray-400 mb-8 text-sm leading-relaxed">
-        4 revenue flows + 1 nurture sequence + 1 consumable replenishment flow.<br
-        />
-        Built by a dedicated strategist, copywriter, designer & Klaviyo specialist.<br
-        />
-        No retainer. No lock-in. 100% IP ownership.
+      <p
+        class="text-gray-400 mb-8 text-sm leading-relaxed"
+        {...editProps("offer_summary_body")}
+      >
+        {summaryBody}
       </p>
       <p class="text-gray-500 text-xs mb-8">
         Most agencies charge $3,000–$8,000/month for a fraction of this. We do
         it once. Book a call to get your number.
       </p>
       <a
-        href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2R0f..."
+        href="#qualify"
         class="inline-block px-10 py-4 rounded-xl bg-white text-e2-black font-bold text-lg hover:scale-[1.02] transition-transform shadow-xl"
       >
-        See If You Qualify — Book a Free Call →
+        See If You Qualify →
       </a>
       <p class="text-xs text-gray-500 mt-4">
-        Fully refundable if we don't identify at least 20% growth potential in
-        your first call.
+        No obligation · 30 minutes · We'll identify at least 20% growth
+        potential or we'll tell you we're not the right fit.
       </p>
     </div>
   </div>

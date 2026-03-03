@@ -1,0 +1,300 @@
+---
+import { supabase } from "../../lib/supabase";
+
+const adminPass = import.meta.env.ADMIN_PASS;
+const cookie = Astro.cookies.get("admin_auth");
+const authed = cookie?.value === adminPass;
+
+if (!authed) return Astro.redirect("/admin");
+
+// Handle save
+if (Astro.request.method === "POST") {
+    const form = await Astro.request.formData();
+    const id = form.get("id") as string;
+    const content = form.get("content") as string;
+    if (id && content !== null) {
+        await supabase
+            .from("knowledge_docs")
+            .update({ content, updated_at: new Date().toISOString() })
+            .eq("id", id);
+    }
+    return Astro.redirect("/admin/knowledge");
+}
+
+const { data: docs } = await supabase
+    .from("knowledge_docs")
+    .select("id, slug, title, category, content, updated_at")
+    .order("category");
+
+const { data: reviewStats } = await supabase
+    .from("reviews")
+    .select("tag, rating")
+    .not("body", "is", null);
+
+const tagCounts: Record<string, number> = {};
+(reviewStats ?? []).forEach((r) => {
+    const t = r.tag ?? "Untagged";
+    tagCounts[t] = (tagCounts[t] ?? 0) + 1;
+});
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>e2 Admin — Knowledge Base</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    sans-serif;
+                background: #f9fafb;
+                color: #111;
+                min-height: 100vh;
+            }
+            .header {
+                background: #fff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 16px 32px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 16px;
+            }
+            .header h1 {
+                font-size: 18px;
+                font-weight: 700;
+            }
+            .header-links {
+                display: flex;
+                gap: 12px;
+            }
+            .header-links a {
+                font-size: 13px;
+                color: #6b7280;
+                text-decoration: none;
+                border: 1px solid #e5e7eb;
+                padding: 7px 14px;
+                border-radius: 8px;
+            }
+            .header-links a:hover {
+                background: #111;
+                color: #fff;
+                border-color: #111;
+            }
+            .container {
+                max-width: 960px;
+                margin: 40px auto;
+                padding: 0 24px;
+                display: flex;
+                flex-direction: column;
+                gap: 32px;
+            }
+            .section-title {
+                font-size: 13px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #6b7280;
+                margin-bottom: 16px;
+            }
+            .doc-card {
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 16px;
+                overflow: hidden;
+            }
+            .doc-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 20px;
+                border-bottom: 1px solid #f3f4f6;
+                gap: 12px;
+            }
+            .doc-header h2 {
+                font-size: 15px;
+                font-weight: 700;
+            }
+            .doc-meta {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+            .badge {
+                display: inline-block;
+                padding: 2px 10px;
+                border-radius: 20px;
+                font-size: 11px;
+                font-weight: 600;
+                background: #f3f4f6;
+                color: #6b7280;
+            }
+            .badge.framework {
+                background: #ede9fe;
+                color: #7c3aed;
+            }
+            .badge.about {
+                background: #dbeafe;
+                color: #1d4ed8;
+            }
+            .badge.homepage {
+                background: #dcfce7;
+                color: #16a34a;
+            }
+            .date {
+                font-size: 11px;
+                color: #9ca3af;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+            }
+            textarea {
+                width: 100%;
+                padding: 16px 20px;
+                border: none;
+                font-family: "SF Mono", "Fira Code", monospace;
+                font-size: 12px;
+                line-height: 1.6;
+                resize: vertical;
+                min-height: 200px;
+                outline: none;
+                color: #374151;
+                background: #fcfcfd;
+            }
+            textarea:focus {
+                background: #fff;
+            }
+            .doc-footer {
+                padding: 12px 20px;
+                border-top: 1px solid #f3f4f6;
+                display: flex;
+                justify-content: flex-end;
+            }
+            .save-btn {
+                background: #111;
+                color: #fff;
+                border: none;
+                padding: 8px 20px;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            .save-btn:hover {
+                background: #374151;
+            }
+            .reviews-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 12px;
+            }
+            .review-tag {
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                padding: 16px;
+            }
+            .review-tag h3 {
+                font-size: 13px;
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+            .review-tag p {
+                font-size: 24px;
+                font-weight: 700;
+                color: #111;
+            }
+            .review-tag span {
+                font-size: 11px;
+                color: #9ca3af;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>🧠 AI Knowledge Base</h1>
+            <div class="header-links">
+                <a href="/admin">← Variants</a>
+            </div>
+        </div>
+        <div class="container">
+            <!-- Knowledge Docs -->
+            <div>
+                <p class="section-title">
+                    Knowledge Documents ({docs?.length ?? 0})
+                </p>
+                {
+                    (docs ?? []).map((doc) => (
+                        <div class="doc-card" style="margin-bottom: 16px;">
+                            <div class="doc-header">
+                                <div>
+                                    <h2>{doc.title}</h2>
+                                    <p style="font-size: 12px; color: #9ca3af; margin-top: 2px;">
+                                        /{doc.slug}
+                                    </p>
+                                </div>
+                                <div class="doc-meta">
+                                    <span class={`badge ${doc.category}`}>
+                                        {doc.category}
+                                    </span>
+                                    <span class="date">
+                                        {doc.content?.length ?? 0} chars
+                                    </span>
+                                    <span class="date">
+                                        Updated{" "}
+                                        {new Date(
+                                            doc.updated_at
+                                        ).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </div>
+                            <form method="POST">
+                                <input type="hidden" name="id" value={doc.id} />
+                                <textarea name="content" rows={14}>
+                                    {doc.content}
+                                </textarea>
+                                <div class="doc-footer">
+                                    <button type="submit" class="save-btn">
+                                        Save changes
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <!-- Reviews Summary -->
+            <div>
+                <p class="section-title">
+                    Client Reviews ({reviewStats?.length ?? 0} with text)
+                </p>
+                <div class="reviews-grid">
+                    {
+                        Object.entries(tagCounts)
+                            .sort((a, b) => b[1] - a[1])
+                            .map(([tag, count]) => (
+                                <div class="review-tag">
+                                    <h3>{tag}</h3>
+                                    <p>{count}</p>
+                                    <span>reviews</span>
+                                </div>
+                            ))
+                    }
+                </div>
+                <p style="font-size: 12px; color: #9ca3af; margin-top: 12px;">
+                    Reviews are seeded from <code>public/reviews (1).csv</code>.
+                    Run <code>npx tsx scripts/seed-reviews.ts</code> to re-import.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,337 @@
+---
+/**
+ * VisualEditor.astro
+ * Renders the admin bar UI + wires up the visual-editor script.
+ * Only imported into BaseLayout when isAdmin === true.
+ * Astro processes the top-level <style is:global> and <script> correctly.
+ */
+interface Props {
+    variantId: string;
+    adminPass: string;
+}
+const { variantId, adminPass } = Astro.props;
+---
+
+{/* ── Admin Bar ──────────────────────────────────────────────────────── */}
+<div
+    id="admin-bar"
+    style="position:fixed;bottom:24px;left:24px;background:#111;color:#fff;border-radius:999px;padding:12px 20px;display:flex;align-items:center;gap:12px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;box-shadow:0 8px 40px rgba(0,0,0,0.3);z-index:9999;user-select:none;white-space:nowrap;"
+>
+    <span
+        style="width:8px;height:8px;background:#22c55e;border-radius:50%;flex-shrink:0;"
+    ></span>
+    <span
+        style="font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;opacity:.6;"
+    >
+        Visual Editor
+    </span>
+    <span id="admin-dirty" style="display:none;color:#fbbf24;font-size:12px;">
+        &middot; unsaved changes
+    </span>
+    <button
+        id="admin-save"
+        style="background:#6366f1;color:#fff;border:none;border-radius:999px;padding:5px 16px;font-size:12px;font-weight:700;cursor:pointer;display:none;"
+    >
+        Save
+    </button>
+    <button
+        id="admin-discard"
+        style="background:transparent;color:#9ca3af;border:none;padding:5px 8px;font-size:12px;cursor:pointer;display:none;"
+    >
+        Discard
+    </button>
+    <a
+        href="/admin"
+        style="color:#9ca3af;text-decoration:none;font-size:12px;padding-left:12px;margin-left:4px;border-left:1px solid rgba(255,255,255,.12);"
+    >
+        &larr; Admin
+    </a>
+</div>
+
+{/* ── Pass runtime values into the script via hidden meta elements ── */}
+<meta id="ve-variant-id" content={variantId} />
+<meta id="ve-admin-pass" content={adminPass} />
+
+<style is:global>
+    [data-field],
+    [data-list-field] {
+        cursor: pointer;
+        border-radius: 4px;
+        transition: outline 80ms ease, outline-offset 80ms ease;
+    }
+    [data-field]:hover,
+    [data-list-field]:hover {
+        outline: 2px solid rgba(99, 102, 241, 0.45);
+        outline-offset: 3px;
+    }
+    [data-field].ve-active,
+    [data-list-field].ve-active {
+        outline: 2px solid #6366f1;
+        outline-offset: 3px;
+        cursor: text;
+    }
+    .ve-label {
+        position: fixed;
+        background: #6366f1;
+        color: #fff;
+        font: 700 10px/1 -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
+        padding: 3px 8px;
+        border-radius: 4px;
+        pointer-events: none;
+        z-index: 99998;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 100ms;
+    }
+    .ve-label.ve-label-visible {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    // Read runtime values from meta elements (avoids needing Astro template interpolation in script)
+    const variantIdEl = document.getElementById(
+        "ve-variant-id"
+    ) as HTMLMetaElement | null;
+    const adminPassEl = document.getElementById(
+        "ve-admin-pass"
+    ) as HTMLMetaElement | null;
+    const variantId = variantIdEl?.content ?? "";
+    const adminPass = adminPassEl?.content ?? "";
+
+    const saveBtn = document.getElementById(
+        "admin-save"
+    ) as HTMLButtonElement | null;
+    const discardBtn = document.getElementById(
+        "admin-discard"
+    ) as HTMLButtonElement | null;
+    const dirtyEl = document.getElementById(
+        "admin-dirty"
+    ) as HTMLElement | null;
+
+    // ── Label chip ──────────────────────────────────────────────────────────
+    const label = document.createElement("div");
+    label.className = "ve-label";
+    document.body.appendChild(label);
+
+    function showLabel(el: HTMLElement, rect: DOMRect) {
+        const field = el.dataset["field"] ?? el.dataset["listField"] ?? "";
+        label.textContent = field.replace(/_/g, " ");
+        label.style.top = Math.max(rect.top - 22, 4) + "px";
+        label.style.left = rect.left + "px";
+        label.classList.add("ve-label-visible");
+    }
+    function hideLabel() {
+        label.classList.remove("ve-label-visible");
+    }
+
+    // ── Originals store (Escape revert) ─────────────────────────────────────
+    const originals = new Map<HTMLElement, string>();
+
+    // ── Dirty state ─────────────────────────────────────────────────────────
+    function markDirty() {
+        if (!variantId) return;
+        if (dirtyEl) dirtyEl.style.display = "inline";
+        if (saveBtn) saveBtn.style.display = "inline-block";
+        if (discardBtn) discardBtn.style.display = "inline-block";
+    }
+    function clearDirty() {
+        if (dirtyEl) dirtyEl.style.display = "none";
+        if (saveBtn) saveBtn.style.display = "none";
+        if (discardBtn) discardBtn.style.display = "none";
+    }
+
+    // ── Activate / deactivate ────────────────────────────────────────────────
+    let activeEl: HTMLElement | null = null;
+
+    function deactivate(el: HTMLElement | null) {
+        if (!el) return;
+        el.removeAttribute("contenteditable");
+        el.classList.remove("ve-active");
+        activeEl = null;
+    }
+
+    function activate(el: HTMLElement) {
+        if (activeEl && activeEl !== el) deactivate(activeEl);
+        if (!originals.has(el)) originals.set(el, el.innerHTML);
+        el.contentEditable = "true";
+        el.classList.add("ve-active");
+        activeEl = el;
+        el.focus();
+        try {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            const sel = window.getSelection();
+            if (sel) {
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        } catch (_) {}
+    }
+
+    function findEditable(target: EventTarget | null): HTMLElement | null {
+        if (!target || !(target instanceof Element)) return null;
+        return target.closest(
+            "[data-field],[data-list-field]"
+        ) as HTMLElement | null;
+    }
+
+    // ── Hover highlight ──────────────────────────────────────────────────────
+    document.addEventListener("mouseover", (e) => {
+        const el = findEditable(e.target);
+        if (!el || el === activeEl) return;
+        showLabel(el, el.getBoundingClientRect());
+    });
+    document.addEventListener("mouseout", (e) => {
+        const el = findEditable(e.target);
+        if (!el || el.classList.contains("ve-active")) return;
+        hideLabel();
+    });
+
+    // ── Click to activate (capture, prevents link navigation) ───────────────
+    document.addEventListener(
+        "click",
+        (e) => {
+            const el = findEditable(e.target);
+            if (!el) {
+                deactivate(activeEl);
+                hideLabel();
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            if (el !== activeEl) activate(el);
+        },
+        true
+    );
+
+    // ── Escape to revert ─────────────────────────────────────────────────────
+    document.addEventListener("keydown", (e) => {
+        if (!activeEl) return;
+        if (e.key === "Escape") {
+            const orig = originals.get(activeEl);
+            if (orig !== undefined) activeEl.innerHTML = orig;
+            deactivate(activeEl);
+            hideLabel();
+        }
+    });
+
+    // ── Input → dirty ────────────────────────────────────────────────────────
+    document.addEventListener("input", (e) => {
+        const t = e.target as HTMLElement;
+        if (t.hasAttribute("data-field") || t.hasAttribute("data-list-field"))
+            markDirty();
+    });
+
+    // ── Save ─────────────────────────────────────────────────────────────────
+    saveBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deactivate(activeEl);
+        saveBtn.textContent = "Saving…";
+        saveBtn.disabled = true;
+
+        const payload: Record<string, unknown> = {};
+        document.querySelectorAll<HTMLElement>("[data-field]").forEach((el) => {
+            payload[el.dataset["field"]!] = el.textContent?.trim() ?? "";
+        });
+        // ── Collect list fields ───────────────────────────────────────────
+        (
+            [
+                "prob_pain_points",
+                "prob_gain_points",
+                "mech_step1_bullets",
+                "mech_step2_bullets",
+                "mech_step3_bullets",
+            ] as const
+        ).forEach((key) => {
+            const items = document.querySelectorAll<HTMLElement>(
+                `[data-list-field="${key}"]`
+            );
+            if (items.length) {
+                payload[key] = Array.from(items)
+                    .map((i) => i.textContent?.trim() ?? "")
+                    .filter(Boolean);
+            }
+        });
+
+        // ── Reconstruct offer_cards JSONB from individual tagged elements ──
+        // Elements use data-field="offer_cards.{cardIdx}.{key}" or
+        // data-field="offer_cards.{cardIdx}.items.{itemIdx}.{key}"
+        const offerEls = document.querySelectorAll<HTMLElement>(
+            '[data-field^="offer_cards."]'
+        );
+        if (offerEls.length) {
+            // Build a mutable deep copy from whatever is already in payload (or create fresh)
+            // We need the existing card structure as the skeleton.
+            // Grab it from the current DOM-rendered data via a side-channel:
+            // each card element gets data-card-meta={json} injected by Offer.astro.
+            const cardMetaEl = document.getElementById("ve-offer-cards-meta");
+            let cards: any[] = [];
+            try {
+                cards = JSON.parse(cardMetaEl?.textContent ?? "[]");
+            } catch {
+                cards = [];
+            }
+            offerEls.forEach((el) => {
+                const path = (el.dataset["field"] ?? "").split(".");
+                // path: ["offer_cards", cardIdx, key] or ["offer_cards", cardIdx, "items", itemIdx, key]
+                const cardIdx = parseInt(path[1]);
+                if (!cards[cardIdx]) return;
+                if (path.length === 3) {
+                    // card-level field: title | desc | icon | block
+                    cards[cardIdx][path[2]] = el.textContent?.trim() ?? "";
+                } else if (path.length === 5 && path[2] === "items") {
+                    const itemIdx = parseInt(path[3]);
+                    if (cards[cardIdx].items[itemIdx]) {
+                        cards[cardIdx].items[itemIdx][path[4]] =
+                            el.textContent?.trim() ?? "";
+                    }
+                }
+            });
+            payload["offer_cards"] = cards;
+            // Strip individual offer_cards.* keys from payload (they're now in the JSONB)
+            Object.keys(payload).forEach((k) => {
+                if (k.startsWith("offer_cards.")) delete payload[k];
+            });
+        }
+
+        fetch(`/api/variants/${variantId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "x-admin-pass": adminPass,
+            },
+            body: JSON.stringify(payload),
+        })
+            .then((res) => {
+                if (res.ok) {
+                    saveBtn.textContent = "✓ Saved";
+                    saveBtn.style.background = "#22c55e";
+                    originals.clear();
+                    setTimeout(() => {
+                        saveBtn.textContent = "Save";
+                        saveBtn.style.background = "#6366f1";
+                        saveBtn.disabled = false;
+                        clearDirty();
+                    }, 1600);
+                } else {
+                    saveBtn.textContent = "Error — retry";
+                    saveBtn.disabled = false;
+                }
+            })
+            .catch(() => {
+                saveBtn.textContent = "Error — retry";
+                saveBtn.disabled = false;
+            });
+    });
+
+    // ── Discard ──────────────────────────────────────────────────────────────
+    discardBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        location.reload();
+    });
+</script>
