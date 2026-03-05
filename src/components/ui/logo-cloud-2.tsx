@@ -26,7 +26,7 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
             {/* 1. The Oodie */}
             <LogoCard
                 className="relative border-r border-b border-black/10"
-                logo={{ src: "/Brand Logos/0x0 1.webp", alt: "The Oodie" }}
+                logo={{ src: "/brand-logos/the-oodie.webp", alt: "The Oodie" }}
             >
                 <PlusIcon className="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" strokeWidth={1} />
             </LogoCard>
@@ -34,13 +34,13 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
             {/* 2. Twosge */}
             <LogoCard
                 className="border-b border-black/10 md:border-r md:border-black/10"
-                logo={{ src: "/Brand Logos/TWOSVGE BLACK 1.webp", alt: "Twosge", invert: true }}
+                logo={{ src: "/brand-logos/twosvge.webp", alt: "Twosge", invert: true }}
             />
 
             {/* 3. OTAA */}
             <LogoCard
                 className="relative border-r border-b border-black/10"
-                logo={{ src: "/Brand Logos/0x0 (1) 1.png", alt: "OTAA" }}
+                logo={{ src: "/brand-logos/otaa.png", alt: "OTAA" }}
             >
                 <PlusIcon className="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" strokeWidth={1} />
                 <PlusIcon className="-bottom-[12.5px] -left-[12.5px] absolute z-10 hidden size-6 md:block text-black" strokeWidth={1} />
@@ -49,13 +49,13 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
             {/* 4. Bogey Bros */}
             <LogoCard
                 className="border-b border-black/10"
-                logo={{ src: "/Brand Logos/bogeyBrosLogo_dark.webp", alt: "Bogey Bros" }}
+                logo={{ src: "/brand-logos/bogey-bros.webp", alt: "Bogey Bros" }}
             />
 
             {/* 5. Daily Mentor */}
             <LogoCard
                 className="relative border-r border-black/10"
-                logo={{ src: "/Brand Logos/Daily mentor Logo.avif", alt: "Daily Mentor" }}
+                logo={{ src: "/brand-logos/daily-mentor.avif", alt: "Daily Mentor" }}
             />
 
             {/* 6. Candy Claws */}
@@ -73,7 +73,7 @@ export function LogoCloud({ className, ...props }: LogoCloudProps) {
             {/* 8. VOID */}
             <LogoCard
                 className="border-black/10"
-                logo={{ src: "/Brand Logos/void-logo-main-white 1.webp", alt: "VOID", invert: true }}
+                logo={{ src: "/brand-logos/void.webp", alt: "VOID", invert: true }}
             />
 
             {/* Bottom full-width border line */}

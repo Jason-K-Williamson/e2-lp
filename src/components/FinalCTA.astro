@@ -99,13 +99,19 @@ const editProps = (field: string) =>
 
             <!-- GetFormFlow Embed -->
             <!-- Scroll anchor sits just above the form -->
-            <div id="qualify" class="w-full max-w-2xl mx-auto">
+            <div
+                id="qualify"
+                class="w-full max-w-2xl mx-auto rounded-xl overflow-hidden bg-white"
+                style="background: #ffffff;"
+            >
                 <iframe
                     src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
                     loading="lazy"
-                    class="w-full min-h-[520px] rounded-xl border-0"
+                    class="w-full min-h-[520px] border-0 block"
+                    style="background: #ffffff;"
                     title="See if you qualify"
-                    allowtransparency="true"></iframe>
+                >
+                </iframe>
             </div>
 
             <!-- Micro-copy guarantee strip -->
