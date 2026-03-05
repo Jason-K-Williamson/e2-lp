@@ -1,0 +1,162 @@
+---
+import BunnyVideo from "./video/BunnyVideo.astro";
+---
+
+<section
+    class="relative w-full flex flex-col items-center justify-center overflow-hidden bg-white pt-16 pb-24"
+>
+    <!-- Ultra-subtle ambient glow to give depth without looking messy -->
+    <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-50/50 rounded-full blur-[100px] pointer-events-none"
+    >
+    </div>
+
+    <div
+        class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center gap-6 lg:gap-8 justify-center h-full"
+    >
+        <!-- Header Text Block -->
+        <div
+            class="flex flex-col items-center text-center gap-4 max-w-4xl mx-auto shrink-0"
+        >
+            <!-- Badge -->
+            <div
+                class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em]"
+            >
+                <span class="relative flex h-1.5 w-1.5">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"
+                    ></span>
+                    <span
+                        class="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-500"
+                    ></span>
+                </span>
+                Client Story
+            </div>
+
+            <!-- Quote -->
+            <h2
+                class="text-2xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-black text-slate-900 tracking-tight leading-[1.1] text-balance"
+            >
+                "I <span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600"
+                    >trust him a lot</span
+                > (which is a big thing for agencies)."
+            </h2>
+
+            <p
+                class="text-sm md:text-base text-slate-500 max-w-2xl leading-relaxed"
+            >
+                "He drove over 25 million for The Oodie with SMS. Ton of energy,
+                an uplifter rather than a drainer... Highly recommend."
+            </p>
+        </div>
+
+        <!-- Video Player -->
+        <div class="relative w-full max-w-xl mx-auto shrink-0">
+            <!-- Outer diffuse shadow -->
+            <div
+                class="absolute -inset-4 bg-gradient-to-b from-blue-500/10 to-indigo-500/10 rounded-[32px] blur-2xl opacity-50 transition-opacity duration-500 group-hover:opacity-70 pointer-events-none hidden md:block"
+            >
+            </div>
+
+            <div
+                class="relative rounded-2xl overflow-hidden bg-slate-900 shadow-xl shadow-slate-900/10 ring-1 ring-slate-900/5 cursor-pointer w-full mx-auto"
+            >
+                <!-- Overlay CTA -->
+                <div
+                    class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 bg-white/90 backdrop-blur text-slate-900 border border-slate-200 text-[10px] sm:text-xs font-bold px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-sm flex items-center gap-1.5 sm:gap-2 pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600"
+                    >
+                        <path
+                            fill-rule="evenodd"
+                            d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    Play Story
+                </div>
+
+                <!-- Video Component -->
+                <div class="w-full h-full object-cover">
+                    <BunnyVideo
+                        libraryId="609841"
+                        videoId="8a35383c-c3c5-48dc-8e96-6e1d396d16e4"
+                        title="How We Built $25M in SMS Revenue for The Oodie"
+                        subtitle="Davie Fogarty · Founder, The Oodie"
+                        author="Davie Fogarty"
+                        authorRole="Founder, The Oodie ($800M+)"
+                    />
+                </div>
+            </div>
+        </div>
+
+        <!-- Metric Bar (Trust Bar) - Moved below video -->
+        <div
+            class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 sm:gap-x-12 border-t border-slate-100 pt-5 sm:pt-6 w-full max-w-3xl shrink-0 mt-2"
+        >
+            <!-- Avatar & Details -->
+            <div class="flex items-center gap-2.5">
+                <div
+                    class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 flex items-center justify-center text-white text-base sm:text-lg font-black shrink-0 shadow-sm"
+                >
+                    D
+                </div>
+                <div class="text-left">
+                    <div class="text-sm sm:text-base font-bold text-slate-900">
+                        Davie Fogarty
+                    </div>
+                    <div
+                        class="text-[11px] sm:text-[13px] font-semibold text-blue-600"
+                    >
+                        Founder, The Oodie ($800M+)
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden md:block w-px h-8 sm:h-10 bg-slate-200"></div>
+
+            <div class="flex items-center gap-6 sm:gap-10">
+                <div class="text-left">
+                    <div
+                        class="text-xl sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
+                    >
+                        $25M+
+                    </div>
+                    <div
+                        class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.15em] sm:mt-0.5 whitespace-nowrap"
+                    >
+                        SMS Revenue
+                    </div>
+                </div>
+                <div class="text-left">
+                    <div
+                        class="text-xl sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
+                    >
+                        $0
+                    </div>
+                    <div
+                        class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.15em] sm:mt-0.5 whitespace-nowrap"
+                    >
+                        Start Point
+                    </div>
+                </div>
+                <div class="text-left">
+                    <div
+                        class="text-xl sm:text-2xl font-black text-emerald-600 tabular-nums tracking-tight"
+                    >
+                        &lt;2 yrs
+                    </div>
+                    <div
+                        class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.15em] sm:mt-0.5 whitespace-nowrap"
+                    >
+                        Timeframe
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,135 @@
+---
+/**
+ * FormflowModal
+ * Full-screen overlay modal that loads the GetFormFlow widget when opened.
+ * Trigger: any element with data-open-formflow or href="#qualify"
+ * Close: clicking backdrop, pressing Escape, or clicking the X button.
+ */
+---
+
+<!-- Modal Backdrop -->
+<div
+    id="formflow-modal"
+    class="fixed inset-0 z-[9999] hidden items-center justify-center"
+    aria-modal="true"
+    role="dialog"
+    aria-label="Application form"
+>
+    <!-- Backdrop -->
+    <div
+        id="formflow-backdrop"
+        class="absolute inset-0 bg-black/70 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+    >
+    </div>
+
+    <!-- Panel -->
+    <div
+        id="formflow-panel"
+        class="relative z-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto mx-4 bg-white rounded-2xl shadow-2xl translate-y-6 opacity-0 transition-all duration-300"
+    >
+        <!-- Header -->
+        <div
+            class="sticky top-0 z-10 flex items-center justify-between px-6 py-4 bg-white border-b border-gray-100"
+        >
+            <div>
+                <p
+                    class="text-xs uppercase tracking-widest text-gray-400 font-bold"
+                >
+                    Step 1 of 4
+                </p>
+                <h2 class="text-lg font-black text-gray-900 tracking-tight">
+                    See If You Qualify
+                </h2>
+            </div>
+            <button
+                id="formflow-close"
+                class="w-9 h-9 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                aria-label="Close form"
+            >
+                <svg
+                    class="w-4 h-4 text-gray-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Formflow embed container -->
+        <div class="px-4 pt-2 pb-8">
+            <div
+                id="formflow-embed"
+                data-form-id="669116a60dc0431e247ef7a5"
+                class="w-full"
+            >
+            </div>
+        </div>
+
+        <!-- Trust strip -->
+        <div
+            class="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-3 flex flex-wrap items-center justify-center gap-4 text-[11px] text-gray-400 font-medium"
+        >
+            <span>No contracts</span>
+            <span>·</span>
+            <span>Results guaranteed</span>
+            <span>·</span>
+            <span>Live in 21 days</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    #formflow-modal.is-open {
+        display: flex;
+    }
+    #formflow-modal.is-open #formflow-backdrop {
+        opacity: 1;
+    }
+    #formflow-modal.is-open #formflow-panel {
+        opacity: 1;
+        transform: translateY(0);
+    }
+</style>
+
+<script is:inline>
+    (function () {
+        var modal = document.getElementById("formflow-modal");
+        var backdrop = document.getElementById("formflow-backdrop");
+        var closeBtn = document.getElementById("formflow-close");
+
+        function openModal() {
+            modal.classList.add("is-open");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+            modal.classList.remove("is-open");
+            document.body.style.overflow = "";
+        }
+
+        // Close triggers
+        closeBtn && closeBtn.addEventListener("click", closeModal);
+        backdrop && backdrop.addEventListener("click", closeModal);
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") closeModal();
+        });
+
+        // Open triggers — any link/button with href="#qualify" or data-open-formflow
+        document.addEventListener("DOMContentLoaded", function () {
+            document
+                .querySelectorAll('[href="#qualify"], [data-open-formflow]')
+                .forEach(function (el) {
+                    el.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        openModal();
+                    });
+                });
+        });
+    })();
+</script>

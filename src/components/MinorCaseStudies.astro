@@ -1,0 +1,412 @@
+---
+/**
+ * MinorCaseStudies — BFCM hero cards + supporting case study grid + CTA
+ * Extracted from CaseStudies.astro so /2 can use them independently.
+ */
+
+const cases = [
+  {
+    client: "OTAA",
+    segment: "Accessories · 8-Figure Brand",
+    before: "21%",
+    after: "40%",
+    metric: "Email contribution to revenue",
+    timeframe: "90 days",
+    quote:
+      "e2 doubled our revenue growth to almost 40% and brought groundbreaking changes. His guidance during Black Friday led to the busiest week in our company's history.",
+    author: "Fameez Haroon, Co-Founder",
+  },
+];
+---
+
+<section class="pt-24 pb-16 relative overflow-hidden">
+  <div
+    class="absolute inset-0 bg-gradient-to-b from-gray-950 to-gray-950 pointer-events-none"
+  >
+  </div>
+
+  <div class="section-container relative z-10">
+    <!-- Section Headline -->
+    <div class="text-center mb-16 max-w-4xl mx-auto">
+      <p class="text-xs font-bold uppercase tracking-widest text-rose-400 mb-4">
+        BFCM Results
+      </p>
+      <h2
+        class="font-black text-white text-4xl md:text-5xl lg:text-6xl leading-tight tracking-tight mb-5 text-balance"
+      >
+        The brands that print money on Black Friday are our clients.
+      </h2>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+        While everyone else guesses, our clients run BFCM like a machine. Here's
+        the proof.
+      </p>
+    </div>
+
+    <!-- BFCM Hero #1: Nail Cosmetics Brand -->
+    <div class="mb-16">
+      <div
+        class="flex flex-col lg:flex-row gap-0 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-rose-500/5"
+      >
+        <div
+          class="lg:w-[45%] bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-8">
+              <div
+                class="w-10 h-10 rounded-2xl bg-rose-500/15 border border-rose-500/25 flex items-center justify-center text-rose-400 text-lg"
+              >
+                💅
+              </div>
+              <span
+                class="text-xs font-bold uppercase tracking-widest text-rose-400"
+                >BFCM Email Strategy</span
+              >
+            </div>
+            <h3
+              class="font-black text-white text-3xl md:text-4xl leading-none tracking-tight mb-4"
+            >
+              421% YoY BFCM<br />Email Revenue
+            </h3>
+            <p class="text-gray-400 text-lg leading-relaxed mb-8">
+              A Nail Cosmetics brand came to us after a flat BFCM season:
+              diluted messaging, low volume, poor deliverability. We rebuilt
+              everything and took them from A$200k to over A$1M in email revenue
+              in a single BFCM period.
+            </p>
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-rose-400">✓</span> 28 targeted campaigns with laser
+                segmentation
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-rose-400">✓</span> Pre-BFCM deliverability warmup
+                rebuilt inbox placement
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-rose-400">✓</span> Single unified sales message,
+                zero dilution
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-10 text-xs text-gray-600 font-semibold uppercase tracking-wide"
+          >
+            Anonymous · Nail Cosmetics · eCommerce
+          </div>
+        </div>
+        <div
+          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-10 md:p-14 flex flex-col justify-center"
+        >
+          <div class="grid grid-cols-2 gap-4 mb-5">
+            <div
+              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-6"
+            >
+              <div class="flex items-baseline gap-3 mb-1">
+                <div class="text-xl font-black text-gray-600">A$200,732</div>
+                <div class="text-gray-600">→</div>
+                <div class="text-4xl font-black text-rose-400">A$1,045,096</div>
+              </div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide"
+              >
+                Email Revenue · BFCM Period
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">421%</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                YoY Revenue Growth
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">48.5%↓</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Unsubscribe Rate
+              </div>
+            </div>
+            <div
+              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
+            >
+              <div class="text-3xl font-black text-white mb-1">A$3,748,975</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Total BFCM Revenue (Email Was the #1 Driver)
+              </div>
+            </div>
+          </div>
+          <div class="rounded-2xl bg-rose-500/5 border border-rose-500/20 p-5">
+            <p class="text-sm text-rose-300/80 leading-relaxed italic">
+              "A single launch email generated A$80,198. Black Friday is won
+              before it starts. Deliverability, hype, and precision
+              segmentation."
+            </p>
+            <p class="text-xs text-gray-600 mt-2 font-semibold">
+              e2 Agency BFCM Case Study · Verified via Klaviyo
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BFCM Hero #2: Eyewear Brand (Email + SMS) -->
+    <div class="mb-16">
+      <div
+        class="flex flex-col lg:flex-row-reverse gap-0 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-indigo-500/5"
+      >
+        <div
+          class="lg:w-[45%] bg-gradient-to-bl from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-8">
+              <div
+                class="w-10 h-10 rounded-2xl bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center text-indigo-400 text-lg"
+              >
+                👓
+              </div>
+              <span
+                class="text-xs font-bold uppercase tracking-widest text-indigo-400"
+                >Email + SMS BFCM Retention</span
+              >
+            </div>
+            <h3
+              class="font-black text-white text-3xl md:text-4xl leading-none tracking-tight mb-4"
+            >
+              128% More Retention Revenue. One BFCM.
+            </h3>
+            <p class="text-gray-400 text-lg leading-relaxed mb-8">
+              A major Eyewear brand had plateaued at $1.5M email BFCM revenue.
+              Solid strategy, but missing the 10% that adds millions. We rebuilt
+              frequency, segmentation, timezone targeting, and SMS and unlocked
+              $2.6M in new retention revenue.
+            </p>
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-indigo-400">✓</span> Timezone-based segmentation
+                across US, UK &amp; AU
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-indigo-400">✓</span> 29 targeted campaigns + omni-channel
+                SMS hype
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-indigo-400">✓</span> Launch day alone: $1,284,826
+                in revenue
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-10 text-xs text-gray-600 font-semibold uppercase tracking-wide"
+          >
+            Anonymous · Eyewear · eCommerce
+          </div>
+        </div>
+        <div
+          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-r border-white/10 p-10 md:p-14 flex flex-col justify-center"
+        >
+          <div class="grid grid-cols-2 gap-4 mb-5">
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-base font-black text-gray-600 mb-0.5">
+                $1.52M →
+              </div>
+              <div class="text-3xl font-black text-indigo-400">$2.59M</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Email (+70% YoY)
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-base font-black text-gray-600 mb-0.5">
+                $525k →
+              </div>
+              <div class="text-3xl font-black text-indigo-400">$2.09M</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                SMS (+298% YoY)
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">128.93%</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Retention Revenue Growth
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">$9.78M</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Total BFCM 2025 Revenue
+              </div>
+            </div>
+            <div
+              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
+            >
+              <div class="text-3xl font-black text-white mb-1">54.6%↑</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Total Company Revenue Growth YoY · $6.3M → $9.78M
+              </div>
+            </div>
+          </div>
+          <p class="text-xs text-gray-600 italic text-center">
+            Results verified via Klaviyo + SMS dashboard · BFCM 2025
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTAA Micro Case Study -->
+    <div class="mb-16">
+      <div
+        class="flex flex-col lg:flex-row gap-0 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-emerald-500/5"
+      >
+        <!-- Left: story -->
+        <div
+          class="lg:w-[45%] bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center gap-3 mb-8">
+              <div
+                class="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/25 flex items-center justify-center text-emerald-400 text-lg"
+              >
+                🏆
+              </div>
+              <span
+                class="text-xs font-bold uppercase tracking-widest text-emerald-400"
+                >Black Friday · OTAA</span
+              >
+            </div>
+            <h3
+              class="font-black text-white text-3xl md:text-4xl leading-none tracking-tight mb-4"
+            >
+              Busiest Week in<br />Company History.
+            </h3>
+            <p class="text-gray-400 text-lg leading-relaxed mb-8">
+              OTAA were plateauing at 15-20% Klaviyo growth. We doubled their
+              revenue contribution to 40%, built out SMS flows from scratch, and
+              ran their Black Friday campaign - resulting in the biggest week
+              they'd ever had.
+            </p>
+            <div class="flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-emerald-400">✓</span> Email revenue contribution:
+                21% → 40% in 90 days
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-emerald-400">✓</span> SMS flows built and launched
+                from zero
+              </div>
+              <div class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="text-emerald-400">✓</span> Record-breaking Black Friday
+                week
+              </div>
+            </div>
+          </div>
+          <div
+            class="mt-10 text-xs text-gray-600 font-semibold uppercase tracking-wide"
+          >
+            OTAA · Accessories · 8-Figure Brand · Verified
+          </div>
+        </div>
+
+        <!-- Right: full testimonial + metrics -->
+        <div
+          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-10 md:p-14 flex flex-col justify-center"
+        >
+          <!-- Key metrics -->
+          <div class="grid grid-cols-2 gap-4 mb-8">
+            <div
+              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-6"
+            >
+              <div class="flex items-baseline gap-3 mb-1">
+                <div class="text-xl font-black text-gray-600">21%</div>
+                <div class="text-gray-600">→</div>
+                <div class="text-4xl font-black text-emerald-400">40%</div>
+              </div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide"
+              >
+                Email Contribution to Revenue · 90 Days
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">+100%</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                Revenue Growth
+              </div>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
+              <div class="text-3xl font-black text-white mb-1">$0 → Live</div>
+              <div
+                class="text-xs text-gray-500 uppercase font-semibold tracking-wide mt-1"
+              >
+                SMS Flows Built
+              </div>
+            </div>
+          </div>
+
+          <!-- Full testimonial -->
+          <div
+            class="rounded-2xl bg-emerald-500/5 border border-emerald-500/20 p-6"
+          >
+            <blockquote
+              class="text-sm text-gray-300 leading-relaxed italic mb-5"
+            >
+              "Partnering with e2 agency and Jason was a pivotal moment for
+              OTAA. Initially, we were plateauing at 15-20% growth on Klaviyo.
+              Jason's strategic approach not only doubled our revenue growth to
+              almost 40% and brought groundbreaking changes. His guidance during
+              Black Friday led to the busiest week in our company's history,
+              showcasing his exceptional skills in managing high-stakes
+              campaigns.
+              <br /><br />
+              Beyond that, Jason's expertise extended to setting up SMS update flows,
+              a feature we hadn't utilized before. This addition has been invaluable
+              in enhancing our customer engagement and outreach. Jason's work goes
+              beyond delivering solutions; he empowers teams with the knowledge and
+              tools for independent growth.
+              <br /><br />
+              They're not just good; they're legendary."
+            </blockquote>
+            <div class="flex items-center gap-3 mt-4">
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-800 to-gray-900 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-sm font-black flex-shrink-0"
+              >
+                F
+              </div>
+              <div>
+                <p class="text-white text-sm font-bold">Fameez Haroon</p>
+                <p class="text-gray-500 text-xs">Co-Founder, OTAA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- CTA below case studies -->
+
+  <div class="text-center pb-16">
+    <a
+      href="#qualify"
+      class="inline-flex items-center gap-2 px-9 py-4 bg-white text-gray-950 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-2xl"
+    >
+      Get Your Free Revenue Audit →
+    </a>
+    <p class="text-xs text-gray-600 mt-3">
+      No obligation · We'll show you exactly what's leaking revenue right now
+    </p>
+  </div>
+</section>

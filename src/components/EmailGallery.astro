@@ -58,14 +58,14 @@ const emails = [
                 The Work
             </p>
             <h2
-                class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-5"
+                class="font-bold text-4xl md:text-5xl lg:text-6xl text-e2-black tracking-tight mb-5 text-balance"
             >
-                Emails That Stop the Scroll.<br />
-                <span class="text-gray-400"
-                    >Not Templates. Not AI. Real Design.</span
-                >
+                We turn brands that look like Toyota into Mercedes.
             </h2>
-            <p class="text-xl text-gray-500">
+            <p class="text-xl text-gray-500 mb-10">
+                Emails That Stop the Scroll. Not Templates. Not AI. Real Design.
+            </p>
+            <p class="text-base text-gray-400 max-w-xl mx-auto">
                 Every email is built from scratch for your brand. Here's a
                 sample of what lands in your customers' inboxes.
             </p>
@@ -191,8 +191,8 @@ const emails = [
 </style>
 
 <script>
-    // Load Figma as soon as visitor reaches the Problem section —
-    // it'll be fully loaded by the time they scroll to EmailGallery.
+    // Load Figma as soon as visitor reaches the case studies section —
+    // it'll be fully loaded by the time they scroll down to EmailGallery.
     const iframe = document.getElementById(
         "figma-embed"
     ) as HTMLIFrameElement | null;
@@ -208,8 +208,10 @@ const emails = [
         }
     };
 
-    // Trigger: Problems section enters viewport
-    const trigger = document.getElementById("problem-section");
+    // Trigger: MajorCaseStudies section enters viewport (fires one section early)
+    const trigger =
+        document.getElementById("major-case-studies") ??
+        document.getElementById("problem-section");
     if (trigger && iframe) {
         new IntersectionObserver(
             (entries, obs) => {
@@ -218,7 +220,7 @@ const emails = [
                     obs.disconnect();
                 }
             },
-            { rootMargin: "0px" }
+            { rootMargin: "200px" }
         ).observe(trigger);
     } else {
         // Fallback: load when the embed wrapper itself is near

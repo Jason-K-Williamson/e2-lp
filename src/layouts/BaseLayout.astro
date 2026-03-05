@@ -74,6 +74,73 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    <!-- GetFormFlow widget — loaded once, eagerly, so all data-form-id containers initialise on DOMContentLoaded -->
+    <script src="https://myformflow.io/embed/widget.js" async></script>
+
+    <!--
+      CRITICAL CSS: Inlined to prevent FOUC while the full CSS bundle loads async.
+      Covers only above-the-fold content: body base, fonts, hero layout, animation guards.
+      The full CSS bundle (~10KB gz) is loaded non-blocking via middleware.
+    -->
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        background: #fff;
+        -webkit-font-smoothing: antialiased;
+        scroll-behavior: smooth;
+        overscroll-behavior: none;
+      }
+      body {
+        font-family: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Helvetica, Arial, sans-serif;
+        background: #fff;
+        color: #050505;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/DMSans-400.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/fonts/DMSans-500.woff2") format("woff2");
+      }
+      @font-face {
+        font-family: "DM Sans";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url("/fonts/DMSans-700.woff2") format("woff2");
+      }
+      /* Animation guard: hide animated elements until GSAP reveals them */
+      [data-animate] {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      /* LCP fix: hero headline must always be visible */
+      #hero-headline[data-animate] {
+        opacity: 1;
+        transform: none;
+      }
+      /* Sticky nav: hidden initially */
+      #sticky-nav {
+        opacity: 0;
+      }
+    </style>
+
     <style is:global>
       @import "../styles/global.css";
     </style>

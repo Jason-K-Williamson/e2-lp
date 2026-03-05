@@ -43,19 +43,22 @@ const editProps = (field: string) =>
             <blockquote
                 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-6 italic"
             >
-                "I was skeptical after being burned by two agencies. e2
-                delivered $214K in new email revenue in our first 60 days."
+                "The team at e2 are experts on Klaviyo and I would highly
+                recommend them to any eCommerce store looking to grow fast, make
+                a lot of money, and work with good people."
             </blockquote>
             <div class="flex items-center justify-center gap-3">
                 <div
                     class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold text-sm"
                 >
-                    C
+                    P
                 </div>
                 <div class="text-left">
-                    <div class="text-gray-900 font-bold text-sm">Colin</div>
+                    <div class="text-gray-900 font-bold text-sm">
+                        Pete James
+                    </div>
                     <div class="text-gray-500 text-xs">
-                        Owner / CEO, 8-Figure Supplement Brand
+                        Senior Account Executive, Klaviyo
                     </div>
                 </div>
             </div>
@@ -97,13 +100,12 @@ const editProps = (field: string) =>
             <!-- GetFormFlow Embed -->
             <!-- Scroll anchor sits just above the form -->
             <div id="qualify" class="w-full max-w-2xl mx-auto">
-                <div
-                    id="formflow-embed"
-                    data-form-id="669116a60dc0431e247ef7a5"
-                    class="w-full"
-                >
-                </div>
-                <!-- widget.js loaded lazily via IntersectionObserver — not render-blocking -->
+                <iframe
+                    src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
+                    loading="lazy"
+                    class="w-full min-h-[520px] rounded-xl border-0"
+                    title="See if you qualify"
+                    allowtransparency="true"></iframe>
             </div>
 
             <!-- Micro-copy guarantee strip -->
@@ -171,91 +173,9 @@ const editProps = (field: string) =>
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         ></path>
                     </svg>
-                    <span>Live in 7 days</span>
+                    <span>Live in 21 days</span>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<style>
-    /* Force the GetFormFlow widget to be centered and constrained */
-    #formflow-embed > * {
-        max-width: 600px !important;
-        margin-left: auto !important;
-        margin-right: auto !important;
-        display: block !important;
-    }
-</style>
-
-<script is:inline>
-    (function () {
-        var embed = null;
-        var isEngaged = false;
-        var widgetLoaded = false;
-
-        function loadWidget() {
-            if (widgetLoaded) return;
-            widgetLoaded = true;
-            var s = document.createElement("script");
-            s.src = "https://myformflow.io/embed/widget.js";
-            s.async = true;
-            document.body.appendChild(s);
-        }
-
-        function centerEmbed() {
-            if (!embed || !isEngaged) return;
-            var rect = embed.getBoundingClientRect();
-            var embedMidY = rect.top + window.scrollY + rect.height / 2;
-            var targetScrollY = embedMidY - window.innerHeight / 2;
-            window.scrollTo({
-                top: Math.max(0, targetScrollY),
-                behavior: "smooth",
-            });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            embed = document.getElementById("formflow-embed");
-            var section = document.getElementById("qualify");
-            if (!embed || !section) return;
-
-            // Lazy-load the widget when the form section is ~300px away
-            if ("IntersectionObserver" in window) {
-                var io = new IntersectionObserver(
-                    function (entries, obs) {
-                        if (entries[0].isIntersecting) {
-                            loadWidget();
-                            obs.disconnect();
-                        }
-                    },
-                    { rootMargin: "300px" }
-                );
-                io.observe(section);
-            } else {
-                // Fallback for old browsers
-                loadWidget();
-            }
-
-            // Watch for size changes (step transitions change widget height)
-            if ("ResizeObserver" in window) {
-                var ro = new ResizeObserver(function () {
-                    centerEmbed();
-                });
-                ro.observe(embed);
-            }
-
-            // Center on any #qualify link click
-            document
-                .querySelectorAll('a[href="#qualify"]')
-                .forEach(function (link) {
-                    link.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        isEngaged = true;
-                        // Ensure widget is loaded immediately if user clicks CTA
-                        loadWidget();
-                        centerEmbed();
-                    });
-                });
-        });
-    })();
-</script>

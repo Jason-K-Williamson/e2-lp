@@ -215,7 +215,7 @@ You can use concrete sub-niche examples in prob_agitation_body, mech_step descri
 TOOLS TO CALL:
 1. get_knowledge_base with slugs: ["about-jason", "creative-matrix-spine", "playbook-2026", "homepage-e2"]
 2. get_reviews filtered by "Email/SMS Marketing Service" — pull real result numbers. NEVER invent stats.
-3. get_knowledge_base with slugs: ["how-to-write-headlines", "how-to-write-subheadlines"] — read BEFORE writing hero_headline and hero_subheadline. These define exactly how those fields must be written.
+3. get_knowledge_base with slugs: ["skill-headline-writer", "skill-subheadline-writer"] — read BEFORE writing hero_headline and hero_subheadline. These skills define exactly how those fields must be written.
 
 Return ONLY valid JSON. No preamble. No markdown fences.`;
 
@@ -233,7 +233,7 @@ ${brief}
 
 1. Call get_knowledge_base: ["about-jason", "creative-matrix-spine", "playbook-2026", "homepage-e2"] to understand e2's positioning
 2. Call get_reviews filtered by "Email/SMS Marketing Service" — extract real result numbers
-3. Call get_knowledge_base: ["how-to-write-headlines", "how-to-write-subheadlines"] — read both guides BEFORE writing hero_headline and hero_subheadline
+3. Call get_knowledge_base: ["skill-headline-writer", "skill-subheadline-writer"] — read both skills BEFORE writing hero_headline and hero_subheadline
 4. Build the complete page structure — every field, strategically placed, content-accurate
 
 ## OUTPUT — return ONLY this JSON, fully populated
@@ -393,7 +393,7 @@ function buildStage2Prompt(stage1JSON: string): string {
     return `You have received the structural draft below from the architect. Your job: rewrite every field to be elite direct-response copy.
 
 First, call get_knowledge_base with slug "ultimate-copywriter-guide" — read it fully before touching anything.
-Then call get_knowledge_base with slugs ["how-to-write-headlines", "how-to-write-subheadlines"] — read both before rewriting hero_headline and hero_subheadline.
+Then call get_knowledge_base with slugs ["skill-headline-writer", "skill-subheadline-writer"] — read both skills before rewriting hero_headline and hero_subheadline.
 
 Then rewrite every single field in the JSON below. Keep all field names identical. Improve every value.
 
@@ -526,7 +526,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const body = await request.json();
-    const { brief, concept, tam } = body;
+    const { brief, concept, tam, product_slug } = body;
 
     if (!brief || brief.trim().length < 20) {
         return new Response(JSON.stringify({ error: "Brief is too short. Add more context." }), { status: 400 });
@@ -534,6 +534,29 @@ export const POST: APIRoute = async ({ request }) => {
 
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+    // ── Stage 0: Fetch product context ────────────────────────────────────────
+    let productContext = "";
+    if (product_slug) {
+        const sb = createClient(supabaseUrl, supabaseKey);
+        const { data: product } = await sb
+            .from("products")
+            .select("name, description")
+            .eq("slug", product_slug)
+            .single();
+        if (product) {
+            productContext = `
+## PRODUCT CONTEXT — READ THIS FIRST
+You are writing copy for the following specific product. This is what you are selling. Read it fully before doing anything else.
+
+Product Name: ${product.name}
+
+${product.description}
+
+---
+`;
+        }
+    }
 
     // Return SSE stream
     const stream = new ReadableStream({
@@ -545,9 +568,13 @@ export const POST: APIRoute = async ({ request }) => {
                 // ── STAGE 1: ARCHITECT ────────────────────────────────────
                 emit(sseProgress(1, "Building page structure", "Reading brief, fetching brand docs and client proof..."));
 
+                const stage1System = productContext
+                    ? productContext + STAGE1_SYSTEM
+                    : STAGE1_SYSTEM;
+
                 const stage1Tools = makeTools(["about-jason", "creative-matrix-spine", "playbook-2026", "homepage-e2"]);
                 const stage1Raw = await runAgenticLoop(
-                    STAGE1_SYSTEM,
+                    stage1System,
                     buildStage1Prompt(brief, concept, tam),
                     stage1Tools,
                     supabaseUrl,
@@ -564,9 +591,13 @@ export const POST: APIRoute = async ({ request }) => {
                 // ── STAGE 2: COPYWRITER ───────────────────────────────────
                 emit(sseProgress(2, "Applying copywriting framework", "Apex is rewriting every field through 13 master frameworks..."));
 
-                const stage2Tools = makeTools(["ultimate-copywriter-guide", "how-to-write-headlines", "how-to-write-subheadlines"]);
+                const stage2System = productContext
+                    ? productContext + STAGE2_SYSTEM
+                    : STAGE2_SYSTEM;
+
+                const stage2Tools = makeTools(["ultimate-copywriter-guide", "skill-headline-writer", "skill-subheadline-writer"]);
                 const stage2Raw = await runAgenticLoop(
-                    STAGE2_SYSTEM,
+                    stage2System,
                     buildStage2Prompt(stage1JSON),
                     stage2Tools,
                     supabaseUrl,
@@ -581,9 +612,13 @@ export const POST: APIRoute = async ({ request }) => {
                 // ── STAGE 3: OFFER OPTIMIZER ──────────────────────────────
                 emit(sseProgress(3, "Wrapping with offer science", "Applying Hormozi's Grand Slam Offer value equation..."));
 
+                const stage3System = productContext
+                    ? productContext + STAGE3_SYSTEM
+                    : STAGE3_SYSTEM;
+
                 const stage3Tools = makeTools(["100m-offers-framework"]);
                 const stage3Raw = await runAgenticLoop(
-                    STAGE3_SYSTEM,
+                    stage3System,
                     buildStage3Prompt(stage2JSON),
                     stage3Tools,
                     supabaseUrl,

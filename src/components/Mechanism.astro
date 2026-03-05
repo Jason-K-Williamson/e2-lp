@@ -46,26 +46,29 @@ const editProps = (field: string) =>
     : {};
 ---
 
-<section id="how-it-works" class="py-32 relative">
+<section
+  id="how-it-works"
+  class="h-[100svh] min-h-[750px] relative flex items-center"
+>
   <div
     class="absolute inset-0 bg-gradient-to-b from-white via-gray-50/30 to-white pointer-events-none"
   >
   </div>
 
-  <div class="section-container relative z-10">
+  <div class="section-container relative z-10 w-full">
     <!-- Header -->
-    <div class="max-w-3xl mx-auto text-center mb-20">
-      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">
+    <div class="max-w-3xl mx-auto text-center mb-10">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">
         How It Works
       </p>
       <h2
-        class="font-bold text-4xl md:text-5xl mb-6 text-e2-black tracking-tight text-balance"
+        class="font-bold text-4xl md:text-5xl mb-4 text-e2-black tracking-tight text-balance"
       >
         <span {...editProps('mech_heading')}>{heading}</span><br />
         <span class="text-gray-400">Built in 3 Steps.</span>
       </h2>
       <p
-        class="text-xl text-gray-500 leading-relaxed text-balance"
+        class="text-lg text-gray-500 leading-relaxed text-balance"
         {...editProps('mech_subheading')}
       >
         {subheading}
@@ -73,25 +76,25 @@ const editProps = (field: string) =>
     </div>
 
     <!-- 3-Step Layout -->
-    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-8 mb-20">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-3 gap-6 mb-10">
       <!-- Step 1 -->
       <div class="relative group">
         <!-- Connector line (desktop) -->
         <div
-          class="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-gray-200 to-transparent z-0 -mr-8"
+          class="hidden md:block absolute top-10 left-full w-full h-px bg-gradient-to-r from-gray-200 to-transparent z-0 -mr-8"
         >
         </div>
 
         <div
-          class="relative z-10 glass-panel rounded-3xl p-8 h-full hover:-translate-y-2 transition-all duration-500 border border-white/80"
+          class="relative z-10 glass-panel rounded-3xl p-6 h-full hover:-translate-y-1 transition-all duration-500 border border-white/80"
         >
           <div
-            class="w-12 h-12 rounded-2xl bg-blue-600 text-white font-black text-xl flex items-center justify-center mb-6 shadow-lg shadow-blue-600/25"
+            class="w-10 h-10 rounded-2xl bg-blue-600 text-white font-black text-lg flex items-center justify-center mb-5 shadow-lg shadow-blue-600/25"
           >
             1
           </div>
           <h3
-            class="font-bold text-xl text-e2-black mb-3"
+            class="font-bold text-lg text-e2-black mb-2"
             {...editProps('mech_step1_label')}
           >
             {step1Label}
@@ -102,7 +105,7 @@ const editProps = (field: string) =>
           >
             {step1Desc}
           </p>
-          <div class="mt-6 pt-6 border-t border-gray-100">
+          <div class="mt-5 pt-5 border-t border-gray-100">
             <p
               class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2"
             >
@@ -129,20 +132,20 @@ const editProps = (field: string) =>
       <!-- Step 2 -->
       <div class="relative group">
         <div
-          class="hidden md:block absolute top-12 left-full w-full h-px bg-gradient-to-r from-gray-200 to-transparent z-0 -mr-8"
+          class="hidden md:block absolute top-10 left-full w-full h-px bg-gradient-to-r from-gray-200 to-transparent z-0 -mr-8"
         >
         </div>
 
         <div
-          class="relative z-10 glass-panel rounded-3xl p-8 h-full hover:-translate-y-2 transition-all duration-500 border border-white/80"
+          class="relative z-10 glass-panel rounded-3xl p-6 h-full hover:-translate-y-1 transition-all duration-500 border border-white/80"
         >
           <div
-            class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-black text-xl flex items-center justify-center mb-6 shadow-lg shadow-indigo-600/25"
+            class="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-black text-lg flex items-center justify-center mb-5 shadow-lg shadow-indigo-600/25"
           >
             2
           </div>
           <h3
-            class="font-bold text-xl text-e2-black mb-3"
+            class="font-bold text-lg text-e2-black mb-2"
             {...editProps('mech_step2_label')}
           >
             {step2Label}
@@ -153,7 +156,7 @@ const editProps = (field: string) =>
           >
             {step2Desc}
           </p>
-          <div class="mt-6 pt-6 border-t border-gray-100">
+          <div class="mt-5 pt-5 border-t border-gray-100">
             <p
               class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2"
             >
@@ -180,15 +183,15 @@ const editProps = (field: string) =>
       <!-- Step 3 -->
       <div class="relative group">
         <div
-          class="relative z-10 glass-panel rounded-3xl p-8 h-full hover:-translate-y-2 transition-all duration-500 border border-white/80"
+          class="relative z-10 glass-panel rounded-3xl p-6 h-full hover:-translate-y-1 transition-all duration-500 border border-white/80"
         >
           <div
-            class="w-12 h-12 rounded-2xl bg-green-600 text-white font-black text-xl flex items-center justify-center mb-6 shadow-lg shadow-green-600/25"
+            class="w-10 h-10 rounded-2xl bg-green-600 text-white font-black text-lg flex items-center justify-center mb-5 shadow-lg shadow-green-600/25"
           >
             3
           </div>
           <h3
-            class="font-bold text-xl text-e2-black mb-3"
+            class="font-bold text-lg text-e2-black mb-2"
             {...editProps('mech_step3_label')}
           >
             {step3Label}
@@ -199,7 +202,7 @@ const editProps = (field: string) =>
           >
             {step3Desc}
           </p>
-          <div class="mt-6 pt-6 border-t border-gray-100">
+          <div class="mt-5 pt-5 border-t border-gray-100">
             <p
               class="text-xs font-bold text-gray-400 uppercase tracking-wide mb-2"
             >
@@ -224,19 +227,7 @@ const editProps = (field: string) =>
       </div>
     </div>
 
-    <!-- Timeline callout -->
-    <div class="max-w-2xl mx-auto text-center mb-16">
-      <div
-        class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gray-950 text-white text-sm font-semibold"
-      >
-        <span>⏱</span>
-        <span
-          >Average time from kickoff to live flows: <strong>21 days</strong>
-        </span>
-      </div>
-    </div>
-
-    <!-- CTA after mechanism (playbook requirement) -->
+    <!-- CTA -->
     <div class="text-center">
       <a
         href="#qualify"

@@ -1,0 +1,108 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Hero from "../../../components/Hero.astro";
+import SocialProof from "../../../components/SocialProof.astro";
+import Problem from "../../../components/Problem.astro";
+import Mechanism from "../../../components/Mechanism.astro";
+import Testimonials from "../../../components/Testimonials.astro";
+import Offer from "../../../components/Offer.astro";
+import FAQ from "../../../components/FAQ.astro";
+import StickyNav from "../../../components/StickyNav.astro";
+import Footer from "../../../components/Footer.astro";
+import EmailGallery from "../../../components/EmailGallery.astro";
+import {
+    supabase,
+    DEFAULT_VARIANT,
+    type PageVariant,
+} from "../../../lib/supabase";
+
+const { product, concept, tam } = Astro.params;
+const isAdmin = !!(Astro.locals as any).isAdmin;
+
+// Validate the product exists
+const { data: productData } = await supabase
+    .from("products")
+    .select("id, slug, name, description")
+    .eq("slug", product)
+    .eq("active", true)
+    .single();
+
+if (!productData) return Astro.redirect("/404");
+
+// Resolve the variant for this product + concept + tam
+const { data, error } = await supabase
+    .from("page_variants")
+    .select("*")
+    .eq("product_slug", product)
+    .eq("concept", concept)
+    .eq("tam", tam)
+    .eq("active", true)
+    .single();
+
+// Allow admin to preview inactive variants
+if (error || !data) {
+    if (!isAdmin) return Astro.redirect("/404");
+    const { data: adminData } = await supabase
+        .from("page_variants")
+        .select("*")
+        .eq("product_slug", product)
+        .eq("concept", concept)
+        .eq("tam", tam)
+        .single();
+    if (!adminData) return Astro.redirect("/404");
+}
+
+const v = (data ?? {}) as PageVariant;
+---
+
+<BaseLayout
+    title={v.meta_title || DEFAULT_VARIANT.meta_title}
+    description={v.meta_description || DEFAULT_VARIANT.meta_description}
+    variantId={v.id}
+>
+    <StickyNav />
+
+    <Hero
+        badge={v.hero_badge}
+        headline={v.hero_headline}
+        subheadline={v.hero_subheadline}
+        ctaPrimary={v.hero_cta_primary}
+        ctaSecondary={v.hero_cta_secondary}
+    />
+
+    <SocialProof />
+
+    <Problem
+        heading={v.prob_heading}
+        subheading={v.prob_subheading}
+        painPoints={v.prob_pain_points}
+        gainPoints={v.prob_gain_points}
+        trapLabel={v.prob_trap_label}
+        beforeLabel={v.prob_before_label}
+    />
+
+    <Mechanism
+        heading={v.mech_heading}
+        subheading={v.mech_subheading}
+        step1Label={v.mech_step1_label}
+        step1Desc={v.mech_step1_desc}
+        step1Bullets={v.mech_step1_bullets}
+        step2Label={v.mech_step2_label}
+        step2Desc={v.mech_step2_desc}
+        step2Bullets={v.mech_step2_bullets}
+        step3Label={v.mech_step3_label}
+        step3Desc={v.mech_step3_desc}
+        step3Bullets={v.mech_step3_bullets}
+    />
+    <EmailGallery />
+    <Testimonials />
+    <Offer
+        heading={v.offer_heading}
+        subheading={v.offer_subheading}
+        summaryTitle={v.offer_summary_title}
+        summaryBody={v.offer_summary_body}
+        cards={v.offer_cards}
+    />
+    <FAQ faqs={v.faq} />
+    <Footer />
+</BaseLayout>

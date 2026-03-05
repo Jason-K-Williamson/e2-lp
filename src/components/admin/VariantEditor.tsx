@@ -3,23 +3,47 @@ import type { PageVariant } from "../../lib/supabase";
 
 type Tab = "hero" | "problem" | "mechanism" | "offer" | "meta";
 
+interface Product {
+    id: string;
+    slug: string;
+    name: string;
+    active: boolean;
+}
+
 interface Props {
     variant?: Partial<PageVariant>;
     adminPass: string;
+    products?: Product[];
 }
 
 const FONT = "'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
 
+// ─── Dark theme tokens ────────────────────────────────────────────────────────
+const BG = "#0d0d0f";
+const SURFACE = "#18181b";
+const SURFACE2 = "#1f1f23";
+const BORDER = "#2a2a2e";
+const BORDER2 = "#333338";
+const TEXT = "#f4f4f5";
+const TEXT2 = "#a1a1aa";
+const TEXT3 = "#52525b";
+const ACCENT = "#818cf8"; // indigo-400
+const ACCENT_DIM = "rgba(129,140,248,0.12)";
+const GREEN = "#4ade80";
+const GREEN_DIM = "rgba(74,222,128,0.12)";
+const RED = "#f87171";
+
 const inputStyle: React.CSSProperties = {
-    width: "100%", padding: "10px 14px", border: "1px solid #e5e7eb",
+    width: "100%", padding: "10px 14px",
+    border: `1px solid ${BORDER2}`,
     borderRadius: "10px", fontSize: "14px", outline: "none",
-    background: "#fafafa", boxSizing: "border-box", fontFamily: FONT,
-    color: "#111",
+    background: SURFACE2, boxSizing: "border-box", fontFamily: FONT,
+    color: TEXT,
 };
 
 const labelStyle: React.CSSProperties = {
     display: "block", fontSize: "11px", fontWeight: 700,
-    textTransform: "uppercase", letterSpacing: "0.09em", color: "#9ca3af", marginBottom: "6px",
+    textTransform: "uppercase", letterSpacing: "0.09em", color: TEXT3, marginBottom: "6px",
     fontFamily: FONT,
 };
 
@@ -30,19 +54,22 @@ function injectStyles() {
     el.id = STYLE_ID;
     el.textContent = `
         @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
-        .ve-input::placeholder, .ve-textarea::placeholder { color: #d1d5db; opacity: 1; }
-        .ve-input:focus, .ve-textarea:focus { border-color: #6366f1; background: #fff; }
+        .ve-input::placeholder, .ve-textarea::placeholder { color: #3f3f46; opacity: 1; }
+        .ve-input:focus, .ve-textarea:focus { border-color: ${ACCENT} !important; background: #202027 !important; }
         .ve-textarea { resize: vertical; line-height: 1.6; }
         .ve-save-indicator { font-size: 12px; font-family: ${FONT}; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
-            50% { box-shadow: 0 0 0 6px rgba(99,102,241,0.25); }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(129,140,248,0); }
+            50% { box-shadow: 0 0 0 6px rgba(129,140,248,0.25); }
         }
         @keyframes pulsedot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.4; transform: scale(0.7); }
         }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333338; border-radius: 3px; }
     `;
     document.head.appendChild(el);
 }
@@ -54,7 +81,7 @@ const Field = ({ label, value, onChange, rows, hint, mono, placeholder }: {
 }) => (
     <div style={{ marginBottom: "18px" }}>
         <label style={labelStyle}>{label}</label>
-        {hint && <p style={{ fontSize: "11px", color: "#c4c9d4", marginBottom: "6px", fontFamily: FONT }}>{hint}</p>}
+        {hint && <p style={{ fontSize: "11px", color: TEXT3, marginBottom: "6px", fontFamily: FONT }}>{hint}</p>}
         {rows ? (
             <textarea value={value} onChange={e => onChange(e.target.value)} rows={rows}
                 placeholder={placeholder} className="ve-textarea"
@@ -67,7 +94,7 @@ const Field = ({ label, value, onChange, rows, hint, mono, placeholder }: {
     </div>
 );
 
-export default function VariantEditor({ variant, adminPass }: Props) {
+export default function VariantEditor({ variant, adminPass, products = [] }: Props) {
     useEffect(() => { injectStyles(); }, []);
 
     const isEdit = !!variant?.id;
@@ -75,6 +102,7 @@ export default function VariantEditor({ variant, adminPass }: Props) {
     const slugify = (v: string) => v.toLowerCase().replace(/\s/g, "-").replace(/[^a-z0-9-]/g, "");
 
     // ── Meta / slug fields ────────────────────────────────────────────────────
+    const [productSlug, setProductSlug] = useState((variant as any)?.product_slug ?? products[0]?.slug ?? "flows");
     const [concept, setConcept] = useState(variant?.concept ?? "");
     const [tam, setTam] = useState(variant?.tam ?? "");
     const [brief, setBrief] = useState(variant?.brief ?? "");
@@ -116,9 +144,18 @@ export default function VariantEditor({ variant, adminPass }: Props) {
     const [mechStep3Desc, setMechStep3Desc] = useState(variant?.mech_step3_desc ?? "");
 
     // ── Offer / FinalCTA fields ───────────────────────────────────────────────
+    const [offerHeading, setOfferHeading] = useState(variant?.offer_heading ?? "");
     const [offerSub, setOfferSub] = useState(variant?.offer_subheading ?? "");
+    const [offerSummaryTitle, setOfferSummaryTitle] = useState(variant?.offer_summary_title ?? "");
+    const [offerSummaryBody, setOfferSummaryBody] = useState(variant?.offer_summary_body ?? "");
+    const [offerCards, setOfferCards] = useState<any[]>(variant?.offer_cards ?? []);
     const [finalCtaHeading, setFinalCtaHeading] = useState(variant?.finalcta_heading ?? "");
     const [finalCtaSub, setFinalCtaSub] = useState(variant?.finalcta_subheading ?? "");
+    const [probTrapLabel, setProbTrapLabel] = useState(variant?.prob_trap_label ?? "");
+    const [probBeforeLabel, setProbBeforeLabel] = useState(variant?.prob_before_label ?? "");
+    const [mechStep1Bullets, setMechStep1Bullets] = useState((variant?.mech_step1_bullets ?? []).join("\n"));
+    const [mechStep2Bullets, setMechStep2Bullets] = useState((variant?.mech_step2_bullets ?? []).join("\n"));
+    const [mechStep3Bullets, setMechStep3Bullets] = useState((variant?.mech_step3_bullets ?? []).join("\n"));
 
     // ── FAQ ───────────────────────────────────────────────────────────────────
     const [faq, setFaq] = useState<{ q: string; a: string }[]>(variant?.faq ?? []);
@@ -155,15 +192,24 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                     if (f.prob_gain_points) setGain(f.prob_gain_points.join("\n"));
                     if (f.prob_agitation_body) setProbAgitation(f.prob_agitation_body);
                     if (f.prob_stakes_body) setProbStakes(f.prob_stakes_body);
+                    if (f.prob_trap_label) setProbTrapLabel(f.prob_trap_label);
+                    if (f.prob_before_label) setProbBeforeLabel(f.prob_before_label);
                     if (f.mech_heading) setMechHeading(f.mech_heading);
                     if (f.mech_subheading) setMechSub(f.mech_subheading);
                     if (f.mech_step1_label) setMechStep1Label(f.mech_step1_label);
                     if (f.mech_step1_desc) setMechStep1Desc(f.mech_step1_desc);
+                    if (f.mech_step1_bullets) setMechStep1Bullets(f.mech_step1_bullets.join("\n"));
                     if (f.mech_step2_label) setMechStep2Label(f.mech_step2_label);
                     if (f.mech_step2_desc) setMechStep2Desc(f.mech_step2_desc);
+                    if (f.mech_step2_bullets) setMechStep2Bullets(f.mech_step2_bullets.join("\n"));
                     if (f.mech_step3_label) setMechStep3Label(f.mech_step3_label);
                     if (f.mech_step3_desc) setMechStep3Desc(f.mech_step3_desc);
+                    if (f.mech_step3_bullets) setMechStep3Bullets(f.mech_step3_bullets.join("\n"));
+                    if (f.offer_heading) setOfferHeading(f.offer_heading);
                     if (f.offer_subheading) setOfferSub(f.offer_subheading);
+                    if (f.offer_summary_title) setOfferSummaryTitle(f.offer_summary_title);
+                    if (f.offer_summary_body) setOfferSummaryBody(f.offer_summary_body);
+                    if (f.offer_cards && Array.isArray(f.offer_cards)) setOfferCards(f.offer_cards);
                     if (f.finalcta_heading) setFinalCtaHeading(f.finalcta_heading);
                     if (f.finalcta_subheading) setFinalCtaSub(f.finalcta_subheading);
                     if (f.faq && Array.isArray(f.faq) && f.faq.length > 0) setFaq(f.faq);
@@ -183,38 +229,43 @@ export default function VariantEditor({ variant, adminPass }: Props) {
     const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const draftDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Always-current ref — fixes stale closure issues in debounced/event callbacks
     const latestRef = useRef({ brief, concept, tam });
     useEffect(() => { latestRef.current = { brief, concept, tam }; }, [brief, concept, tam]);
 
     const buildPayload = useCallback(() => ({
-        brief, concept, tam,
+        brief, concept, tam, product_slug: productSlug,
         spine_product: spineProduct, spine_jtbd: spineJtbd,
         spine_problem: spineProblem, spine_mechanism: spineMechanism,
         hero_badge: heroBadge, hero_headline: heroHeadline,
         hero_subheadline: heroSub, hero_cta_primary: heroCtaP, hero_cta_secondary: heroCtaS,
         prob_heading: probHeading, prob_subheading: probSub,
+        prob_trap_label: probTrapLabel, prob_before_label: probBeforeLabel,
         prob_pain_points: pain.split("\n").map(s => s.trim()).filter(Boolean),
         prob_gain_points: gain.split("\n").map(s => s.trim()).filter(Boolean),
         prob_agitation_body: probAgitation,
         prob_stakes_body: probStakes,
         mech_heading: mechHeading, mech_subheading: mechSub,
         mech_step1_label: mechStep1Label, mech_step1_desc: mechStep1Desc,
+        mech_step1_bullets: mechStep1Bullets.split("\n").map(s => s.trim()).filter(Boolean),
         mech_step2_label: mechStep2Label, mech_step2_desc: mechStep2Desc,
+        mech_step2_bullets: mechStep2Bullets.split("\n").map(s => s.trim()).filter(Boolean),
         mech_step3_label: mechStep3Label, mech_step3_desc: mechStep3Desc,
-        offer_subheading: offerSub,
+        mech_step3_bullets: mechStep3Bullets.split("\n").map(s => s.trim()).filter(Boolean),
+        offer_heading: offerHeading, offer_subheading: offerSub,
+        offer_summary_title: offerSummaryTitle, offer_summary_body: offerSummaryBody,
+        offer_cards: offerCards,
         finalcta_heading: finalCtaHeading, finalcta_subheading: finalCtaSub,
         faq,
         meta_title: metaTitle, meta_description: metaDesc,
-    }), [brief, concept, tam, spineProduct, spineJtbd, spineProblem, spineMechanism,
+    }), [brief, concept, tam, productSlug, spineProduct, spineJtbd, spineProblem, spineMechanism,
         heroBadge, heroHeadline, heroSub, heroCtaP, heroCtaS,
-        probHeading, probSub, pain, gain, probAgitation, probStakes,
-        mechHeading, mechSub, mechStep1Label, mechStep1Desc,
-        mechStep2Label, mechStep2Desc, mechStep3Label, mechStep3Desc,
-        offerSub, finalCtaHeading, finalCtaSub, faq, metaTitle, metaDesc]);
+        probHeading, probSub, probTrapLabel, probBeforeLabel, pain, gain, probAgitation, probStakes,
+        mechHeading, mechSub, mechStep1Label, mechStep1Desc, mechStep1Bullets,
+        mechStep2Label, mechStep2Desc, mechStep2Bullets, mechStep3Label, mechStep3Desc, mechStep3Bullets,
+        offerHeading, offerSub, offerSummaryTitle, offerSummaryBody, offerCards,
+        finalCtaHeading, finalCtaSub, faq, metaTitle, metaDesc]);
 
     const saveDraft = useCallback((fields?: ReturnType<typeof buildPayload>) => {
-        // Read from latestRef so we always capture current values, even in stale closures
         const { brief: b, concept: c, tam: t } = latestRef.current;
         setDraftStatus("saving");
         return fetch("/api/drafts", {
@@ -226,7 +277,6 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                 setDraftStatus("saved");
                 setTimeout(() => setDraftStatus("idle"), 2000);
             } else {
-                // Non-ok response — reset so indicator doesn't stay stuck
                 setDraftStatus("idle");
             }
         }).catch(() => {
@@ -250,11 +300,12 @@ export default function VariantEditor({ variant, adminPass }: Props) {
     }, [isEdit, variant, adminPass]);
 
     const allValues = [brief, heroBadge, heroHeadline, heroSub, heroCtaP, heroCtaS,
-        probHeading, probSub, pain, gain, probAgitation, probStakes,
-        mechHeading, mechSub, mechStep1Label, mechStep1Desc,
-        mechStep2Label, mechStep2Desc, mechStep3Label, mechStep3Desc,
-        offerSub, finalCtaHeading, finalCtaSub, JSON.stringify(faq), metaTitle, metaDesc,
-        spineProduct, spineJtbd, spineProblem, spineMechanism];
+        probHeading, probSub, probTrapLabel, probBeforeLabel, pain, gain, probAgitation, probStakes,
+        mechHeading, mechSub, mechStep1Label, mechStep1Desc, mechStep1Bullets,
+        mechStep2Label, mechStep2Desc, mechStep2Bullets, mechStep3Label, mechStep3Desc, mechStep3Bullets,
+        offerHeading, offerSub, offerSummaryTitle, offerSummaryBody, JSON.stringify(offerCards),
+        finalCtaHeading, finalCtaSub, JSON.stringify(faq), metaTitle, metaDesc,
+        spineProduct, spineJtbd, spineProblem, spineMechanism, productSlug];
 
     const initializedRef = useRef(false);
     useEffect(() => {
@@ -273,25 +324,21 @@ export default function VariantEditor({ variant, adminPass }: Props) {
         if (!draftInitRef.current) { draftInitRef.current = true; return; }
         if (draftDebounceRef.current) clearTimeout(draftDebounceRef.current);
         draftDebounceRef.current = setTimeout(() => {
-            // 400ms — fast enough to catch quick navigation
             saveDraft(generated ? buildPayload() : undefined);
         }, 400);
         return () => { if (draftDebounceRef.current) clearTimeout(draftDebounceRef.current); };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [brief, concept, tam, ...allValues]);
 
-    // Flush draft immediately on page unload (navigation, tab close, refresh)
     useEffect(() => {
         const flush = () => {
             const { brief: b, concept: c, tam: t } = latestRef.current;
-            // sendBeacon is fire-and-forget, survives page unload
             const payload = JSON.stringify({
                 draft_key: draftKey,
                 brief: b, concept: c, tam: t,
                 fields: null,
             });
             const blob = new Blob([payload], { type: "application/json" });
-            // Include auth in URL param as fallback since headers aren't supported with sendBeacon
             navigator.sendBeacon(`/api/drafts-beacon?pass=${encodeURIComponent(adminPass)}`, blob);
         };
         window.addEventListener("beforeunload", flush);
@@ -308,7 +355,7 @@ export default function VariantEditor({ variant, adminPass }: Props) {
             const res = await fetch("/api/generate", {
                 method: "POST",
                 headers: { "Content-Type": "application/json", "x-admin-pass": adminPass },
-                body: JSON.stringify({ brief, concept, tam }),
+                body: JSON.stringify({ brief, concept, tam, product_slug: productSlug }),
             });
 
             if (!res.ok) {
@@ -362,7 +409,16 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                         setMechStep2Desc(json.mech_step2_desc ?? "");
                         setMechStep3Label(json.mech_step3_label ?? "");
                         setMechStep3Desc(json.mech_step3_desc ?? "");
+                        setMechStep1Bullets((json.mech_step1_bullets ?? []).join("\n"));
+                        setMechStep2Bullets((json.mech_step2_bullets ?? []).join("\n"));
+                        setMechStep3Bullets((json.mech_step3_bullets ?? []).join("\n"));
+                        setOfferHeading(json.offer_heading ?? "");
                         setOfferSub(json.offer_subheading ?? "");
+                        setOfferSummaryTitle(json.offer_summary_title ?? "");
+                        setOfferSummaryBody(json.offer_summary_body ?? "");
+                        if (Array.isArray(json.offer_cards)) setOfferCards(json.offer_cards);
+                        setProbTrapLabel(json.prob_trap_label ?? "");
+                        setProbBeforeLabel(json.prob_before_label ?? "");
                         setFinalCtaHeading(json.finalcta_heading ?? "");
                         setFinalCtaSub(json.finalcta_subheading ?? "");
                         if (Array.isArray(json.faq) && json.faq.length > 0) setFaq(json.faq);
@@ -374,8 +430,6 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                         setSpineMechanism(json.spine_mechanism ?? "");
                         setGenerated(true);
                         setActiveTab("hero");
-                        // Don't call saveDraft here — React state hasn't flushed yet.
-                        // The useEffect debounce on allValues will fire after state updates and save correctly.
                     } else if (msg.type === "error") {
                         setGenError(msg.message ?? "Generation failed");
                     }
@@ -420,30 +474,75 @@ export default function VariantEditor({ variant, adminPass }: Props) {
         { id: "meta", label: "🔍 Meta" },
     ];
 
+    // ── Shared card style ─────────────────────────────────────────────────────
+    const card: React.CSSProperties = {
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: "16px",
+        padding: "28px",
+        marginBottom: "16px",
+    };
+
     return (
-        <div style={{ maxWidth: "780px", margin: "0 auto", padding: "32px 24px", fontFamily: FONT }}>
+        <div style={{ maxWidth: "820px", margin: "0 auto", padding: "32px 24px", fontFamily: FONT, background: BG, minHeight: "100vh" }}>
             {/* Header */}
             <div style={{ marginBottom: "32px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <div>
-                    <a href="/admin" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontFamily: FONT }}>← All variants</a>
-                    <h1 style={{ fontSize: "24px", fontWeight: 800, marginTop: "10px", color: "#111", fontFamily: FONT }}>
+                    <a href="/admin" style={{ fontSize: "13px", color: TEXT3, textDecoration: "none", fontFamily: FONT }}>← All variants</a>
+                    <h1 style={{ fontSize: "24px", fontWeight: 800, marginTop: "10px", color: TEXT, fontFamily: FONT }}>
                         {isEdit ? `Editing: /${concept}/${tam}` : "New Variant"}
                     </h1>
                 </div>
                 {isEdit && saveIndicator && (
                     <span className="ve-save-indicator" style={{
-                        color: saveStatus === "saved" ? "#22c55e" : saveStatus === "error" ? "#ef4444" : "#9ca3af",
+                        color: saveStatus === "saved" ? GREEN : saveStatus === "error" ? RED : TEXT3,
                         fontWeight: 600,
                     }}>{saveIndicator}</span>
                 )}
             </div>
 
+            {/* ── Product selector ── */}
+            {!isEdit && products.length > 0 && (
+                <div style={card}>
+                    <h2 style={{ fontSize: "11px", fontWeight: 800, marginBottom: "4px", fontFamily: FONT, textTransform: "uppercase", letterSpacing: "0.08em", color: ACCENT }}>
+                        Product
+                    </h2>
+                    <p style={{ fontSize: "13px", color: TEXT2, marginBottom: "18px", fontFamily: FONT }}>
+                        Pick the product you're writing copy for. Claude reads its full description before generating.
+                    </p>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "10px" }}>
+                        {products.map(p => (
+                            <button
+                                key={p.slug}
+                                onClick={() => setProductSlug(p.slug)}
+                                style={{
+                                    padding: "14px 16px",
+                                    border: productSlug === p.slug ? `2px solid ${ACCENT}` : `1px solid ${BORDER2}`,
+                                    borderRadius: "12px",
+                                    background: productSlug === p.slug ? ACCENT_DIM : SURFACE2,
+                                    cursor: "pointer", textAlign: "left", fontFamily: FONT,
+                                    transition: "all 0.15s",
+                                }}
+                            >
+                                <div style={{ fontSize: "14px", fontWeight: 700, color: productSlug === p.slug ? ACCENT : TEXT, marginBottom: "3px" }}>{p.name}</div>
+                                <div style={{ fontSize: "11px", color: TEXT3, fontFamily: "monospace" }}>{p.slug}</div>
+                            </button>
+                        ))}
+                    </div>
+                    {productSlug && (
+                        <p style={{ marginTop: "12px", fontSize: "11px", color: TEXT3, fontFamily: FONT }}>
+                            Selected: <code style={{ background: SURFACE2, padding: "2px 7px", borderRadius: "5px", color: ACCENT }}>{productSlug}</code>
+                        </p>
+                    )}
+                </div>
+            )}
+
             {/* ── STEP 1: Brief ── */}
-            <div style={{ background: "#fff", border: "1px solid #e5e7eb", borderRadius: "16px", padding: "28px", marginBottom: "20px" }}>
-                <h2 style={{ fontSize: "14px", fontWeight: 800, marginBottom: "4px", fontFamily: FONT, textTransform: "uppercase", letterSpacing: "0.06em", color: "#111" }}>
-                    {isEdit ? "Regenerate from brief" : "Step 1 — Dump your brief"}
+            <div style={card}>
+                <h2 style={{ fontSize: "11px", fontWeight: 800, marginBottom: "4px", fontFamily: FONT, textTransform: "uppercase", letterSpacing: "0.08em", color: ACCENT }}>
+                    {isEdit ? "Regenerate from brief" : "Step 1 — Brief"}
                 </h2>
-                <p style={{ fontSize: "13px", color: "#c4c9d4", marginBottom: "20px", fontFamily: FONT }}>
+                <p style={{ fontSize: "13px", color: TEXT2, marginBottom: "20px", fontFamily: FONT }}>
                     Paste anything — SPINE notes, Creative Matrix output, ad copy, raw ideas.
                 </p>
 
@@ -452,8 +551,8 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                     <Field label="TAM slug" value={tam} onChange={v => setTam(slugify(v))} placeholder="supplements" mono />
                 </div>
                 {concept && tam && (
-                    <p style={{ fontSize: "12px", color: "#c4c9d4", marginBottom: "16px", fontFamily: FONT }}>
-                        URL: <code style={{ background: "#f3f4f6", padding: "2px 6px", borderRadius: "4px", color: "#6b7280" }}>/{concept}/{tam}</code>
+                    <p style={{ fontSize: "12px", color: TEXT3, marginBottom: "16px", fontFamily: FONT }}>
+                        URL: <code style={{ background: SURFACE2, padding: "2px 6px", borderRadius: "4px", color: TEXT2 }}>/{concept}/{tam}</code>
                     </p>
                 )}
 
@@ -463,7 +562,7 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                     rows={12}
                     className="ve-textarea"
                     placeholder={`Dump everything here:\n\n• Creative Matrix output\n• SPINE: product, JTBD, problem, mechanism\n• The specific ad hook / UMOP\n• TAM desires and pain points\n• Raw notes, bullet points, anything\n\nClaude reads it all and writes the whole page.`}
-                    style={{ ...inputStyle, background: "#f9fafb", fontSize: "14px", fontFamily: FONT }}
+                    style={{ ...inputStyle, fontSize: "14px", fontFamily: FONT }}
                 />
 
                 {/* Generate button */}
@@ -472,12 +571,15 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                     disabled={generating || brief.trim().length < 20 || !concept || !tam}
                     style={{
                         marginTop: "16px", padding: "13px 28px",
-                        background: generating ? "#111" : "#111",
-                        color: "#fff", border: "none", borderRadius: "10px",
-                        fontSize: "14px", fontWeight: 700, cursor: generating ? "default" : "pointer",
-                        opacity: brief.trim().length < 20 || !concept || !tam ? 0.4 : 1,
+                        background: generating ? SURFACE2 : ACCENT,
+                        color: generating ? TEXT2 : "#0d0d0f",
+                        border: `1px solid ${generating ? BORDER2 : ACCENT}`,
+                        borderRadius: "10px",
+                        fontSize: "14px", fontWeight: 800, cursor: generating ? "default" : "pointer",
+                        opacity: brief.trim().length < 20 || !concept || !tam ? 0.35 : 1,
                         display: "flex", alignItems: "center", gap: "8px",
-                        fontFamily: FONT, transition: "opacity 0.2s",
+                        fontFamily: FONT, transition: "opacity 0.2s, background 0.2s",
+                        letterSpacing: "0.01em",
                     }}
                 >
                     <span style={{ display: "inline-block", animation: generating ? "spin 1.2s linear infinite" : "none" }}>✦</span>
@@ -488,10 +590,9 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                 {generating && (
                     <div style={{
                         marginTop: "20px", padding: "20px 24px",
-                        background: "#f9fafb", border: "1px solid #e5e7eb",
+                        background: SURFACE2, border: `1px solid ${BORDER}`,
                         borderRadius: "14px", fontFamily: FONT,
                     }}>
-                        {/* Stage steps */}
                         <div style={{ display: "flex", alignItems: "flex-start", gap: "0", marginBottom: "16px" }}>
                             {[
                                 { n: 1, label: "Architect", sublabel: "Brief → structure" },
@@ -508,8 +609,9 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                                                 width: "32px", height: "32px", borderRadius: "50%",
                                                 display: "flex", alignItems: "center", justifyContent: "center",
                                                 fontSize: "12px", fontWeight: 700, lineHeight: 1,
-                                                background: isDone ? "#22c55e" : isActive ? "#111" : "#e5e7eb",
-                                                color: isDone || isActive ? "#fff" : "#9ca3af",
+                                                background: isDone ? GREEN_DIM : isActive ? ACCENT_DIM : SURFACE,
+                                                color: isDone ? GREEN : isActive ? ACCENT : TEXT3,
+                                                border: `1px solid ${isDone ? GREEN : isActive ? ACCENT : BORDER2}`,
                                                 transition: "all 0.3s",
                                                 animation: isActive ? "pulse-glow 1.5s ease-in-out infinite" : "none",
                                                 flexShrink: 0,
@@ -517,14 +619,14 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                                                 {isDone ? "✓" : n}
                                             </div>
                                             <div style={{ marginTop: "6px", textAlign: "center" }}>
-                                                <div style={{ fontSize: "11px", fontWeight: 700, color: isActive ? "#111" : isPending ? "#9ca3af" : "#374151", letterSpacing: "0.02em" }}>{label}</div>
-                                                <div style={{ fontSize: "10px", color: "#c4c9d4", marginTop: "1px" }}>{sublabel}</div>
+                                                <div style={{ fontSize: "11px", fontWeight: 700, color: isActive ? TEXT : isPending ? TEXT3 : TEXT2, letterSpacing: "0.02em" }}>{label}</div>
+                                                <div style={{ fontSize: "10px", color: TEXT3, marginTop: "1px" }}>{sublabel}</div>
                                             </div>
                                         </div>
                                         {i < 2 && (
                                             <div style={{
-                                                height: "2px", flex: "0 0 24px", margin: "0 0 22px",
-                                                background: isDone ? "#22c55e" : "#e5e7eb",
+                                                height: "1px", flex: "0 0 24px", margin: "0 0 22px",
+                                                background: isDone ? GREEN : BORDER2,
                                                 transition: "background 0.3s",
                                             }} />
                                         )}
@@ -533,71 +635,71 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                             })}
                         </div>
 
-                        {/* Live status */}
                         {stageDetail && (
                             <p style={{
-                                fontSize: "12px", color: "#6b7280", margin: 0,
-                                paddingTop: "12px", borderTop: "1px solid #e5e7eb",
+                                fontSize: "12px", color: TEXT2, margin: 0,
+                                paddingTop: "12px", borderTop: `1px solid ${BORDER}`,
                                 display: "flex", alignItems: "center", gap: "8px",
                             }}>
-                                <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: "#6366f1", animation: "pulsedot 1s ease-in-out infinite", flexShrink: 0 }} />
+                                <span style={{ display: "inline-block", width: "6px", height: "6px", borderRadius: "50%", background: ACCENT, animation: "pulsedot 1s ease-in-out infinite", flexShrink: 0 }} />
                                 {stageDetail}
                             </p>
                         )}
                     </div>
                 )}
 
-                {genError && <p style={{ marginTop: "10px", fontSize: "13px", color: "#ef4444", fontFamily: FONT }}>{genError}</p>}
+                {genError && <p style={{ marginTop: "10px", fontSize: "13px", color: RED, fontFamily: FONT }}>{genError}</p>}
             </div>
 
             {/* ── STEP 2: Review ── */}
             {generated && (
-                <div style={{ border: "1px solid #e5e7eb", borderRadius: "16px", overflow: "hidden" }}>
-                    <div style={{ background: "#f9fafb", borderBottom: "1px solid #e5e7eb", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ border: `1px solid ${BORDER}`, borderRadius: "16px", overflow: "hidden", background: SURFACE }}>
+                    <div style={{ background: SURFACE2, borderBottom: `1px solid ${BORDER}`, padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <div>
                             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                                 {isEdit && (
                                     <span style={{
                                         display: "inline-flex", alignItems: "center", gap: "5px",
                                         padding: "3px 10px", borderRadius: "20px",
-                                        background: "#dcfce7", color: "#15803d",
+                                        background: GREEN_DIM, color: GREEN,
                                         fontSize: "11px", fontWeight: 700, letterSpacing: "0.06em",
                                         fontFamily: FONT,
                                     }}>
-                                        <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "#22c55e", display: "inline-block" }} />
+                                        <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: GREEN, display: "inline-block" }} />
                                         LIVE
                                     </span>
                                 )}
-                                <h2 style={{ fontSize: "14px", fontWeight: 800, marginBottom: "2px", fontFamily: FONT, textTransform: "uppercase", letterSpacing: "0.06em", color: "#111" }}>
+                                <h2 style={{ fontSize: "11px", fontWeight: 800, marginBottom: "2px", fontFamily: FONT, textTransform: "uppercase", letterSpacing: "0.08em", color: ACCENT }}>
                                     {isEdit ? "Edit fields" : "Step 2 — Review & edit"}
                                 </h2>
                             </div>
-                            <p style={{ fontSize: "12px", color: "#c4c9d4", fontFamily: FONT }}>
+                            <p style={{ fontSize: "12px", color: TEXT3, fontFamily: FONT }}>
                                 {isEdit ? "Changes auto-save as you type." : "Claude wrote this. Change anything before publishing."}
                             </p>
                         </div>
                         {isEdit && saveIndicator && (
                             <span className="ve-save-indicator" style={{
-                                color: saveStatus === "saved" ? "#22c55e" : saveStatus === "error" ? "#ef4444" : "#9ca3af",
+                                color: saveStatus === "saved" ? GREEN : saveStatus === "error" ? RED : TEXT3,
                                 fontWeight: 600,
                             }}>{saveIndicator}</span>
                         )}
                     </div>
 
                     {/* Tabs */}
-                    <div style={{ display: "flex", borderBottom: "1px solid #e5e7eb", background: "#fff", overflowX: "auto" }}>
+                    <div style={{ display: "flex", borderBottom: `1px solid ${BORDER}`, background: SURFACE, overflowX: "auto" }}>
                         {tabs.map(t => (
                             <button key={t.id} onClick={() => setActiveTab(t.id)} style={{
                                 padding: "12px 18px", border: "none", background: "none", cursor: "pointer",
                                 fontSize: "13px", fontWeight: activeTab === t.id ? 700 : 500,
-                                color: activeTab === t.id ? "#111" : "#9ca3af",
-                                borderBottom: activeTab === t.id ? "2px solid #111" : "2px solid transparent",
+                                color: activeTab === t.id ? TEXT : TEXT3,
+                                borderBottom: activeTab === t.id ? `2px solid ${ACCENT}` : "2px solid transparent",
                                 marginBottom: "-1px", fontFamily: FONT, whiteSpace: "nowrap",
+                                transition: "color 0.15s",
                             }}>{t.label}</button>
                         ))}
                     </div>
 
-                    <div style={{ background: "#fff", padding: "28px" }}>
+                    <div style={{ background: SURFACE, padding: "28px" }}>
 
                         {/* ── Hero tab ── */}
                         {activeTab === "hero" && (
@@ -627,21 +729,17 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                             <>
                                 <Field label="Section heading" value={mechHeading} onChange={setMechHeading} rows={2} placeholder="How We Build Flows That Actually Convert" />
                                 <Field label="Section subheading" value={mechSub} onChange={setMechSub} rows={2} placeholder="Not retainer-style maintenance. A one-time build engineered around your product." />
-                                <div style={{ border: "1px solid #f3f4f6", borderRadius: "12px", padding: "18px", marginBottom: "18px", background: "#fafafa" }}>
-                                    <p style={{ ...labelStyle, marginBottom: "14px", color: "#6366f1" }}>Step 1</p>
-                                    <Field label="Label" value={mechStep1Label} onChange={setMechStep1Label} placeholder="Diagnostic Call" />
-                                    <Field label="Description" value={mechStep1Desc} onChange={setMechStep1Desc} rows={3} placeholder="We map your product, your customer's pain, and what they need to hear to buy again." />
-                                </div>
-                                <div style={{ border: "1px solid #f3f4f6", borderRadius: "12px", padding: "18px", marginBottom: "18px", background: "#fafafa" }}>
-                                    <p style={{ ...labelStyle, marginBottom: "14px", color: "#6366f1" }}>Step 2</p>
-                                    <Field label="Label" value={mechStep2Label} onChange={setMechStep2Label} placeholder="Custom Flow Build" />
-                                    <Field label="Description" value={mechStep2Desc} onChange={setMechStep2Desc} rows={3} placeholder="We write and build every flow around your formulation, not Klaviyo's defaults." />
-                                </div>
-                                <div style={{ border: "1px solid #f3f4f6", borderRadius: "12px", padding: "18px", marginBottom: "18px", background: "#fafafa" }}>
-                                    <p style={{ ...labelStyle, marginBottom: "14px", color: "#6366f1" }}>Step 3</p>
-                                    <Field label="Label" value={mechStep3Label} onChange={setMechStep3Label} placeholder="Launch & Compound" />
-                                    <Field label="Description" value={mechStep3Desc} onChange={setMechStep3Desc} rows={3} placeholder="Flows go live. One-time fee. No retainer. Every sale they generate is pure profit added back." />
-                                </div>
+                                {[
+                                    { n: 1, label: mechStep1Label, setLabel: setMechStep1Label, desc: mechStep1Desc, setDesc: setMechStep1Desc },
+                                    { n: 2, label: mechStep2Label, setLabel: setMechStep2Label, desc: mechStep2Desc, setDesc: setMechStep2Desc },
+                                    { n: 3, label: mechStep3Label, setLabel: setMechStep3Label, desc: mechStep3Desc, setDesc: setMechStep3Desc },
+                                ].map(({ n, label, setLabel, desc, setDesc }) => (
+                                    <div key={n} style={{ border: `1px solid ${BORDER}`, borderRadius: "12px", padding: "18px", marginBottom: "18px", background: SURFACE2 }}>
+                                        <p style={{ ...labelStyle, marginBottom: "14px", color: ACCENT }}>Step {n}</p>
+                                        <Field label="Label" value={label} onChange={setLabel} placeholder="Diagnostic Call" />
+                                        <Field label="Description" value={desc} onChange={setDesc} rows={3} placeholder="We map your product, your customer's pain, and what they need to hear to buy again." />
+                                    </div>
+                                ))}
                             </>
                         )}
 
@@ -649,31 +747,31 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                         {activeTab === "offer" && (
                             <>
                                 <Field label="Offer subheading" value={offerSub} onChange={setOfferSub} rows={3} placeholder="Other agencies sell retainers. We build your flows once, hand them over, and they run forever." />
-                                <div style={{ borderTop: "1px solid #f3f4f6", marginTop: "8px", paddingTop: "24px" }}>
-                                    <p style={{ ...labelStyle, marginBottom: "14px", color: "#6b7280" }}>Final CTA Section</p>
+                                <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: "8px", paddingTop: "24px" }}>
+                                    <p style={{ ...labelStyle, marginBottom: "14px", color: TEXT2 }}>Final CTA Section</p>
                                     <Field label="Heading" value={finalCtaHeading} onChange={setFinalCtaHeading} rows={2} placeholder="Start Printing Revenue From Email. Without More Ad Spend." />
                                     <Field label="Subheading" value={finalCtaSub} onChange={setFinalCtaSub} rows={2} placeholder="See if your brand qualifies for the flow buildout." />
                                 </div>
-                                <div style={{ borderTop: "1px solid #f3f4f6", marginTop: "8px", paddingTop: "24px" }}>
+                                <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: "8px", paddingTop: "24px" }}>
                                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-                                        <p style={{ ...labelStyle, color: "#6b7280", margin: 0 }}>FAQ ({faq.length} questions)</p>
+                                        <p style={{ ...labelStyle, color: TEXT2, margin: 0 }}>FAQ ({faq.length} questions)</p>
                                         <button
                                             onClick={() => setFaq(prev => [...prev, { q: "", a: "" }])}
-                                            style={{ fontSize: "12px", fontWeight: 700, color: "#6366f1", background: "none", border: "1px solid #e0e7ff", borderRadius: "8px", padding: "5px 12px", cursor: "pointer", fontFamily: FONT }}
+                                            style={{ fontSize: "12px", fontWeight: 700, color: ACCENT, background: ACCENT_DIM, border: `1px solid ${ACCENT}26`, borderRadius: "8px", padding: "5px 12px", cursor: "pointer", fontFamily: FONT }}
                                         >+ Add question</button>
                                     </div>
                                     {faq.length === 0 && (
-                                        <p style={{ fontSize: "13px", color: "#c4c9d4", fontFamily: FONT, textAlign: "center", padding: "20px" }}>
+                                        <p style={{ fontSize: "13px", color: TEXT3, fontFamily: FONT, textAlign: "center", padding: "20px" }}>
                                             Generate copy first — Claude will write brief-specific FAQs automatically.
                                         </p>
                                     )}
                                     {faq.map((item, i) => (
-                                        <div key={i} style={{ border: "1px solid #f3f4f6", borderRadius: "12px", padding: "16px", marginBottom: "12px", background: "#fafafa" }}>
+                                        <div key={i} style={{ border: `1px solid ${BORDER}`, borderRadius: "12px", padding: "16px", marginBottom: "12px", background: SURFACE2 }}>
                                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-                                                <p style={{ ...labelStyle, color: "#6366f1", margin: 0 }}>Q{i + 1}</p>
+                                                <p style={{ ...labelStyle, color: ACCENT, margin: 0 }}>Q{i + 1}</p>
                                                 <button
                                                     onClick={() => setFaq(prev => prev.filter((_, idx) => idx !== i))}
-                                                    style={{ fontSize: "11px", color: "#ef4444", background: "none", border: "none", cursor: "pointer", fontFamily: FONT, fontWeight: 600 }}
+                                                    style={{ fontSize: "11px", color: RED, background: "none", border: "none", cursor: "pointer", fontFamily: FONT, fontWeight: 600 }}
                                                 >✕ Remove</button>
                                             </div>
                                             <div style={{ marginBottom: "10px" }}>
@@ -708,17 +806,17 @@ export default function VariantEditor({ variant, adminPass }: Props) {
                             <>
                                 <Field label="Page title" value={metaTitle} onChange={setMetaTitle} placeholder="e2 Agency — Supplement Email Flows That Print Revenue" />
                                 <Field label="Meta description" value={metaDesc} onChange={setMetaDesc} rows={3} placeholder="Stop running ads to customers you already won. Get flows built around your formulation." />
-                                <div style={{ borderTop: "1px solid #f3f4f6", marginTop: "8px", paddingTop: "24px" }}>
-                                    <p style={{ ...labelStyle, marginBottom: "14px", color: "#6b7280" }}>SPINE Summary (AI reference)</p>
+                                <div style={{ borderTop: `1px solid ${BORDER}`, marginTop: "8px", paddingTop: "24px" }}>
+                                    <p style={{ ...labelStyle, marginBottom: "14px", color: TEXT2 }}>SPINE Summary (AI reference)</p>
                                     <Field label="Product" value={spineProduct} onChange={setSpineProduct} placeholder="Flow buildout, one-time fee" />
                                     <Field label="JTBD" value={spineJtbd} onChange={setSpineJtbd} placeholder="Automated revenue without more ad spend" />
                                     <Field label="Core Problem" value={spineProblem} onChange={setSpineProblem} placeholder="Generic flows don't connect with why the customer bought" />
                                     <Field label="Mechanism" value={spineMechanism} onChange={setSpineMechanism} placeholder="Flows built around unique product and customer pain" />
                                 </div>
-                                <div style={{ marginTop: "8px", padding: "14px", background: "#f9fafb", borderRadius: "10px", border: "1px solid #e5e7eb" }}>
-                                    <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "#9ca3af", marginBottom: "6px", fontFamily: FONT }}>Live URL</p>
-                                    <code style={{ fontSize: "13px", color: "#374151", fontFamily: "monospace" }}>/{concept}/{tam}</code>{" "}
-                                    <a href={`/${concept}/${tam}`} target="_blank" style={{ fontSize: "12px", color: "#6366f1", textDecoration: "none", fontFamily: FONT }}>Open ↗</a>
+                                <div style={{ marginTop: "8px", padding: "14px", background: SURFACE2, borderRadius: "10px", border: `1px solid ${BORDER}` }}>
+                                    <p style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: TEXT3, marginBottom: "6px", fontFamily: FONT }}>Live URL</p>
+                                    <code style={{ fontSize: "13px", color: TEXT2, fontFamily: "monospace" }}>/{productSlug}/{concept}/{tam}</code>{" "}
+                                    <a href={`/${productSlug}/${concept}/${tam}`} target="_blank" style={{ fontSize: "12px", color: ACCENT, textDecoration: "none", fontFamily: FONT }}>Open ↗</a>
                                 </div>
                             </>
                         )}
@@ -726,22 +824,25 @@ export default function VariantEditor({ variant, adminPass }: Props) {
 
                     {/* Footer */}
                     {!isEdit && (
-                        <div style={{ padding: "20px 28px", borderTop: "1px solid #f3f4f6", display: "flex", alignItems: "center", gap: "12px" }}>
+                        <div style={{ padding: "20px 28px", borderTop: `1px solid ${BORDER}`, display: "flex", alignItems: "center", gap: "12px", background: SURFACE2 }}>
                             <button onClick={handlePublish} disabled={saving} style={{
-                                padding: "12px 28px", background: "#111",
-                                color: "#fff", border: "none", borderRadius: "10px",
-                                fontSize: "14px", fontWeight: 700, cursor: saving ? "not-allowed" : "pointer",
-                                fontFamily: FONT,
+                                padding: "12px 28px", background: ACCENT,
+                                color: "#0d0d0f", border: "none", borderRadius: "10px",
+                                fontSize: "14px", fontWeight: 800, cursor: saving ? "not-allowed" : "pointer",
+                                fontFamily: FONT, letterSpacing: "0.01em",
                             }}>
                                 {saving ? "Publishing…" : "Publish variant →"}
                             </button>
-                            <a href="/admin" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontFamily: FONT }}>Cancel</a>
+                            <a href="/admin" style={{ fontSize: "13px", color: TEXT3, textDecoration: "none", fontFamily: FONT }}>Cancel</a>
                         </div>
                     )}
                 </div>
             )}
 
-            <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
+            <style>{`
+                @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                body { background: ${BG}; }
+            `}</style>
         </div>
     );
 }

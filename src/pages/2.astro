@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StickyNav from "../components/StickyNav.astro";
+import Hero from "../components/Hero.astro";
+import SocialProof from "../components/SocialProof.astro";
+import HeroTestimonial from "../components/HeroTestimonial.astro";
+import Agitation from "../components/Agitation.astro";
+import Problem from "../components/Problem.astro";
+import Mechanism from "../components/Mechanism.astro";
+import CaseStudies from "../components/CaseStudies.astro";
+import EmailGallery from "../components/EmailGallery.astro";
+import Testimonials from "../components/Testimonials.astro";
+import Offer from "../components/Offer.astro";
+import FAQ from "../components/FAQ.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Footer from "../components/Footer.astro";
+import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+
+// ── Variant resolution ────────────────────────────────────────────────────────
+// The only exception is ?v=<id> for admin preview of a specific variant.
+const variantId = Astro.url.searchParams.get("v");
+
+let variant = { ...DEFAULT_VARIANT } as Record<string, any>;
+
+if (variantId) {
+    try {
+        const { data, error } = await supabase
+            .from("page_variants")
+            .select("*")
+            .eq("id", variantId)
+            .single();
+
+        if (!error && data) {
+            variant = {
+                ...DEFAULT_VARIANT,
+                ...Object.fromEntries(
+                    Object.entries(data).filter(
+                        ([, v]) => v !== null && v !== undefined && v !== ""
+                    )
+                ),
+            };
+        }
+    } catch {
+        // Silently fall through to DEFAULT_VARIANT
+    }
+}
+
+const title = variant.meta_title ?? DEFAULT_VARIANT.meta_title;
+const description =
+    variant.meta_description ?? DEFAULT_VARIANT.meta_description;
+---
+
+<BaseLayout title={title} description={description}>
+    <!-- Sticky pill nav (follows scroll, shows after hero) -->
+    <StickyNav />
+
+    <!-- 1. HERO — Benefit headline + VSL + trust logos -->
+    <Hero
+        badge={variant.hero_badge}
+        headline={variant.hero_headline}
+        subheadline={variant.hero_subheadline}
+        ctaPrimary={variant.hero_cta_primary}
+        ctaSecondary={variant.hero_cta_secondary}
+    />
+
+    <!-- 2. SOCIAL PROOF STRIP — Stats anchor -->
+    <SocialProof />
+
+    <!-- 3. HERO TESTIMONIAL — The Oodie / Davie Fogarty -->
+    <HeroTestimonial />
+
+    <!-- 4. PROBLEM — S3: Name the pain, show the before/after -->
+    <Problem
+        heading={variant.prob_heading}
+        subheading={variant.prob_subheading}
+        painPoints={variant.prob_pain_points}
+        gainPoints={variant.prob_gain_points}
+        trapLabel={variant.prob_trap_label}
+        beforeLabel={variant.prob_before_label}
+    />
+
+    <!-- 5. AGITATION — S4: Intensify cost of inaction, bridge to mechanism -->
+    <Agitation
+        heading={variant.prob_heading}
+        subheading={variant.prob_subheading}
+        painPoints={variant.prob_pain_points}
+        gainPoints={variant.prob_gain_points}
+        agitationBody={variant.prob_agitation_body}
+        stakesBody={variant.prob_stakes_body}
+        trapLabel={variant.prob_trap_label}
+        beforeLabel={variant.prob_before_label}
+    />
+
+    <!-- 6. HOW IT WORKS — 3-step plan (StoryBrand) -->
+    <Mechanism
+        heading={variant.mech_heading}
+        subheading={variant.mech_subheading}
+        step1Label={variant.mech_step1_label}
+        step1Desc={variant.mech_step1_desc}
+        step1Bullets={variant.mech_step1_bullets}
+        step2Label={variant.mech_step2_label}
+        step2Desc={variant.mech_step2_desc}
+        step2Bullets={variant.mech_step2_bullets}
+        step3Label={variant.mech_step3_label}
+        step3Desc={variant.mech_step3_desc}
+        step3Bullets={variant.mech_step3_bullets}
+    />
+
+    <!-- 7. OFFER — What You Get (Hormozi-style stack) -->
+    <Offer
+        heading={variant.offer_heading}
+        subheading={variant.offer_subheading}
+        summaryTitle={variant.offer_summary_title}
+        summaryBody={variant.offer_summary_body}
+        cards={variant.offer_cards}
+    />
+
+    <!-- 8. THE WORK — Email Design Gallery + Figma showcase -->
+    <EmailGallery />
+
+    <!-- 9. CASE STUDIES — Deep proof (dark section) -->
+    <CaseStudies />
+
+    <!-- 10. TESTIMONIALS — Wall of Love -->
+    <Testimonials />
+
+    <!-- 11. FAQ — Objection handling -->
+    <FAQ />
+
+    <!-- 12. FINAL CTA — Conversion section with GetFormFlow embed -->
+    <FinalCTA
+        heading={variant.finalcta_heading}
+        subheading={variant.finalcta_subheading}
+    />
+
+    <!-- 13. FOOTER -->
+    <Footer />
+</BaseLayout>

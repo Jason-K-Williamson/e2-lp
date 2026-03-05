@@ -1,0 +1,241 @@
+---
+import { supabase } from "../../../lib/supabase";
+
+const adminPass = import.meta.env.ADMIN_PASS;
+const cookie = Astro.cookies.get("admin_auth");
+if (cookie?.value !== adminPass) return Astro.redirect("/admin");
+
+const { id } = Astro.params;
+const { data: product } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+if (!product) return Astro.redirect("/admin/products");
+
+let saveError = "";
+if (Astro.request.method === "POST") {
+    const form = await Astro.request.formData();
+    const name = (form.get("name") as string) ?? "";
+    const description = (form.get("description") as string) ?? "";
+    const active = form.get("active") === "on";
+
+    const { error } = await supabase
+        .from("products")
+        .update({
+            name,
+            description,
+            active,
+            updated_at: new Date().toISOString(),
+        })
+        .eq("id", id);
+
+    if (!error) return Astro.redirect("/admin");
+    saveError = error.message;
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Edit {product.name} — e2 Admin</title>
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    sans-serif;
+                background: #f9fafb;
+                color: #111;
+                min-height: 100vh;
+            }
+            .header {
+                background: #fff;
+                border-bottom: 1px solid #e5e7eb;
+                padding: 16px 32px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+            .header a {
+                font-size: 13px;
+                color: #6b7280;
+                text-decoration: none;
+            }
+            .header a:hover {
+                color: #111;
+            }
+            .header h1 {
+                font-size: 18px;
+                font-weight: 700;
+            }
+            .slug-tag {
+                font-family: monospace;
+                font-size: 12px;
+                background: #f3f4f6;
+                padding: 3px 8px;
+                border-radius: 6px;
+                color: #374151;
+            }
+            .container {
+                max-width: 720px;
+                margin: 40px auto;
+                padding: 0 24px;
+            }
+            .card {
+                background: #fff;
+                border: 1px solid #e5e7eb;
+                border-radius: 16px;
+                padding: 32px;
+            }
+            label {
+                display: block;
+                font-size: 11px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.09em;
+                color: #9ca3af;
+                margin-bottom: 6px;
+            }
+            .hint {
+                font-size: 12px;
+                color: #c4c9d4;
+                margin-bottom: 8px;
+                line-height: 1.5;
+            }
+            input[type="text"],
+            textarea {
+                width: 100%;
+                padding: 10px 14px;
+                border: 1px solid #e5e7eb;
+                border-radius: 10px;
+                font-size: 14px;
+                font-family: inherit;
+                outline: none;
+                background: #fafafa;
+                color: #111;
+                transition: border-color 0.15s;
+            }
+            input[type="text"]::placeholder,
+            textarea::placeholder {
+                opacity: 0.35;
+            }
+            input:focus,
+            textarea:focus {
+                border-color: #6366f1;
+                background: #fff;
+            }
+            textarea {
+                resize: vertical;
+                line-height: 1.6;
+            }
+            .field {
+                margin-bottom: 20px;
+            }
+            .toggle-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            .toggle-row label {
+                margin: 0;
+                font-size: 13px;
+                font-weight: 600;
+                text-transform: none;
+                letter-spacing: 0;
+                color: #374151;
+            }
+            .actions {
+                display: flex;
+                gap: 12px;
+                margin-top: 24px;
+                align-items: center;
+            }
+            .btn {
+                padding: 12px 28px;
+                background: #111;
+                color: #fff;
+                border: none;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                font-family: inherit;
+            }
+            .btn:hover {
+                background: #222;
+            }
+            .cancel {
+                font-size: 13px;
+                color: #9ca3af;
+                text-decoration: none;
+            }
+            .error {
+                background: #fef2f2;
+                border: 1px solid #fca5a5;
+                color: #dc2626;
+                padding: 12px 16px;
+                border-radius: 10px;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <a href="/admin/products">← Products</a>
+            <h1>Edit Product</h1>
+            <span class="slug-tag">{product.slug}</span>
+        </div>
+        <div class="container">
+            <div class="card">
+                {saveError && <div class="error">{saveError}</div>}
+                <form method="POST">
+                    <div class="field">
+                        <label>Product Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            value={product.name}
+                            required
+                        />
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <p class="hint">
+                            The AI reads this before generating copy. Describe
+                            what you sell, what you deliver, the price model,
+                            timelines, differentiators. Be specific.
+                        </p>
+                        <textarea name="description" rows={14}
+                            >{product.description}</textarea
+                        >
+                    </div>
+                    <div class="toggle-row">
+                        <input
+                            type="checkbox"
+                            name="active"
+                            id="active"
+                            checked={product.active}
+                        />
+                        <label for="active"
+                            >Active (variants can use this product)</label
+                        >
+                    </div>
+                    <div class="actions">
+                        <button type="submit" class="btn">Save changes</button>
+                        <a href="/admin/products" class="cancel">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>

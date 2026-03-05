@@ -28,6 +28,12 @@ const { variantId, adminPass } = Astro.props;
     <span id="admin-dirty" style="display:none;color:#fbbf24;font-size:12px;">
         &middot; unsaved changes
     </span>
+    <span
+        id="admin-autosave"
+        style="display:none;color:#9ca3af;font-size:12px;"
+    >
+        &middot; saving…
+    </span>
     <button
         id="admin-save"
         style="background:#6366f1;color:#fff;border:none;border-radius:999px;padding:5px 16px;font-size:12px;font-weight:700;cursor:pointer;display:none;"
@@ -220,25 +226,12 @@ const { variantId, adminPass } = Astro.props;
         }
     });
 
-    // ── Input → dirty ────────────────────────────────────────────────────────
-    document.addEventListener("input", (e) => {
-        const t = e.target as HTMLElement;
-        if (t.hasAttribute("data-field") || t.hasAttribute("data-list-field"))
-            markDirty();
-    });
-
-    // ── Save ─────────────────────────────────────────────────────────────────
-    saveBtn?.addEventListener("click", (e) => {
-        e.stopPropagation();
-        deactivate(activeEl);
-        saveBtn.textContent = "Saving…";
-        saveBtn.disabled = true;
-
+    // ── Collect current DOM state into a saveable payload ───────────────────
+    function collectPayload(): Record<string, unknown> {
         const payload: Record<string, unknown> = {};
         document.querySelectorAll<HTMLElement>("[data-field]").forEach((el) => {
             payload[el.dataset["field"]!] = el.textContent?.trim() ?? "";
         });
-        // ── Collect list fields ───────────────────────────────────────────
         (
             [
                 "prob_pain_points",
@@ -257,18 +250,10 @@ const { variantId, adminPass } = Astro.props;
                     .filter(Boolean);
             }
         });
-
-        // ── Reconstruct offer_cards JSONB from individual tagged elements ──
-        // Elements use data-field="offer_cards.{cardIdx}.{key}" or
-        // data-field="offer_cards.{cardIdx}.items.{itemIdx}.{key}"
         const offerEls = document.querySelectorAll<HTMLElement>(
             '[data-field^="offer_cards."]'
         );
         if (offerEls.length) {
-            // Build a mutable deep copy from whatever is already in payload (or create fresh)
-            // We need the existing card structure as the skeleton.
-            // Grab it from the current DOM-rendered data via a side-channel:
-            // each card element gets data-card-meta={json} injected by Offer.astro.
             const cardMetaEl = document.getElementById("ve-offer-cards-meta");
             let cards: any[] = [];
             try {
@@ -278,11 +263,9 @@ const { variantId, adminPass } = Astro.props;
             }
             offerEls.forEach((el) => {
                 const path = (el.dataset["field"] ?? "").split(".");
-                // path: ["offer_cards", cardIdx, key] or ["offer_cards", cardIdx, "items", itemIdx, key]
                 const cardIdx = parseInt(path[1]);
                 if (!cards[cardIdx]) return;
                 if (path.length === 3) {
-                    // card-level field: title | desc | icon | block
                     cards[cardIdx][path[2]] = el.textContent?.trim() ?? "";
                 } else if (path.length === 5 && path[2] === "items") {
                     const itemIdx = parseInt(path[3]);
@@ -293,11 +276,60 @@ const { variantId, adminPass } = Astro.props;
                 }
             });
             payload["offer_cards"] = cards;
-            // Strip individual offer_cards.* keys from payload (they're now in the JSONB)
             Object.keys(payload).forEach((k) => {
                 if (k.startsWith("offer_cards.")) delete payload[k];
             });
         }
+        return payload;
+    }
+
+    // ── Debounced auto-save ──────────────────────────────────────────────────
+    const autosaveEl = document.getElementById(
+        "admin-autosave"
+    ) as HTMLElement | null;
+    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function autosave() {
+        if (!variantId) return;
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(async () => {
+            if (autosaveEl) autosaveEl.style.display = "inline";
+            try {
+                const res = await fetch(`/api/variants/${variantId}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-admin-pass": adminPass,
+                    },
+                    body: JSON.stringify(collectPayload()),
+                });
+                if (res.ok) {
+                    originals.clear();
+                    clearDirty();
+                }
+            } catch (_) {
+                // silent — manual Save button is always available
+            } finally {
+                if (autosaveEl) autosaveEl.style.display = "none";
+            }
+        }, 1500);
+    }
+
+    // ── Input → dirty + debounced auto-save ─────────────────────────────────
+    document.addEventListener("input", (e) => {
+        const t = e.target as HTMLElement;
+        if (t.hasAttribute("data-field") || t.hasAttribute("data-list-field")) {
+            markDirty();
+            autosave();
+        }
+    });
+
+    // ── Save ─────────────────────────────────────────────────────────────────
+    saveBtn?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        deactivate(activeEl);
+        saveBtn.textContent = "Saving…";
+        saveBtn.disabled = true;
 
         fetch(`/api/variants/${variantId}`, {
             method: "PUT",
@@ -305,7 +337,7 @@ const { variantId, adminPass } = Astro.props;
                 "Content-Type": "application/json",
                 "x-admin-pass": adminPass,
             },
-            body: JSON.stringify(payload),
+            body: JSON.stringify(collectPayload()),
         })
             .then((res) => {
                 if (res.ok) {

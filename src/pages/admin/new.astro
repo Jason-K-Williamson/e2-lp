@@ -1,11 +1,18 @@
 ---
 import VariantEditor from "../../components/admin/VariantEditor";
+import { supabase } from "../../lib/supabase";
 
 const adminPass = import.meta.env.ADMIN_PASS;
 const cookie = Astro.cookies.get("admin_auth");
 if (cookie?.value !== adminPass) {
     return Astro.redirect("/admin");
 }
+
+const { data: products } = await supabase
+    .from("products")
+    .select("id, slug, name, active")
+    .eq("active", true)
+    .order("name");
 ---
 
 <!DOCTYPE html>
@@ -22,15 +29,17 @@ if (cookie?.value !== adminPass) {
                 padding: 0;
             }
             body {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
-                    sans-serif;
-                background: #f9fafb;
-                color: #111;
+                background: #0d0d0f;
+                color: #f4f4f5;
                 min-height: 100vh;
             }
         </style>
     </head>
     <body>
-        <VariantEditor adminPass={adminPass} client:load />
+        <VariantEditor
+            adminPass={adminPass}
+            products={products ?? []}
+            client:load
+        />
     </body>
 </html>
