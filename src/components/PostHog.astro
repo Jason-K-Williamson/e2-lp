@@ -18,21 +18,29 @@
     "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" ").forEach(function(m){g(u,m)});
     _ph._i.push([i,s,a]);
   };
-  // Defer actual library load until after page is fully loaded
+  // After load: idle-defer array.js so it doesn't stack with GSAP / first paint work (lower TBT in lab).
   window.addEventListener('load', function(){
-    var s=document.createElement('script');
-    s.async=true;
-    s.src='https://us-assets.i.posthog.com/static/array.js';
-    document.head.appendChild(s);
-    s.onload=function(){
-      if(window.posthog&&window.posthog.init){
-        window.posthog.init('phc_xRW8fkiKkedq3MaeVDBn2wRPQtUmcyvRvSGgSVWkqqv2',{
-          api_host:'https://us.i.posthog.com',
-          defaults:'2026-01-30',
-          loaded:function(ph){ph.capture('$pageview');}
-        });
-      }
-    };
+    function inject(){
+      var s=document.createElement('script');
+      s.async=true;
+      s.src='https://us-assets.i.posthog.com/static/array.js';
+      document.head.appendChild(s);
+      s.onload=function(){
+        if(window.posthog&&window.posthog.init){
+          window.posthog.init('phc_xRW8fkiKkedq3MaeVDBn2wRPQtUmcyvRvSGgSVWkqqv2',{
+            api_host:'https://us.i.posthog.com',
+            defaults:'2026-01-30',
+            disable_session_recording:true,
+            loaded:function(ph){ph.capture('$pageview');}
+          });
+        }
+      };
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(inject, { timeout: 4000 });
+    } else {
+      setTimeout(inject, 2000);
+    }
   },{once:true});
 })();
 </script>

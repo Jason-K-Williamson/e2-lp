@@ -71,7 +71,8 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <link rel="preconnect" href="https://vz-e4e7db1f-2fb.b-cdn.net" crossorigin />
     <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
-    <link rel="preconnect" href="https://myformflow.io" crossorigin />
+    <!-- Formflow loads only when modal opens — dns-prefetch is enough -->
+    <link rel="dns-prefetch" href="https://myformflow.io" />
     <!-- Analytics origins — preconnect only; scripts load deferred -->
     <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
     <link rel="dns-prefetch" href="https://slrgkgulru.pixelflow.so" />
@@ -80,15 +81,7 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <PostHog />
     <PixelFlow />
 
-    <!-- Formflow widget: deferred via JS, injected only after page is interactive -->
-    <script is:inline>
-      window.addEventListener('load', function() {
-        var s = document.createElement('script');
-        s.src = 'https://myformflow.io/embed/widget.js';
-        s.async = true;
-        document.head.appendChild(s);
-      }, { once: true });
-    </script>
+    <!-- Formflow widget.js is injected from FormflowModal.astro on first open only -->
 
     <!--
       CRITICAL CSS: Inlined to prevent FOUC while the full CSS bundle loads async.

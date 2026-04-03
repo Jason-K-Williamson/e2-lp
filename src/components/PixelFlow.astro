@@ -12,10 +12,17 @@
   window[f].apiEndpoint="https://api.pixelflow.so/event";
   window["PixelFlowObject"]=f;
   window.addEventListener('load',function(){
-    var s=document.createElement('script');
-    s.async=1;
-    s.src='https://slrgkgulru.pixelflow.so/pfm.js';
-    document.head.appendChild(s);
+    function inject(){
+      var s=document.createElement('script');
+      s.async=1;
+      s.src='https://slrgkgulru.pixelflow.so/pfm.js';
+      document.head.appendChild(s);
+    }
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(inject, { timeout: 6000 });
+    } else {
+      setTimeout(inject, 3500);
+    }
   },{once:true});
 })();
 </script>

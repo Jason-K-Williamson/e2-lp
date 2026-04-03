@@ -109,10 +109,47 @@
         var modal = document.getElementById("formflow-modal");
         var backdrop = document.getElementById("formflow-backdrop");
         var closeBtn = document.getElementById("formflow-close");
+        var widgetCallbacks = [];
 
-        function openModal() {
+        function showModal() {
             modal.classList.add("is-open");
             document.body.style.overflow = "hidden";
+        }
+
+        /** Load myformflow widget.js once; keeps ~1.4MB off initial page / Lighthouse unless user opens modal. */
+        function ensureFormflowWidget(done) {
+            if (window.__formflowWidgetReady) {
+                done();
+                return;
+            }
+            widgetCallbacks.push(done);
+            if (window.__formflowWidgetLoading) return;
+            window.__formflowWidgetLoading = true;
+            var s = document.createElement("script");
+            s.src = "https://myformflow.io/embed/widget.js";
+            s.async = true;
+            s.onload = function () {
+                window.__formflowWidgetReady = true;
+                window.__formflowWidgetLoading = false;
+                var cbs = widgetCallbacks;
+                widgetCallbacks = [];
+                cbs.forEach(function (fn) {
+                    fn();
+                });
+            };
+            s.onerror = function () {
+                window.__formflowWidgetLoading = false;
+                var cbs = widgetCallbacks;
+                widgetCallbacks = [];
+                cbs.forEach(function (fn) {
+                    fn();
+                });
+            };
+            document.head.appendChild(s);
+        }
+
+        function openModal() {
+            ensureFormflowWidget(showModal);
         }
 
         function closeModal() {
@@ -120,14 +157,12 @@
             document.body.style.overflow = "";
         }
 
-        // Close triggers
         closeBtn && closeBtn.addEventListener("click", closeModal);
         backdrop && backdrop.addEventListener("click", closeModal);
         document.addEventListener("keydown", function (e) {
             if (e.key === "Escape") closeModal();
         });
 
-        // Open only via data-open-formflow — plain href="#qualify" scrolls to FinalCTA
         document.addEventListener("DOMContentLoaded", function () {
             document.querySelectorAll("[data-open-formflow]").forEach(function (el) {
                 el.addEventListener("click", function (e) {
