@@ -10,8 +10,8 @@ import Testimonials from "../components/Testimonials.astro";
 import HeroTestimonial from "../components/HeroTestimonial.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import Footer from "../components/Footer.astro";
-import FormflowModal from "../components/FormflowModal.astro";
 import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+import KlaviyoProof from "../components/KlaviyoProof.astro";
 
 const isAdmin = !!(Astro.locals as any).isAdmin;
 
@@ -61,10 +61,7 @@ const description =
      description={description}
      variantId={defaultVariantId}
 >
-     <!-- Formflow modal overlay — opened by any href="#qualify" click -->
-     <FormflowModal />
-
-     <!-- Sticky pill nav -->
+     <!-- Sticky pill nav (FormflowModal lives in BaseLayout) -->
      <StickyNav />
 
      <!-- 1. HERO — VSL + logo bar -->
@@ -87,6 +84,9 @@ const description =
 
      <!-- 5. DESIGNS — Email scroll gallery + Figma showcase -->
      <EmailGallery />
+
+     <!-- 6. KLAVIYO PROOF — tabbed screenshot gallery -->
+     <KlaviyoProof />
 
      <!-- 6. MINOR CASE STUDIES — BFCM + supporting grid -->
      <MinorCaseStudies />

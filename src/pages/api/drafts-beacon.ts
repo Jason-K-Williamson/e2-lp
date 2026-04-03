@@ -1,19 +1,16 @@
 import type { APIRoute } from "astro";
 import { supabase } from "../../lib/supabase";
+import { requireAdmin } from "../../lib/admin-auth";
 
 /**
- * POST /api/drafts-beacon?pass=xxx
+ * POST /api/drafts-beacon
  *
  * Receives navigator.sendBeacon() payloads from the editor's beforeunload handler.
- * sendBeacon can't set custom headers, so auth is passed via the ?pass= query param.
+ * Auth via httpOnly cookie (sent automatically with same-origin beacon requests).
  */
-export const POST: APIRoute = async ({ request, url }) => {
-    const adminPass = import.meta.env.ADMIN_PASS;
-    const passParam = url.searchParams.get("pass") ?? "";
-
-    if (passParam !== adminPass) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
-    }
+export const POST: APIRoute = async ({ request, cookies }) => {
+    const denied = requireAdmin(cookies);
+    if (denied) return denied;
 
     let body: any;
     try {

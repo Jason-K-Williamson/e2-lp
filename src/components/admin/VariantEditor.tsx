@@ -12,7 +12,6 @@ interface Product {
 
 interface Props {
     variant?: Partial<PageVariant>;
-    adminPass: string;
     products?: Product[];
 }
 
@@ -94,7 +93,7 @@ const Field = ({ label, value, onChange, rows, hint, mono, placeholder }: {
     </div>
 );
 
-export default function VariantEditor({ variant, adminPass, products = [] }: Props) {
+export default function VariantEditor({ variant, products = [] }: Props) {
     useEffect(() => { injectStyles(); }, []);
 
     const isEdit = !!variant?.id;
@@ -171,7 +170,7 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
     // ── Load draft on mount ───────────────────────────────────────────────────
     useEffect(() => {
         fetch(`/api/drafts?key=${encodeURIComponent(draftKey)}`, {
-            headers: { "x-admin-pass": adminPass },
+            credentials: "same-origin",
         })
             .then(r => r.json())
             .then(d => {
@@ -270,7 +269,8 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
         setDraftStatus("saving");
         return fetch("/api/drafts", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "x-admin-pass": adminPass },
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
             body: JSON.stringify({ draft_key: draftKey, brief: b, concept: c, tam: t, fields: fields ?? null }),
         }).then(r => {
             if (r.ok) {
@@ -282,13 +282,14 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
         }).catch(() => {
             setDraftStatus("idle");
         });
-    }, [adminPass, draftKey]);
+    }, [draftKey]);
 
     const doSave = useCallback(async (payload: ReturnType<typeof buildPayload>) => {
         setSaveStatus("saving");
         const res = await fetch(isEdit ? `/api/variants/${variant!.id}` : "/api/variants", {
             method: isEdit ? "PUT" : "POST",
-            headers: { "Content-Type": "application/json", "x-admin-pass": adminPass },
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
             body: JSON.stringify(payload),
         });
         if (res.ok) {
@@ -297,7 +298,7 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
         } else {
             setSaveStatus("error");
         }
-    }, [isEdit, variant, adminPass]);
+    }, [isEdit, variant]);
 
     const allValues = [brief, heroBadge, heroHeadline, heroSub, heroCtaP, heroCtaS,
         probHeading, probSub, probTrapLabel, probBeforeLabel, pain, gain, probAgitation, probStakes,
@@ -339,11 +340,11 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
                 fields: null,
             });
             const blob = new Blob([payload], { type: "application/json" });
-            navigator.sendBeacon(`/api/drafts-beacon?pass=${encodeURIComponent(adminPass)}`, blob);
+            navigator.sendBeacon("/api/drafts-beacon", blob);
         };
         window.addEventListener("beforeunload", flush);
         return () => window.removeEventListener("beforeunload", flush);
-    }, [draftKey, adminPass]);
+    }, [draftKey]);
 
     const handleGenerate = async () => {
         setGenerating(true);
@@ -354,7 +355,8 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
         try {
             const res = await fetch("/api/generate", {
                 method: "POST",
-                headers: { "Content-Type": "application/json", "x-admin-pass": adminPass },
+                headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
                 body: JSON.stringify({ brief, concept, tam, product_slug: productSlug }),
             });
 
@@ -447,13 +449,14 @@ export default function VariantEditor({ variant, adminPass, products = [] }: Pro
         setSaving(true);
         const res = await fetch("/api/variants", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "x-admin-pass": adminPass },
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
             body: JSON.stringify(buildPayload()),
         });
         setSaving(false);
         if (res.ok) {
             fetch(`/api/drafts?key=${encodeURIComponent(draftKey)}`, {
-                method: "DELETE", headers: { "x-admin-pass": adminPass },
+                method: "DELETE", credentials: "same-origin",
             }).catch(() => { });
             setTimeout(() => { window.location.href = "/admin"; }, 700);
         }

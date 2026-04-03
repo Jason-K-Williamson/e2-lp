@@ -1,15 +1,11 @@
 import type { APIRoute } from "astro";
 import { supabase } from "../../lib/supabase";
-
-function auth(req: Request, pass: string) {
-    return req.headers.get("x-admin-pass") === pass;
-}
+import { requireAdmin } from "../../lib/admin-auth";
 
 /** GET /api/drafts?key=xxx — load a draft */
-export const GET: APIRoute = async ({ request, url }) => {
-    const adminPass = import.meta.env.ADMIN_PASS;
-    if (!auth(request, adminPass))
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+export const GET: APIRoute = async ({ url, cookies }) => {
+    const denied = requireAdmin(cookies);
+    if (denied) return denied;
 
     const key = url.searchParams.get("key") ?? "new";
     const { data } = await supabase
@@ -24,10 +20,9 @@ export const GET: APIRoute = async ({ request, url }) => {
 };
 
 /** POST /api/drafts — upsert a draft */
-export const POST: APIRoute = async ({ request }) => {
-    const adminPass = import.meta.env.ADMIN_PASS;
-    if (!auth(request, adminPass))
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+export const POST: APIRoute = async ({ request, cookies }) => {
+    const denied = requireAdmin(cookies);
+    if (denied) return denied;
 
     const body = await request.json();
     const { draft_key = "new", brief, concept, tam, fields } = body;
@@ -47,10 +42,9 @@ export const POST: APIRoute = async ({ request }) => {
 };
 
 /** DELETE /api/drafts?key=xxx — clear a draft after publishing */
-export const DELETE: APIRoute = async ({ request, url }) => {
-    const adminPass = import.meta.env.ADMIN_PASS;
-    if (!auth(request, adminPass))
-        return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+export const DELETE: APIRoute = async ({ url, cookies }) => {
+    const denied = requireAdmin(cookies);
+    if (denied) return denied;
 
     const key = url.searchParams.get("key") ?? "new";
     await supabase.from("variant_drafts").delete().eq("draft_key", key);

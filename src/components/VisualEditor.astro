@@ -1,15 +1,14 @@
 ---
 /**
  * VisualEditor.astro
- * Renders the admin bar UI + wires up the visual-editor script.
+ * Renders the admin bar UI + wires up the visual-editor client script.
  * Only imported into BaseLayout when isAdmin === true.
- * Astro processes the top-level <style is:global> and <script> correctly.
+ * Astro processes global styles and inline scripts in this component as expected.
  */
 interface Props {
     variantId: string;
-    adminPass: string;
 }
-const { variantId, adminPass } = Astro.props;
+const { variantId } = Astro.props;
 ---
 
 {/* ── Admin Bar ──────────────────────────────────────────────────────── */}
@@ -56,7 +55,6 @@ const { variantId, adminPass } = Astro.props;
 
 {/* ── Pass runtime values into the script via hidden meta elements ── */}
 <meta id="ve-variant-id" content={variantId} />
-<meta id="ve-admin-pass" content={adminPass} />
 
 <style is:global>
     [data-field],
@@ -102,11 +100,7 @@ const { variantId, adminPass } = Astro.props;
     const variantIdEl = document.getElementById(
         "ve-variant-id"
     ) as HTMLMetaElement | null;
-    const adminPassEl = document.getElementById(
-        "ve-admin-pass"
-    ) as HTMLMetaElement | null;
     const variantId = variantIdEl?.content ?? "";
-    const adminPass = adminPassEl?.content ?? "";
 
     const saveBtn = document.getElementById(
         "admin-save"
@@ -297,10 +291,8 @@ const { variantId, adminPass } = Astro.props;
             try {
                 const res = await fetch(`/api/variants/${variantId}`, {
                     method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-admin-pass": adminPass,
-                    },
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
                     body: JSON.stringify(collectPayload()),
                 });
                 if (res.ok) {
@@ -333,10 +325,8 @@ const { variantId, adminPass } = Astro.props;
 
         fetch(`/api/variants/${variantId}`, {
             method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                "x-admin-pass": adminPass,
-            },
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
             body: JSON.stringify(collectPayload()),
         })
             .then((res) => {

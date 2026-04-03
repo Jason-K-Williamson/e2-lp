@@ -1,9 +1,10 @@
 ---
 /**
  * FormflowModal
- * Full-screen overlay modal that loads the GetFormFlow widget when opened.
- * Trigger: any element with data-open-formflow or href="#qualify"
- * Close: clicking backdrop, pressing Escape, or clicking the X button.
+ * Official Formflow embed: widget.js requires exactly one #formflow-embed + data-form-id;
+ * it injects the iframe and handles resize/redirect messages.
+ * Trigger: elements with data-open-formflow only (href="#qualify" scrolls to FinalCTA).
+ * Close: backdrop, Escape, or close button.
  */
 ---
 
@@ -61,12 +62,12 @@
             </button>
         </div>
 
-        <!-- Formflow embed container -->
+        <!-- Official snippet: myformflow.io/embed/widget.js mounts the iframe here -->
         <div class="px-4 pt-2 pb-8">
             <div
                 id="formflow-embed"
                 data-form-id="669116a60dc0431e247ef7a5"
-                class="w-full"
+                class="w-full min-h-[420px]"
             >
             </div>
         </div>
@@ -120,16 +121,14 @@
             if (e.key === "Escape") closeModal();
         });
 
-        // Open triggers — any link/button with href="#qualify" or data-open-formflow
+        // Open only via data-open-formflow — plain href="#qualify" scrolls to FinalCTA
         document.addEventListener("DOMContentLoaded", function () {
-            document
-                .querySelectorAll('[href="#qualify"], [data-open-formflow]')
-                .forEach(function (el) {
-                    el.addEventListener("click", function (e) {
-                        e.preventDefault();
-                        openModal();
-                    });
+            document.querySelectorAll("[data-open-formflow]").forEach(function (el) {
+                el.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    openModal();
                 });
+            });
         });
     })();
 </script>

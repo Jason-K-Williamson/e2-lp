@@ -37,7 +37,6 @@ const { data: products } = await supabase
     </head>
     <body>
         <VariantEditor
-            adminPass={adminPass}
             products={products ?? []}
             client:load
         />

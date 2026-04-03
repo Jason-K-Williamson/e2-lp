@@ -360,6 +360,10 @@ const { data: products } = authed
                     <div class="header-left">
                         <h1>e2 Admin</h1>
                         <span class="header-tag">Internal</span>
+                        <nav style="display:flex;gap:4px;margin-left:8px;">
+                            <a href="/admin" style="color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:6px 12px;border-radius:7px;background:rgba(255,255,255,.12);">Variants</a>
+                            <a href="/admin/leads" style="color:#9ca3af;font-size:13px;font-weight:500;text-decoration:none;padding:6px 12px;border-radius:7px;transition:all 0.15s;" onmouseover="this.style.color='#fff';this.style.background='rgba(255,255,255,.08)'" onmouseout="this.style.color='#9ca3af';this.style.background='transparent'">Leads</a>
+                        </nav>
                     </div>
                     <div class="header-actions">
                         <a href="/admin/new" class="btn-primary">+ New variant</a>
@@ -456,14 +460,14 @@ const { data: products } = authed
                     )}
                 </div>
 
-                <script define:vars={{ adminPass }}>
+                <script>
                     document.querySelectorAll('.delete-btn').forEach(btn => {
                         btn.addEventListener('click', async (e) => {
                             if (!confirm("Delete this variant?")) return;
                             const id = e.currentTarget.getAttribute('data-id');
                             const res = await fetch(`/api/variants/${id}`, {
                                 method: 'DELETE',
-                                headers: { 'x-admin-pass': adminPass }
+                                credentials: 'same-origin',
                             });
                             if (res.ok) {
                                 window.location.reload();

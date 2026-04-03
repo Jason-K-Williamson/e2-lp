@@ -30,7 +30,7 @@ const editProps = (field: string) =>
         : {};
 ---
 
-<section class="py-32 relative overflow-hidden bg-white">
+<section class="py-16 sm:py-32 relative overflow-hidden bg-white">
     <!-- Subtle ambient glow -->
     <div
         class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none"
@@ -39,26 +39,30 @@ const editProps = (field: string) =>
 
     <div class="section-container relative z-10">
         <!-- Objection-handling testimonial quote , above form -->
-        <div class="max-w-2xl mx-auto text-center mb-16">
+        <div class="max-w-2xl mx-auto text-center mb-10 sm:mb-16">
             <blockquote
-                class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-6 italic"
+                class="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-5 sm:mb-6 italic"
             >
                 "The team at e2 are experts on Klaviyo and I would highly
                 recommend them to any eCommerce store looking to grow fast, make
                 a lot of money, and work with good people."
             </blockquote>
             <div class="flex items-center justify-center gap-3">
-                <div
-                    class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold text-sm"
-                >
-                    P
-                </div>
+                <img
+                    src="/images/testimonials/pete-james.png"
+                    alt="Pete James"
+                    width="40"
+                    height="40"
+                    class="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 shadow-sm flex-shrink-0"
+                    loading="lazy"
+                    decoding="async"
+                />
                 <div class="text-left">
                     <div class="text-gray-900 font-bold text-sm">
                         Pete James
                     </div>
                     <div class="text-gray-500 text-xs">
-                        Senior Account Executive, Klaviyo
+                        Former Senior Account Executive, Klaviyo
                     </div>
                 </div>
             </div>
@@ -70,7 +74,7 @@ const editProps = (field: string) =>
             <div class="text-center mb-10">
                 <!-- Urgency badge -->
                 <div
-                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold uppercase tracking-widest mb-6"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[10px] sm:text-xs font-bold uppercase tracking-widest mb-5 sm:mb-6"
                 >
                     <span class="relative flex h-2 w-2">
                         <span
@@ -84,7 +88,7 @@ const editProps = (field: string) =>
                 </div>
 
                 <h2
-                    class="font-bold text-4xl md:text-5xl text-gray-900 tracking-tight mb-4"
+                    class="font-bold text-3xl sm:text-4xl md:text-5xl text-gray-900 tracking-tight mb-3 sm:mb-4"
                     {...editProps('finalcta_heading')}
                 >
                     {heading}
@@ -97,26 +101,22 @@ const editProps = (field: string) =>
                 </p>
             </div>
 
-            <!-- GetFormFlow Embed -->
-            <!-- Scroll anchor sits just above the form -->
+            <!-- GetFormFlow Embed (no loading="lazy" — lazy iframes often never fetch on #qualify hash navigation) -->
             <div
                 id="qualify"
-                class="w-full max-w-2xl mx-auto rounded-xl overflow-hidden bg-white"
-                style="background: #ffffff;"
+                class="w-full max-w-2xl mx-auto scroll-mt-28 rounded-xl border border-gray-200 bg-gray-50/50 shadow-sm ring-1 ring-gray-100 overflow-hidden"
             >
                 <iframe
                     src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
-                    loading="lazy"
-                    class="w-full min-h-[520px] border-0 block"
-                    style="background: #ffffff;"
+                    class="block min-h-[580px] w-full border-0 bg-white"
                     title="See if you qualify"
-                >
-                </iframe>
+                    allow="clipboard-write"
+                ></iframe>
             </div>
 
             <!-- Micro-copy guarantee strip -->
             <div
-                class="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-gray-600"
+                class="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-gray-600"
             >
                 <div class="flex items-center gap-1.5">
                     <svg
@@ -185,3 +185,21 @@ const editProps = (field: string) =>
         </div>
     </div>
 </section>
+
+<!-- Match Formflow widget.js: embed posts resize height to parent window -->
+<script is:inline>
+  (function () {
+    var iframe = document.querySelector("#qualify iframe");
+    if (!iframe) return;
+    window.addEventListener(
+      "message",
+      function (e) {
+        if (e.origin !== "https://myformflow.io") return;
+        if (e.data && e.data.event === "resize" && e.data.height) {
+          iframe.style.height = e.data.height + "px";
+        }
+      },
+      false
+    );
+  })();
+</script>

@@ -1,5 +1,8 @@
 ---
+import PostHog from "../components/PostHog.astro";
+import PixelFlow from "../components/PixelFlow.astro";
 import VisualEditor from "../components/VisualEditor.astro";
+import FormflowModal from "../components/FormflowModal.astro";
 
 interface Props {
   title: string;
@@ -22,6 +25,8 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <PostHog />
+    <PixelFlow />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -74,7 +79,13 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- GetFormFlow widget — loaded once, eagerly, so all data-form-id containers initialise on DOMContentLoaded -->
+    <!-- Bunny Stream: warm connections for poster JPEGs + iframe embeds (no JS until hover) -->
+    <link rel="preconnect" href="https://vz-e4e7db1f-2fb.b-cdn.net" crossorigin />
+    <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
+    <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
+    <link rel="preconnect" href="https://myformflow.io" crossorigin />
+
+    <!-- Formflow: widget injects iframe into #formflow-embed (FormflowModal); FinalCTA uses a second inline iframe -->
     <script src="https://myformflow.io/embed/widget.js" async></script>
 
     <!--
@@ -153,9 +164,12 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
       <slot />
     </main>
 
+    <!-- One global modal: Formflow widget requires #formflow-embed in the document -->
+    <FormflowModal />
+
     {
       isAdmin && (
-        <VisualEditor variantId={variantId ?? ""} adminPass={adminPass} />
+        <VisualEditor variantId={variantId ?? ""} />
       )
     }
 

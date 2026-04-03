@@ -31,10 +31,10 @@ const editProps = (field: string) =>
 ---
 
 <section
-  class="relative min-h-screen flex flex-col justify-center pt-16 pb-24 overflow-hidden"
+  class="relative min-h-screen flex flex-col justify-center pt-16 pb-24 overflow-x-hidden"
 >
-  <!-- Multi-layer ambient background -->
-  <div class="absolute inset-0 pointer-events-none">
+  <!-- Multi-layer ambient background — overflow:hidden prevents horizontal bleed -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
     <div
       style="background: radial-gradient(ellipse 90% 70% at 50% 20%, rgba(219,234,254,0.35) 0%, transparent 65%);position:absolute;inset:0;"
     >
@@ -51,23 +51,23 @@ const editProps = (field: string) =>
     <!-- Badge -->
     <div
       data-animate
-      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-xs font-bold text-gray-900 mb-8 shadow-sm tracking-wide"
+      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-xs font-bold text-gray-900 mb-6 sm:mb-8 shadow-sm tracking-wide max-w-full"
     >
-      <span class="relative flex h-2 w-2">
+      <span class="relative flex h-2 w-2 flex-shrink-0">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"
           style="will-change: transform;"></span>
         <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"
         ></span>
       </span>
-      <span {...editProps("hero_badge")}>{badge}</span>
+      <span class="truncate" {...editProps("hero_badge")}>{badge}</span>
     </div>
 
-    <!-- Headline -->
+    <!-- Headline: clamp starts 1.75rem on phones — full text reads without cutting -->
     <h1
       id="hero-headline"
       data-animate
-      class="max-w-3xl font-bold text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.05] tracking-tight text-e2-black mb-5 text-balance"
+      class="max-w-3xl font-bold text-[clamp(1.75rem,4.5vw,3.5rem)] leading-[1.08] tracking-tight text-e2-black mb-4 sm:mb-5 text-balance"
       {...editProps("hero_headline")}
     >
       {headline}
@@ -76,21 +76,22 @@ const editProps = (field: string) =>
     <!-- Subheadline -->
     <p
       data-animate
-      class="text-base md:text-lg text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed font-normal text-balance"
+      class="text-base md:text-lg text-gray-500 max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed font-normal text-balance"
       {...editProps("hero_subheadline")}
     >
       {subheadline}
     </p>
 
-    <!-- CTA Group -->
+    <!-- CTA Group — full-width stacked on mobile (max tap surface + higher CVR) -->
     <div
       data-animate
-      class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto mb-4"
+      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-3 sm:mb-4"
     >
       <a
         href="#qualify"
         id="hero-cta-primary"
-        class="group w-full sm:w-auto px-9 py-4 bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden"
+        class="group w-full sm:w-auto px-9 bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
+        style="min-height: 56px;"
         {...editProps("hero_cta_primary")}
       >
         <span class="relative z-10">{ctaPrimary}</span>
@@ -100,7 +101,8 @@ const editProps = (field: string) =>
       </a>
       <a
         href="#how-it-works"
-        class="w-full sm:w-auto px-7 py-4 bg-white/80 backdrop-blur-sm text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-white hover:shadow-lg transition-all duration-300"
+        class="w-full sm:w-auto px-7 bg-white/80 backdrop-blur-sm text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-white hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
+        style="min-height: 56px;"
         {...editProps("hero_cta_secondary")}
       >
         {ctaSecondary}
@@ -110,15 +112,15 @@ const editProps = (field: string) =>
     <!-- Micro-copy trust line -->
     <p
       data-animate
-      class="text-xs text-gray-400 font-medium mb-16 tracking-wide"
+      class="text-xs text-gray-400 font-medium mb-10 sm:mb-16 tracking-wide"
     >
       No obligation &nbsp;·&nbsp; 30 minutes &nbsp;·&nbsp; Custom growth plan
     </p>
 
-    <!-- VSL Placeholder -->
+    <!-- VSL — 16:9 on mobile (shorter, CTA in view faster), 4:3 on md+ -->
     <div
       data-animate
-      class="w-full max-w-4xl mx-auto shrink-0 relative rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer aspect-[4/3]"
+      class="w-full max-w-4xl mx-auto shrink-0 relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer aspect-video md:aspect-[4/3]"
       id="vsl-player"
       role="button"
       aria-label="Watch our case study video"
@@ -187,31 +189,31 @@ const editProps = (field: string) =>
 
         <!-- Bottom bar -->
         <div
-          class="absolute bottom-0 left-0 right-0 px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+          class="absolute bottom-0 left-0 right-0 px-3 sm:px-6 py-2.5 sm:py-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex items-center justify-between gap-2"
         >
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 sm:gap-3 min-w-0">
             <div
-              class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-900 border border-white/20 flex items-center justify-center text-white text-[10px] sm:text-xs font-black flex-shrink-0 shadow-inner"
+              class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-900 border border-white/20 flex items-center justify-center text-white text-[10px] sm:text-xs font-black flex-shrink-0 shadow-inner"
             >
               JW
             </div>
-            <div class="text-left">
+            <div class="text-left min-w-0">
               <p
-                class="text-white text-[11px] sm:text-xs font-bold tracking-wide"
+                class="text-white text-[10px] sm:text-xs font-bold tracking-wide"
               >
                 Jason Williamson
               </p>
               <p
-                class="text-slate-400 text-[9px] sm:text-[10px] uppercase font-bold tracking-[0.2em] mt-0.5"
+                class="text-slate-400 text-[8px] sm:text-[10px] uppercase font-bold tracking-[0.2em] mt-0.5"
               >
                 Founder, e2 Agency
               </p>
             </div>
           </div>
-          <div class="flex items-center gap-1.5 self-start sm:self-auto">
+          <div class="flex items-center gap-1.5 flex-shrink-0">
             <span
-              class="text-indigo-400 text-[9px] sm:text-[10px] font-bold px-2 py-1 bg-indigo-900/30 rounded border border-indigo-500/20 uppercase tracking-[0.15em] backdrop-blur-sm"
-              >Highly Valuable Strategy</span
+              class="text-indigo-400 text-[8px] sm:text-[10px] font-bold px-2 py-1 bg-indigo-900/30 rounded border border-indigo-500/20 uppercase tracking-[0.1em] sm:tracking-[0.15em] backdrop-blur-sm whitespace-nowrap"
+              >Highly Valuable</span
             >
           </div>
         </div>

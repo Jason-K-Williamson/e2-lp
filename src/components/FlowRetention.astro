@@ -1,0 +1,167 @@
+---
+/**
+ * FlowRetention — Retention and Brand Loyalty section
+ * 6-email Customer Thank You Sequence
+ * Goal: Turn one-time buyers into brand evangelists
+ */
+
+const thankYouEmails = [
+  {
+    num: "01",
+    timing: "Immediate",
+    title: "The Wow Moment",
+    description: "Not a receipt. A full brand experience. Thank them in a way that feels genuinely human and sets the tone for the relationship.",
+    tag: "Sets the relationship",
+  },
+  {
+    num: "02",
+    timing: "Day 2",
+    title: "What to Expect Next",
+    description: "Shipping update with personality. Build anticipation. Make them feel excited about what's coming, not just waiting for a parcel.",
+    tag: "Builds anticipation",
+  },
+  {
+    num: "03",
+    timing: "Day 5",
+    title: "The Welcome to the Family Email",
+    description: "Introduce your community, your values, and what being a customer truly means. This is where brand loyalty is planted.",
+    tag: "Plants loyalty",
+  },
+  {
+    num: "04",
+    timing: "Day 8-10",
+    title: "The Usage Guide",
+    description: "Help them get maximum value from what they bought. A customer who uses the product properly is a customer who comes back.",
+    tag: "Drives retention",
+  },
+  {
+    num: "05",
+    timing: "Day 14",
+    title: "The Social Proof Ask",
+    description: "Ask for a review at the peak of satisfaction. Perfectly timed, personalised, with a frictionless review link.",
+    tag: "Generates reviews",
+  },
+  {
+    num: "06",
+    timing: "Day 21",
+    title: "The Evangelist Kick",
+    description: "A referral offer, exclusive community access, or a cross-sell that feels like a gift. Turn buyers into advocates who send you customers.",
+    tag: "Creates evangelists",
+  },
+];
+---
+
+<section class="py-28 relative overflow-hidden bg-white">
+  <!-- Ambient -->
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full blur-[120px] pointer-events-none opacity-30" style="background: radial-gradient(ellipse, #d1fae5 0%, transparent 70%);"></div>
+
+  <div class="section-container relative z-10">
+
+    <!-- Section header -->
+    <div  class="text-center mb-20">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 text-green-700 text-xs font-bold uppercase tracking-widest mb-6">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+        Flow 3
+      </div>
+      <h2 class="font-bold text-[clamp(1.8rem,3.5vw,3rem)] leading-tight tracking-tight text-e2-black mb-5 max-w-3xl mx-auto text-balance">
+        Retention and
+        <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #10b981, #3b82f6);">Brand Loyalty</span>
+      </h2>
+      <p class="text-base md:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed text-balance">
+        Getting the sale is the beginning, not the end. This 6-email sequence transforms a first-time buyer into a repeat customer, a reviewer, and ultimately a brand evangelist who sends you new customers for free.
+      </p>
+    </div>
+
+    <!-- Timeline visual -->
+    <div  class="relative">
+
+      <!-- Connector line (desktop) -->
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-green-200 via-blue-200 to-indigo-200 -translate-x-1/2 pointer-events-none"></div>
+
+      <div class="space-y-8">
+        {thankYouEmails.map((email, idx) => {
+          const isEven = idx % 2 === 0;
+          return (
+            <div class={`relative grid md:grid-cols-2 gap-6 md:gap-12`}>
+
+              <!-- Desktop: alternating left/right layout -->
+              <div class={`${isEven ? 'md:col-start-1 md:text-right' : 'md:col-start-2 md:row-start-1'}`}>
+                <div class="inline-block p-6 rounded-2xl border border-gray-100 bg-white shadow-lg shadow-black/4 hover:shadow-xl hover:shadow-black/6 transition-shadow duration-300 cursor-default max-w-sm w-full">
+                  <div class="flex items-center gap-3 flex-wrap mb-4 md:justify-start">
+                    <span class="text-xs font-black text-gray-300">{email.num}</span>
+                    <span class="text-[10px] font-bold text-gray-400 border border-gray-200 px-2 py-0.5 rounded-md uppercase tracking-wide">{email.timing}</span>
+                    <span class="text-[10px] font-bold text-green-700 bg-green-50 border border-green-100 px-2 py-0.5 rounded-md">{email.tag}</span>
+                  </div>
+                  <h4 class="font-bold text-lg text-e2-black mb-2 text-left">{email.title}</h4>
+                  <p class="text-sm text-gray-500 leading-relaxed text-left">{email.description}</p>
+                </div>
+              </div>
+
+              <!-- Center dot (desktop only) -->
+              <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center z-10">
+                <div class="w-4 h-4 rounded-full bg-white border-2 border-green-400 shadow-md"></div>
+              </div>
+
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Evangelist outcome strip -->
+    <div
+      
+      class="mt-20 rounded-3xl overflow-hidden"
+      style="background: linear-gradient(135deg, #050505, #111827);"
+    >
+      <div class="grid md:grid-cols-2 gap-0">
+        <div class="p-10 md:p-14 flex flex-col justify-center">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-green-500/15 border border-green-500/25 text-green-400 text-xs font-bold uppercase tracking-widest mb-8 self-start">
+            The End Goal
+          </div>
+          <h3 class="font-bold text-2xl md:text-3xl leading-tight text-white mb-5">
+            Build Brand Evangelists, Not Just Customers.
+          </h3>
+          <p class="text-slate-400 text-base leading-relaxed mb-8">
+            The most expensive customer is a new one. The most valuable is the one who keeps coming back and brings their friends. This sequence is engineered specifically to manufacture that outcome at scale.
+          </p>
+          <ul class="space-y-4">
+            {[
+              "Higher LTV through repeat purchase velocity",
+              "5-star review generation on autopilot",
+              "Referral loop that compounds over time",
+              "Brand community that markets for you",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-slate-300">
+                <svg class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="p-10 md:p-14 flex flex-col justify-center gap-6 border-t md:border-t-0 md:border-l border-white/8">
+          {[
+            { metric: "6 Emails", label: "In the sequence", icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+            { metric: "21 Days", label: "Full sequence window", icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" },
+            { metric: "3.2x", label: "Average LTV increase", icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" },
+          ].map((item) => (
+            <div class="flex items-center gap-5 p-5 rounded-xl border border-white/8 bg-white/3">
+              <div class="w-10 h-10 rounded-xl bg-green-500/15 border border-green-500/25 flex items-center justify-center flex-shrink-0">
+                <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d={item.icon} />
+                </svg>
+              </div>
+              <div>
+                <p class="text-2xl font-black text-white">{item.metric}</p>
+                <p class="text-xs text-slate-500 mt-0.5">{item.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

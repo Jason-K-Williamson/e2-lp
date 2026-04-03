@@ -1,0 +1,372 @@
+---
+/**
+ * FlowWelcomeSeries — Welcome Series deep-dive
+ *
+ * Scroll architecture:
+ *   1. Section header (contained)
+ *   2. Teaser row — "Your customers never see this coming" + scroll arrow
+ *   3. 280vh scroll-trigger div  ← provides the scroll "space"
+ *   4. position:fixed full-viewport overlay  ← escapes ALL parent constraints
+ *      Driven by JS progress 0→1 across the trigger div
+ *   5. Details + email/SMS breakdown (contained, after trigger)
+ */
+---
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     TRUE FULL-SCREEN OVERLAY — position:fixed escapes every parent
+     ══════════════════════════════════════════════════════════════════════ -->
+<div
+  id="pu-overlay"
+  aria-hidden="true"
+  style="
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+  "
+>
+  <!-- Scene backdrop -->
+  <div
+    id="pu-bg"
+    style="position: absolute; inset: 0; background: #030303;"
+  ></div>
+
+  <!-- Blurred store "environment" hint -->
+  <div
+    id="pu-env"
+    style="
+      position: absolute;
+      inset: 0;
+      background: url('/images/popup-example.png') center / cover no-repeat;
+      filter: blur(40px) saturate(0.4);
+      transform: scale(1.15);
+      opacity: 0;
+    "
+  ></div>
+
+  <!-- The popup card -->
+  <div
+    id="pu-card"
+    style="
+      position: relative;
+      z-index: 2;
+      width: min(82vw, 148vh);
+      transform: scale(0.55) translateY(40px);
+      opacity: 0;
+      will-change: transform, opacity;
+    "
+  >
+    <!-- Browser chrome bar -->
+    <div style="background:#1c1c1e; border-radius: 14px 14px 0 0; padding: 10px 16px; display: flex; align-items: center; gap: 8px;">
+      <span style="width:12px;height:12px;border-radius:50%;background:#ff5f57;flex-shrink:0;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#febc2e;flex-shrink:0;"></span>
+      <span style="width:12px;height:12px;border-radius:50%;background:#28c840;flex-shrink:0;"></span>
+      <div style="flex:1; margin-left:10px; background:#2c2c2e; border-radius:6px; padding:4px 12px; font-size:11px; color:#888; font-family:monospace; white-space:nowrap; overflow:hidden;">
+        yourstore.com
+      </div>
+    </div>
+    <!-- Screenshot -->
+    <div style="border-radius: 0 0 14px 14px; overflow:hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.8);">
+      <img
+        src="/images/popup-example.png"
+        alt="Custom dual opt-in pop-up"
+        style="display:block; width:100%;"
+        loading="eager"
+        fetchpriority="high"
+      />
+    </div>
+  </div>
+
+  <!-- Bottom label -->
+  <div
+    id="pu-label"
+    style="
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    "
+  >
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+    Captures Email + SMS from a single pop-up
+  </div>
+
+  <!-- Continue scrolling hint -->
+  <div
+    id="pu-hint"
+    style="
+      position: absolute;
+      bottom: 12px;
+      right: 24px;
+      opacity: 0;
+      color: rgba(255,255,255,0.3);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      z-index: 3;
+    "
+  >
+    ↓ Keep scrolling
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════
+     SECTION CONTENT
+     ══════════════════════════════════════════════════════════════════════ -->
+<section id="flows-overview" class="relative bg-white overflow-x-hidden">
+
+  <!-- ── Header ─────────────────────────────────────────────────────── -->
+  <div class="section-container pt-28 pb-16">
+    <div class="flex flex-col items-center text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs font-bold uppercase tracking-widest mb-6">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+        Flow 1
+      </div>
+      <h2 class="font-bold text-[clamp(1.8rem,3.5vw,3rem)] leading-tight tracking-tight text-e2-black mb-5 max-w-3xl text-balance">
+        The World-Class Welcome Series
+      </h2>
+      <p class="text-base md:text-lg text-gray-500 max-w-2xl leading-relaxed text-balance">
+        The most important flow in your entire account. This is how you introduce your brand, build trust, and convert new subscribers into buyers before they even think about leaving.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Teaser row: draws attention, invites scroll ─────────────────── -->
+  <div class="section-container pb-12 flex flex-col items-center text-center gap-4">
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-e2-gray-100 border border-e2-gray-200 text-gray-600 text-xs font-bold uppercase tracking-widest">
+      Scroll to experience it
+    </div>
+    <p class="text-2xl md:text-3xl font-bold text-e2-black max-w-xl text-balance leading-tight">
+      Your customers never see what hits them.
+    </p>
+    <p class="text-gray-400 text-sm max-w-xs leading-relaxed">
+      We build a pop-up so well-timed and brand-perfect it feels less like an interruption — and more like a gift.
+    </p>
+    <div class="flex flex-col items-center gap-1.5 text-gray-300 mt-2">
+      <svg class="w-5 h-5 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" /></svg>
+      <span class="text-xs font-semibold tracking-wide">scroll down</span>
+    </div>
+  </div>
+
+  <!-- ── SCROLL TRIGGER — 280vh of scroll space ─────────────────────── -->
+  <!--
+    This div is purely spatial — it creates the scroll distance that JS
+    uses to drive the fixed overlay above. No visual content here.
+  -->
+  <div id="pu-trigger" style="height: 280vh; position: relative;"></div>
+
+  <!-- ── Pop-up explanation + Email / SMS breakdown ──────────────────── -->
+  <div class="section-container py-20">
+
+    <!-- What makes it different -->
+    <div class="mb-16 rounded-3xl overflow-hidden border border-gray-100 shadow-xl shadow-black/4">
+      <div class="grid md:grid-cols-2 gap-0">
+        <div class="p-10 md:p-14 flex flex-col justify-center bg-e2-black text-white">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-500/15 border border-indigo-500/25 text-indigo-300 text-xs font-bold uppercase tracking-widest mb-8 self-start">
+            What makes it different
+          </div>
+          <h3 class="font-bold text-2xl md:text-3xl leading-tight text-white mb-5">
+            Email AND SMS.<br/>One interaction.
+          </h3>
+          <p class="text-slate-400 text-base leading-relaxed mb-8">
+            Most pop-ups collect one thing. Ours collects email and SMS simultaneously — without hurting your email opt-in rate. A two-step, custom-built experience that hands you both channels from a single subscriber moment.
+          </p>
+          <ul class="space-y-3">
+            {[
+              "Custom-designed to match your brand identity",
+              "Dual opt-in: Email + SMS captured together",
+              "No drop in email conversion rate",
+              "A/B tested offer triggers and timing logic",
+            ].map((item) => (
+              <li class="flex items-start gap-3 text-sm text-slate-300">
+                <svg class="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="bg-gradient-to-br from-indigo-50 to-violet-50 p-8 md:p-12 flex items-center justify-center min-h-[300px]">
+          <div class="w-full max-w-sm">
+            <div class="rounded-2xl shadow-2xl shadow-black/20 overflow-hidden">
+              <div class="bg-gray-100 px-4 py-2.5 flex items-center gap-2 border-b border-gray-200">
+                <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                <div class="flex-1 ml-2 bg-white rounded-md px-3 py-1 text-[10px] text-gray-400 font-mono truncate">yourstore.com</div>
+              </div>
+              <img src="/images/popup-example.png" alt="Dual opt-in pop-up" class="w-full block" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email + SMS breakdown -->
+    <div class="grid md:grid-cols-2 gap-6 mb-8">
+
+      <!-- 5 Emails -->
+      <div class="rounded-2xl border border-gray-100 bg-white shadow-lg shadow-black/4 overflow-hidden hover:shadow-xl hover:shadow-black/6 transition-shadow duration-300">
+        <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-1">Email Sequence</div>
+            <h4 class="font-bold text-xl text-e2-black">5 Custom Welcome Emails</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black text-xl flex-shrink-0" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">5</div>
+        </div>
+        <div class="px-8 py-6 space-y-4">
+          {[
+            { num: "01", title: "The Brand Story", desc: "Who you are, why it matters, and why they should care." },
+            { num: "02", title: "The Social Proof Bomb", desc: "Reviews, UGC, and results that build undeniable trust." },
+            { num: "03", title: "The Education Email", desc: "Teach them something valuable. Position as the expert." },
+            { num: "04", title: "The Offer Email", desc: "First purchase incentive with a clear, time-based CTA." },
+            { num: "05", title: "The Last Chance", desc: "Scarcity closer that converts fence-sitters." },
+          ].map((email) => (
+            <div class="flex items-start gap-4">
+              <span class="text-xs font-black text-gray-300 mt-0.5 flex-shrink-0 w-5">{email.num}</span>
+              <div>
+                <p class="text-sm font-bold text-e2-black">{email.title}</p>
+                <p class="text-xs text-gray-500 leading-relaxed mt-0.5">{email.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- 3 SMS -->
+      <div class="rounded-2xl border border-gray-100 bg-white shadow-lg shadow-black/4 overflow-hidden hover:shadow-xl hover:shadow-black/6 transition-shadow duration-300">
+        <div class="px-8 py-6 border-b border-gray-100 flex items-center justify-between">
+          <div>
+            <div class="text-xs font-bold text-violet-600 uppercase tracking-widest mb-1">SMS Sequence</div>
+            <h4 class="font-bold text-xl text-e2-black">3 Perfectly Timed Texts</h4>
+          </div>
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-black text-xl flex-shrink-0" style="background: linear-gradient(135deg, #7c3aed, #c026d3);">3</div>
+        </div>
+        <div class="px-8 py-6 space-y-4">
+          {[
+            { num: "01", title: "The Warm Welcome Text", desc: "Immediate confirmation + your welcome offer link." },
+            { num: "02", title: "The Nudge", desc: "Sent 48 hours later. Personal, conversational, no-pressure." },
+            { num: "03", title: "The Expiry Alert", desc: "Offer ending soon. Direct link to purchase. Converts." },
+          ].map((sms) => (
+            <div class="flex items-start gap-4">
+              <span class="text-xs font-black text-gray-300 mt-0.5 flex-shrink-0 w-5">{sms.num}</span>
+              <div>
+                <p class="text-sm font-bold text-e2-black">{sms.title}</p>
+                <p class="text-xs text-gray-500 leading-relaxed mt-0.5">{sms.desc}</p>
+              </div>
+            </div>
+          ))}
+          <div class="mt-4 p-4 rounded-xl bg-violet-50 border border-violet-100">
+            <p class="text-xs font-bold text-violet-700 mb-1">Why SMS wins here</p>
+            <p class="text-xs text-violet-600 leading-relaxed">Average SMS open rate: 98%. Average email open rate: 21%. Both channels working together = maximum conversion probability.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Welcome series total -->
+    <div
+      class="rounded-2xl p-8 flex flex-wrap justify-center gap-8 border border-indigo-100 text-center"
+      style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);"
+    >
+      <div><p class="text-3xl font-black text-e2-black">1</p><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Pop-Up</p></div>
+      <div class="w-px bg-gray-200 hidden md:block"></div>
+      <div><p class="text-3xl font-black text-e2-black">5</p><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Emails</p></div>
+      <div class="w-px bg-gray-200 hidden md:block"></div>
+      <div><p class="text-3xl font-black text-e2-black">3</p><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">SMS</p></div>
+      <div class="w-px bg-gray-200 hidden md:block"></div>
+      <div><p class="text-3xl font-black text-indigo-600">9</p><p class="text-xs font-bold text-gray-500 uppercase tracking-widest mt-1">Total Touchpoints</p></div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+(() => {
+  const trigger  = document.getElementById('pu-trigger');
+  const overlay  = document.getElementById('pu-overlay') as HTMLElement | null;
+  const bg       = document.getElementById('pu-bg')      as HTMLElement | null;
+  const env      = document.getElementById('pu-env')     as HTMLElement | null;
+  const card     = document.getElementById('pu-card')    as HTMLElement | null;
+  const label    = document.getElementById('pu-label')   as HTMLElement | null;
+  const hint     = document.getElementById('pu-hint')    as HTMLElement | null;
+
+  if (!trigger || !overlay || !card) return;
+
+  // Linear interpolation between ranges
+  const lerp = (v: number, i0: number, i1: number, o0: number, o1: number) => {
+    const t = Math.max(0, Math.min(1, (v - i0) / (i1 - i0)));
+    return o0 + t * (o1 - o0);
+  };
+
+  let raf = 0;
+  let lastP = -1;
+
+  const update = () => {
+    const rect  = trigger.getBoundingClientRect();
+    const total = trigger.offsetHeight - window.innerHeight;
+    const p     = Math.max(0, Math.min(1, -rect.top / total));
+
+    if (Math.abs(p - lastP) < 0.0005) { raf = requestAnimationFrame(update); return; }
+    lastP = p;
+
+    const active = p > 0 && p < 1;
+
+    // Show/hide the overlay
+    overlay.style.visibility = active ? 'visible' : 'hidden';
+    overlay.style.opacity    = active ? '1' : '0';
+
+    if (!active) { raf = requestAnimationFrame(update); return; }
+
+    // ── Phase 1: 0 → 0.30  env + bg fade in, card rises ────────────
+    const envO  = lerp(p, 0, 0.28, 0, 0.18);
+    const cardO = lerp(p, 0, 0.30, 0, 1);
+
+    // Scale: 0.55 → 1.0 as we scroll in, then hold, then 1.0 → 0.85 on exit
+    const scaleIn  = lerp(p, 0, 0.35, 0.55, 1.0);
+    const scaleOut = lerp(p, 0.70, 0.95, 1.0, 0.80);
+    const scale    = p < 0.70 ? scaleIn : Math.min(scaleIn, scaleOut);
+
+    const translateIn  = lerp(p, 0, 0.35, 36, 0);
+    const translateOut = lerp(p, 0.70, 0.95, 0, -20);
+    const translateY   = p < 0.70 ? translateIn : Math.max(translateIn, translateOut);
+
+    // ── Phase 3: 0.70 → 0.95  everything fades out ──────────────────
+    const exitFade = p > 0.70 ? lerp(p, 0.70, 0.95, 1, 0) : 1;
+
+    // Label + hint appear mid-phase
+    const labelO = lerp(p, 0.35, 0.50, 0, 1) * (p < 0.70 ? 1 : lerp(p, 0.70, 0.85, 1, 0));
+    const hintO  = lerp(p, 0.38, 0.50, 0, 1) * (p < 0.72 ? 1 : lerp(p, 0.72, 0.88, 1, 0));
+
+    // Apply
+    if (env)   env.style.opacity = String(envO * exitFade);
+    if (card) {
+      card.style.opacity   = String(cardO * exitFade);
+      card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+    }
+    if (label) label.style.opacity = String(labelO);
+    if (hint)  hint.style.opacity  = String(hintO);
+
+    raf = requestAnimationFrame(update);
+  };
+
+  // Kick off RAF loop (scroll-driven via getBoundingClientRect, no listener needed)
+  raf = requestAnimationFrame(update);
+})();
+</script>

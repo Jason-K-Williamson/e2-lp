@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StickyNav from "../components/StickyNav.astro";
+import FlowHero from "../components/FlowHero.astro";
+import FlowWelcomeSeries from "../components/FlowWelcomeSeries.astro";
+import FlowAbandonmentStages from "../components/FlowAbandonmentStages.astro";
+import FlowRetention from "../components/FlowRetention.astro";
+import FlowSummary from "../components/FlowSummary.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Footer from "../components/Footer.astro";
+
+const title = "Custom Email and SMS Flows Built for Your Brand | e2 Agency";
+const description =
+  "We custom-build every email and SMS flow your store needs — Welcome Series, 5 Stages of Abandonment, and a Retention system that creates lifetime brand believers.";
+---
+
+<BaseLayout title={title} description={description}>
+  <!-- Sticky pill nav (FormflowModal in BaseLayout) -->
+  <StickyNav />
+
+  <!-- 1. HERO — Dark cinematic with proof metrics -->
+  <FlowHero />
+
+  <!-- 2. FLOW 1 — Welcome Series (pop-up + 5 emails + 3 SMS) -->
+  <FlowWelcomeSeries />
+
+  <!-- 3. FLOW 2 — The 5 Stages of Abandonment (14 emails) -->
+  <FlowAbandonmentStages />
+
+  <!-- 4. FLOW 3 — Retention and Brand Loyalty (6 emails) -->
+  <FlowRetention />
+
+  <!-- 5. EVERYTHING YOU GET — Offer stack summary -->
+  <FlowSummary />
+
+  <!-- 6. FINAL CTA — Form embed section -->
+  <FinalCTA
+    heading="Ready to Build Your Complete Flow System?"
+    subheading="We build every flow custom to your brand. No templates. No shortcuts. Just a complete system that recovers revenue and builds lifetime customers."
+  />
+
+  <!-- 7. FOOTER -->
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,194 @@
+---
+/**
+ * FlowAbandonmentStages — The 5 Stages of Abandonment educational section
+ * Abandoned Checkout (5 emails), Added to Cart (3), Browser (3), 
+ * Collection (2), Site/Home Page (1) = 14 emails total
+ */
+
+const stages = [
+  {
+    number: "01",
+    title: "Abandoned Checkout",
+    subtitle: "The highest-intent signal in your entire store.",
+    description: "Someone got all the way to checkout. They have their card out. Something stopped them. These 5 emails don't chase — they remove the friction, handle the objection, and close the sale.",
+    emailCount: 5,
+    color: "from-red-500 to-orange-500",
+    lightColor: "bg-red-50 border-red-100",
+    textColor: "text-red-700",
+    dotColor: "bg-red-500",
+    emails: [
+      { label: "Immediate", title: "Cart Reminder", note: "Sent within 1 hour — personalised with their items" },
+      { label: "3hrs", title: "Urgency + Social Proof", note: "Reviews from buyers of those exact products" },
+      { label: "24hrs", title: "Objection Handler", note: "FAQs, guarantee, trust signals. Remove every barrier." },
+      { label: "48hrs", title: "Offer Email", note: "Discount or free shipping to tip the decision" },
+      { label: "72hrs", title: "Final Warning", note: "Scarcity close. Last chance to secure their cart." },
+    ],
+  },
+  {
+    number: "02",
+    title: "Added to Cart Abandonment",
+    subtitle: "They added it. They want it. They just need a nudge.",
+    description: "A step earlier than checkout but still very warm. These 3 emails are shorter, more direct, and focused entirely on getting them back to the cart.",
+    emailCount: 3,
+    color: "from-orange-500 to-amber-500",
+    lightColor: "bg-orange-50 border-orange-100",
+    textColor: "text-orange-700",
+    dotColor: "bg-orange-500",
+    emails: [
+      { label: "1hr", title: "Friendly Reminder", note: "Hey, you left something behind. Low pressure, conversational." },
+      { label: "24hrs", title: "The Value Reinforcement", note: "Why this product is perfect for them. Benefits, not features." },
+      { label: "48hrs", title: "The Sweetener", note: "Small incentive to complete the purchase." },
+    ],
+  },
+  {
+    number: "03",
+    title: "Browser Abandonment",
+    subtitle: "They browsed. They were interested. Catch them now.",
+    description: "They viewed products without adding to cart. Intent is real, just earlier in the funnel. These 3 emails are educational and inspirational — building desire before asking for the sale.",
+    emailCount: 3,
+    color: "from-amber-500 to-yellow-500",
+    lightColor: "bg-amber-50 border-amber-100",
+    textColor: "text-amber-700",
+    dotColor: "bg-amber-500",
+    emails: [
+      { label: "2hrs", title: "Product Spotlight", note: "Beautiful email featuring what they viewed with key benefits" },
+      { label: "24hrs", title: "Social Proof + Reviews", note: "What other buyers say about the products they saw" },
+      { label: "48hrs", title: "Best Seller Nudge", note: "This is popular. You might want to grab it before it sells out." },
+    ],
+  },
+  {
+    number: "04",
+    title: "Collection Abandonment",
+    subtitle: "They explored a category. Guide them to the right product.",
+    description: "They browsed a collection page without viewing any individual products. These emails help them discover what they're looking for with curated picks and guidance.",
+    emailCount: 2,
+    color: "from-blue-500 to-indigo-500",
+    lightColor: "bg-blue-50 border-blue-100",
+    textColor: "text-blue-700",
+    dotColor: "bg-blue-500",
+    emails: [
+      { label: "4hrs", title: "Curated Picks From That Collection", note: "Top 3 products in the category they browsed, with clear CTAs" },
+      { label: "48hrs", title: "The Category Guide", note: "Help them choose. Education + social proof to build confidence." },
+    ],
+  },
+  {
+    number: "05",
+    title: "Site Abandonment",
+    subtitle: "They visited. They left. One shot to bring them back.",
+    description: "The mildest signal but still worth capturing. One powerful brand email that reminds them who you are and gives them a reason to come back.",
+    emailCount: 1,
+    color: "from-violet-500 to-purple-500",
+    lightColor: "bg-violet-50 border-violet-100",
+    textColor: "text-violet-700",
+    dotColor: "bg-violet-500",
+    emails: [
+      { label: "6hrs", title: "The Brand Story Email", note: "One compelling reason to return. Clear CTA back to your store." },
+    ],
+  },
+];
+---
+
+<section class="py-28 relative overflow-hidden" style="background: #050505;">
+  <!-- Ambient -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div style="background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(239,68,68,0.06) 0%, transparent 60%); position:absolute; inset:0;"></div>
+    <div style="background: radial-gradient(ellipse 50% 40% at 80% 100%, rgba(99,102,241,0.07) 0%, transparent 60%); position:absolute; inset:0;"></div>
+  </div>
+
+  <div class="section-container relative z-10">
+
+    <!-- Section header -->
+    <div  class="text-center mb-20">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 text-white/60 text-xs font-bold uppercase tracking-widest mb-6">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
+        Flow 2
+      </div>
+      <h2 class="font-bold text-[clamp(1.8rem,3.5vw,3rem)] leading-tight tracking-tight text-white mb-5 max-w-3xl mx-auto text-balance">
+        The 5 Stages of
+        <span class="text-transparent bg-clip-text" style="background-image: linear-gradient(135deg, #f97316, #ef4444);">Abandonment</span>
+      </h2>
+      <p class="text-base md:text-lg text-slate-400 max-w-2xl mx-auto leading-relaxed text-balance">
+        Every EXIT from your store is a recovery opportunity. We map every stage of abandonment and build a custom flow for each one — a total of 14 emails engineered to bring revenue back.
+      </p>
+
+      <!-- Total counter -->
+      <div class="mt-10 inline-flex items-center gap-6 px-8 py-4 rounded-2xl border border-white/10 bg-white/4">
+        <div class="text-center">
+          <p class="text-4xl font-black text-white">14</p>
+          <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Total Emails</p>
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div class="text-center">
+          <p class="text-4xl font-black text-white">5</p>
+          <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Distinct Flows</p>
+        </div>
+        <div class="w-px h-10 bg-white/10"></div>
+        <div class="text-center">
+          <p class="text-4xl font-black text-orange-400">0</p>
+          <p class="text-xs text-slate-500 uppercase tracking-widest mt-1">Missed Exits</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stage cards -->
+    <div class="space-y-6">
+      {stages.map((stage, idx) => (
+        <div
+          
+          class="rounded-2xl border border-white/8 bg-white/3 overflow-hidden hover:bg-white/5 transition-colors duration-300 cursor-default"
+        >
+          <div class="grid md:grid-cols-[280px_1fr] gap-0">
+            <!-- Left: stage identity -->
+            <div class="p-8 flex flex-col justify-center border-b md:border-b-0 md:border-r border-white/8">
+              <div class={`inline-flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br ${stage.color} text-white font-black text-sm mb-5`}>
+                {stage.number}
+              </div>
+              <h3 class="font-bold text-xl text-white mb-2">{stage.title}</h3>
+              <p class="text-sm text-slate-400 leading-relaxed mb-5">{stage.subtitle}</p>
+              <p class="text-xs text-slate-500 leading-relaxed">{stage.description}</p>
+              <div class="mt-6 inline-flex items-center gap-2">
+                <span class={`inline-flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br ${stage.color} text-white font-black text-sm`}>{stage.emailCount}</span>
+                <span class="text-xs font-bold text-slate-300">
+                  {stage.emailCount === 1 ? "Email" : "Emails"}
+                </span>
+              </div>
+            </div>
+
+            <!-- Right: email breakdown -->
+            <div class="p-8">
+              <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-5">Email Breakdown</p>
+              <div class="space-y-4">
+                {stage.emails.map((email, eIdx) => (
+                  <div class="flex items-start gap-4">
+                    <div class="flex flex-col items-center flex-shrink-0">
+                      <div class={`w-2 h-2 rounded-full ${stage.dotColor} flex-shrink-0 mt-1`}></div>
+                      {eIdx < stage.emails.length - 1 && (
+                        <div class="w-px flex-1 bg-white/8 mt-1" style="min-height: 24px;"></div>
+                      )}
+                    </div>
+                    <div class="pb-2 flex-1">
+                      <div class="flex items-baseline gap-3 flex-wrap">
+                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest border border-white/10 px-2 py-0.5 rounded-md">{email.label}</span>
+                        <span class="text-sm font-bold text-white">{email.title}</span>
+                      </div>
+                      <p class="text-xs text-slate-500 leading-relaxed mt-1">{email.note}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Bottom CRO nudge -->
+    <div  class="mt-16 text-center">
+      <p class="text-slate-500 text-sm">
+        Industry average email abandonment recovery: 5-15% of lost revenue.
+        <span class="text-white font-bold"> Our clients average 18-34%.</span>
+      </p>
+    </div>
+
+  </div>
+</section>

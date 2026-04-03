@@ -2,40 +2,60 @@
 /**
  * BunnyVideo — Facade pattern for Bunny.net embeds
  *
- * Zero Bunny network requests on page load.
- * Shows a styled thumbnail placeholder; injects the iframe on hover.
+ * Loads a lightweight JPEG poster from Bunny CDN (same asset the player uses).
+ * Injects the iframe on hover / tap only; poster stays visible until iframe `load`
+ * so users never see an empty black embed while it boots.
  *
  * Props:
  *   libraryId  — Bunny stream library ID (e.g. "609841")
  *   videoId    — Bunny video GUID
- *   title      — Video title shown on the thumbnail
- *   subtitle   — Optional subtitle / duration line
- *   author     — Person shown in bottom bar (optional)
- *   authorRole — Their role / company (optional)
+ *   posterUrl  — Full poster image URL (optional; some videos use thumbnail_HASH.jpg)
+ *   thumbBase  — Bunny CDN base URL for `${videoId}/thumbnail.jpg` fallback
+ *   title      — Shown on overlay + img alt
+ *   subtitle   — Optional subtitle line
+ *   author     — Bottom bar (optional)
+ *   authorRole — Bottom bar role (optional)
+ *   fetchPriority — "high" | "low" | "auto" for LCP / below-fold tuning
  */
+
+const DEFAULT_LIBRARY_THUMB_BASE: Record<string, string> = {
+  // Current Bunny Stream library in this project.
+  "609841": "https://vz-e4e7db1f-2fb.b-cdn.net",
+};
 
 interface Props {
   libraryId: string;
   videoId: string;
+  posterUrl?: string;
+  thumbBase?: string;
   title?: string;
   subtitle?: string;
   author?: string;
   authorRole?: string;
   class?: string;
+  fetchPriority?: "high" | "low" | "auto";
 }
 
 const {
   libraryId,
   videoId,
+  posterUrl,
+  thumbBase,
   title = "Watch the video",
   subtitle,
   author,
   authorRole,
   class: className = "",
+  fetchPriority = "low",
 } = Astro.props;
+
+const resolvedThumbBase = thumbBase ?? DEFAULT_LIBRARY_THUMB_BASE[libraryId];
+const poster = posterUrl ?? (resolvedThumbBase ? `${resolvedThumbBase}/${videoId}/thumbnail.jpg` : "");
 
 const uid = `bunny-${videoId.slice(0, 8)}`;
 const embedSrc = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=1&loop=false&muted=false&preload=false&responsive=true`;
+
+const imgAlt = title ? `${title} — video thumbnail` : "Video thumbnail";
 ---
 
 <div
@@ -43,54 +63,174 @@ const embedSrc = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}
   class={`bunny-facade relative rounded-2xl overflow-hidden cursor-pointer group ${className}`}
   style="aspect-ratio: 4/3;"
   data-src={embedSrc}
+  role="button"
+  tabindex="0"
+  aria-label={title}
 >
-  <!-- Thumbnail placeholder — dark cinematic -->
-  <div class="bunny-thumb absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-black flex flex-col items-center justify-center transition-opacity duration-300">
-    <!-- Subtle texture overlay -->
+  <div
+    class="bunny-thumb absolute inset-0 transition-opacity duration-300 z-[2]"
+  >
+    {
+      poster ? (
+        <img
+          src={poster}
+          alt={imgAlt}
+          width="640"
+          height="480"
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+          fetchpriority={fetchPriority}
+          sizes="(max-width: 768px) 100vw, 640px"
+        />
+      ) : (
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900 to-black"></div>
+      )
+    }
+    <!-- Readability for title + play control -->
     <div
-      class="absolute inset-0 opacity-30"
-      style="background-image: radial-gradient(circle at 25% 25%, rgba(99,102,241,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139,92,246,0.15) 0%, transparent 50%);"
-    ></div>
+      class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/25 pointer-events-none"
+    >
+    </div>
 
-    <!-- Play button -->
-    <div class="relative z-10 flex flex-col items-center gap-5">
-      <div class="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-xl">
-        <svg class="w-7 h-7 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </div>
-      <div class="text-center px-6">
-        <p class="text-white font-bold text-base mb-1 text-balance">{title}</p>
-        {subtitle && <p class="text-gray-400 text-sm">{subtitle}</p>}
+    <div
+      class="absolute inset-0 flex flex-col items-center justify-center pb-14 sm:pb-16 px-4"
+    >
+      <div class="relative z-10 flex flex-col items-center gap-5">
+        <div
+          class="w-16 h-16 rounded-full bg-white/15 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-xl"
+        >
+          <svg
+            class="w-7 h-7 text-white ml-1"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path d="M8 5v14l11-7z"></path>
+          </svg>
+        </div>
+        <div class="text-center px-2 max-w-lg">
+          <p
+            class="text-white font-bold text-base mb-1 text-balance drop-shadow-sm"
+          >
+            {title}
+          </p>
+          {subtitle && (
+            <p class="text-gray-200/90 text-sm drop-shadow-sm">{subtitle}</p>
+          )}
+        </div>
       </div>
     </div>
 
-    <!-- Bottom bar (author) -->
-    {author && (
-      <div class="absolute bottom-0 left-0 right-0 px-5 py-3 bg-gradient-to-t from-black/80 to-transparent flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 flex items-center justify-center text-white text-xs font-black flex-shrink-0">
-          {author.charAt(0)}
+    {
+      author && (
+        <div class="absolute bottom-0 left-0 right-0 z-[3] px-5 py-3 bg-gradient-to-t from-black/90 to-transparent flex items-center gap-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border border-white/20 flex items-center justify-center text-white text-xs font-black flex-shrink-0">
+            {author.charAt(0)}
+          </div>
+          <div class="text-left min-w-0">
+            <p class="text-white text-xs font-bold leading-tight truncate">
+              {author}
+            </p>
+            {authorRole && (
+              <p class="text-gray-400 text-xs truncate">{authorRole}</p>
+            )}
+          </div>
+          <span class="ml-auto text-xs text-gray-400 group-hover:text-gray-200 transition-colors duration-200 whitespace-nowrap hidden sm:inline">
+            Hover to play
+          </span>
         </div>
-        <div class="text-left">
-          <p class="text-white text-xs font-bold leading-tight">{author}</p>
-          {authorRole && <p class="text-gray-400 text-xs">{authorRole}</p>}
-        </div>
-        <!-- Hover hint -->
-        <span class="ml-auto text-xs text-gray-500 group-hover:text-gray-300 transition-colors duration-200">Hover to play</span>
-      </div>
-    )}
+      )
+    }
   </div>
 
-  <!-- iframe slot — empty until hover -->
-  <div class="bunny-player absolute inset-0 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+  <div
+    class="bunny-player absolute inset-0 z-[1] opacity-0 pointer-events-none transition-opacity duration-300 bg-black"
+  >
+  </div>
 </div>
 
 <script>
-  document.querySelectorAll<HTMLElement>(".bunny-facade").forEach((facade) => {
+  type BunnyPrewarmState = {
+    warmed: Set<string>;
+    sectionWarmed: WeakSet<Element>;
+    queue: Promise<void>;
+    observer?: IntersectionObserver;
+    observersReady: boolean;
+    slowConnection: boolean;
+  };
+
+  const connection = (navigator as any).connection;
+  const slowConnection =
+    Boolean(connection?.saveData) ||
+    /(^|-)2g$/.test(connection?.effectiveType ?? "");
+
+  const w = window as any;
+  const state: BunnyPrewarmState =
+    w.__bunnyPrewarmState ??
+    (w.__bunnyPrewarmState = {
+      warmed: new Set<string>(),
+      sectionWarmed: new WeakSet<Element>(),
+      queue: Promise.resolve(),
+      observersReady: false,
+      slowConnection,
+    });
+
+  const sleep = (ms: number) =>
+    new Promise<void>((resolve) => window.setTimeout(resolve, ms));
+
+  const prewarmFacade = (facade: HTMLElement) => {
+    const src = facade.dataset.src;
+    if (!src || state.warmed.has(src)) return;
+    state.warmed.add(src);
+
+    state.queue = state.queue.then(async () => {
+      const img = facade.querySelector<HTMLImageElement>(".bunny-thumb img");
+      if (img && !img.complete) {
+        await new Promise<void>((resolve) => {
+          const timeout = window.setTimeout(resolve, 1800);
+          const done = () => {
+            window.clearTimeout(timeout);
+            resolve();
+          };
+          // Force eager loading once the user reaches this section.
+          img.loading = "eager";
+          img.decoding = "async";
+          if (img.getAttribute("fetchpriority") !== "high") {
+            img.setAttribute("fetchpriority", "high");
+          }
+          if (!img.currentSrc) img.src = img.src;
+          img.addEventListener("load", done, { once: true });
+          img.addEventListener("error", done, { once: true });
+        });
+      }
+
+      if (!state.slowConnection) {
+        await fetch(src, { mode: "no-cors", credentials: "omit" }).catch(
+          () => undefined
+        );
+      }
+
+      // Space out warmups to avoid connection spikes.
+      await sleep(250);
+    });
+  };
+
+  const wireFacade = (facade: HTMLElement) => {
+    if (facade.dataset.bunnyInit === "1") return;
+    facade.dataset.bunnyInit = "1";
+
     const src = facade.dataset.src!;
     const thumb = facade.querySelector<HTMLElement>(".bunny-thumb")!;
     const player = facade.querySelector<HTMLElement>(".bunny-player")!;
     let loaded = false;
+
+    const revealPlayer = () => {
+      player.style.opacity = "1";
+      player.style.pointerEvents = "auto";
+      thumb.style.opacity = "0";
+      thumb.style.pointerEvents = "none";
+    };
 
     const load = () => {
       if (loaded) return;
@@ -98,21 +238,63 @@ const embedSrc = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}
 
       const iframe = document.createElement("iframe");
       iframe.src = src;
-      iframe.allow = "accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;";
+      iframe.allow =
+        "accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;";
       iframe.allowFullscreen = true;
-      iframe.style.cssText = "border:0;position:absolute;top:0;left:0;width:100%;height:100%;";
+      iframe.title = "Video player";
+      iframe.style.cssText =
+        "border:0;position:absolute;top:0;left:0;width:100%;height:100%;";
+
+      const fallback = window.setTimeout(revealPlayer, 10000);
+      iframe.addEventListener("load", () => {
+        window.clearTimeout(fallback);
+        revealPlayer();
+      });
 
       player.appendChild(iframe);
-      player.style.opacity = "1";
-      player.style.pointerEvents = "auto";
-      thumb.style.opacity = "0";
-      thumb.style.pointerEvents = "none";
     };
 
-    // Hover to load
-    facade.addEventListener("mouseenter", load);
+    facade.addEventListener("mouseenter", load, { passive: true });
+    facade.addEventListener("click", load, { passive: true });
+    facade.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        load();
+      }
+    });
+  };
 
-    // Also click for mobile / touch
-    facade.addEventListener("click", load);
+  const warmSection = (section: Element) => {
+    if (state.sectionWarmed.has(section)) return;
+    state.sectionWarmed.add(section);
+    section
+      .querySelectorAll<HTMLElement>(".bunny-facade")
+      .forEach((facade) => prewarmFacade(facade));
+  };
+
+  const facades = Array.from(
+    document.querySelectorAll<HTMLElement>(".bunny-facade")
+  );
+  facades.forEach((facade) => wireFacade(facade));
+
+  if (!state.observersReady) {
+    state.observersReady = true;
+    state.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          warmSection(entry.target);
+          state.observer?.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "220px 0px", threshold: 0.15 }
+    );
+  }
+
+  const sectionsToObserve = new Set<Element>();
+  facades.forEach((facade) => {
+    const section = facade.closest("section");
+    if (section) sectionsToObserve.add(section);
   });
+  sectionsToObserve.forEach((section) => state.observer?.observe(section));
 </script>

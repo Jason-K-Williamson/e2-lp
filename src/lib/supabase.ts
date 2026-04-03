@@ -78,6 +78,70 @@ export interface PageVariant {
   updated_at: string;
 }
 
+// ── Leads CRM ────────────────────────────────────────────────────────────────
+
+export interface Lead {
+  id: string;
+  brand_name: string;
+  domain: string;
+  website_url: string | null;
+  facebook_page: string | null;
+  page_likes: number;
+  ads_count: number;
+  country: string | null;
+  niche: string | null;
+  klaviyo_confirmed: boolean;
+  revenue_estimate: string | null;
+  is_shopify: boolean;
+  tech_stack: string[] | null;
+  apify_dataset_id: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+  founders?: Founder | null;
+  outreach?: Outreach | null;
+}
+
+export interface Founder {
+  id: string;
+  lead_id: string;
+  full_name: string | null;
+  first_name: string | null;
+  instagram_handle: string | null;
+  email: string | null;
+  linkedin_url: string | null;
+  title: string | null;
+  dm_sent: boolean;
+  dm_sent_at: string | null;
+  dm_copy: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export type OutreachStage =
+  | 'new' | 'researching' | 'dm_ready' | 'dm_sent'
+  | 'replied' | 'call_booked' | 'closed_won' | 'closed_lost' | 'not_a_fit';
+
+export interface ContactLogEntry {
+  ts: string;
+  note: string;
+}
+
+export interface Outreach {
+  id: string;
+  lead_id: string;
+  stage: OutreachStage;
+  priority: number;
+  contact_log: ContactLogEntry[];
+  replied_at: string | null;
+  call_date: string | null;
+  deal_value: number | null;
+  lost_reason: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export const DEFAULT_VARIANT = {
   brief: "",
   // ── Hero ─────────────────────────────────────────────────────────────────

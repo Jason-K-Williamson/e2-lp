@@ -1,0 +1,505 @@
+---
+/**
+ * KlaviyoProof.astro
+ * Live dashboard screenshots — compact carousel (no full-viewport height).
+ * Nav sits between headline and image so it’s never hidden behind the sticky CTA bar.
+ */
+
+type Shot = {
+  src: string;
+  caption: string;
+  title: string;
+  description: string;
+};
+
+const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
+  {
+    id: "revenue",
+    label: "Revenue Wins",
+    count: 9,
+    shots: [
+      {
+        src: "/klaviyo-proof/23-million.avif",
+        caption: "$23M attributed",
+        title: "$23 million for The Oodie",
+        description:
+          "We helped drive $23M+ in attributed revenue — verified numbers straight from their Klaviyo dashboard, not a mockup.",
+      },
+      {
+        src: "/klaviyo-proof/22.8-million.avif",
+        caption: "$22.8M attributed",
+        title: "$22.8M in attributed revenue",
+        description:
+          "Another eight-figure attributed revenue result — lifecycle and flows doing the heavy lifting behind the scenes.",
+      },
+      {
+        src: "/klaviyo-proof/4.5-million-via-a-welcome-series.avif",
+        caption: "$4.5M via welcome series",
+        title: "$4.5M from a welcome series",
+        description:
+          "First-party email doing real work: onboarding and welcome automation attributed millions over the tracking window.",
+      },
+      {
+        src: "/klaviyo-proof/2.3m-postscript.avif",
+        caption: "$2.3M via Postscript SMS",
+        title: "$2.3M with SMS (Postscript)",
+        description:
+          "We made $2.3M for this brand with SMS marketing using Postscript — shown here alongside their email attribution.",
+      },
+      {
+        src: "/klaviyo-proof/abandoned-cart-700k.avif",
+        caption: "$700k — abandoned cart flow",
+        title: "$700k+ from abandoned cart",
+        description:
+          "Recovery flows that pay rent: cart and browse abandonment attributed serious revenue in-channel.",
+      },
+      {
+        src: "/klaviyo-proof/210k-in-one-email.jpeg",
+        caption: "$210k in one email",
+        title: "$210k from a single send",
+        description:
+          "One campaign, one slice of the dashboard — when creative, offer, and list health line up, the spike is real.",
+      },
+      {
+        src: "/klaviyo-proof/adam-said-we-broke-a-record.avif",
+        caption: "We broke a record",
+        title: "Record-breaking day",
+        description:
+          "Client-verified: their team called out a new record — we screenshot the moment from the live account.",
+      },
+      {
+        src: "/klaviyo-proof/nexus-supplements-proof-biggest-day-on-record.avif",
+        caption: "Nexus — biggest day on record",
+        title: "Nexus — biggest day on record",
+        description:
+          "Supplements brand; Klaviyo showed their largest revenue day — attribution you can point to in a sales call.",
+      },
+      {
+        src: "/klaviyo-proof/alesandro-testimonial.avif",
+        caption: "Alessandro — verified result",
+        title: "Verified client shout-out",
+        description:
+          "Named proof from a founder — paired with dashboard context so it’s not just a quote on a slide.",
+      },
+    ],
+  },
+  {
+    id: "attribution",
+    label: "% Attribution",
+    count: 22,
+    shots: [
+      { src: "/klaviyo-proof/58pct.avif", caption: "58% of total revenue", title: "58% of store revenue", description: "Klaviyo attributed more than half of revenue — direct from the account’s attribution view." },
+      { src: "/klaviyo-proof/54-9pct.avif", caption: "54.9% attribution", title: "54.9% attribution", description: "Email and SMS carrying the majority of tracked revenue for this brand." },
+      { src: "/klaviyo-proof/53-percent.avif", caption: "53% attribution", title: "53% of revenue attributed", description: "Strong channel mix: owned channels doing the lion’s share of reported revenue." },
+      { src: "/klaviyo-proof/50-percent.avif", caption: "50% attribution", title: "Half of revenue from Klaviyo", description: "A clean 50/50 story in the dashboard — powerful for stakeholder updates." },
+      { src: "/klaviyo-proof/another-50pct.avif", caption: "Another 50% result", title: "Another 50% attribution win", description: "We see this pattern repeatedly when flows and campaigns are dialed in." },
+      { src: "/klaviyo-proof/from-35pct-to-50pct.avif", caption: "35% to 50%", title: "35% → 50% attribution", description: "Before/after energy: moving owned-channel share up materially over time." },
+      { src: "/klaviyo-proof/48-5pct.avif", caption: "48.5% attribution", title: "48.5% attributed revenue", description: "Nearly half of revenue tied back to Klaviyo-tracked touches." },
+      { src: "/klaviyo-proof/44-2pct.avif", caption: "44.2% attribution", title: "44.2% attribution", description: "Mid-forties attribution — consistent performance across the reporting period." },
+      { src: "/klaviyo-proof/44-percent.avif", caption: "44% attribution", title: "44% of total revenue", description: "Owned channels pulling strong weight in the brand’s revenue mix." },
+      { src: "/klaviyo-proof/43.4-percent.avif", caption: "43.4% attribution", title: "43.4% attribution", description: "Screenshot-proof share of revenue from Klaviyo-attributed orders." },
+      { src: "/klaviyo-proof/43-percent-before-and-after.webp", caption: "43% before and after", title: "43% — before & after", description: "A narrative-friendly grab: movement in attribution over a defined window." },
+      { src: "/klaviyo-proof/43-percent.avif", caption: "43% attribution", title: "43% attributed", description: "Solid two-fifths-plus of revenue credited to lifecycle marketing." },
+      { src: "/klaviyo-proof/43pct.avif", caption: "43% attribution", title: "43% share of revenue", description: "Another account showing Klaviyo as a primary growth lever." },
+      { src: "/klaviyo-proof/41-percent.webp", caption: "41% attribution", title: "41% attribution", description: "High thirties / low forties is a recurring band for well-run programs." },
+      { src: "/klaviyo-proof/37-percent.avif", caption: "37% attribution", title: "37% of revenue", description: "More than a third of revenue attributed — meaningful for any DTC P&L." },
+      { src: "/klaviyo-proof/36pct.avif", caption: "36% attribution", title: "36% attribution", description: "Healthy owned-channel contribution with room still to scale." },
+      { src: "/klaviyo-proof/33-percent.avif", caption: "33% attribution", title: "33% attributed revenue", description: "A third of revenue from Klaviyo-tracked activity — credible and defensible." },
+      { src: "/klaviyo-proof/32-percent.avif", caption: "32% attribution", title: "32% of store revenue", description: "Repeatable playbook: campaigns + flows + segmentation." },
+      { src: "/klaviyo-proof/31pct.avif", caption: "31% attribution", title: "31% attribution", description: "Demonstrates traction even when the brand has other large channels." },
+      { src: "/klaviyo-proof/31.avif", caption: "31% attribution", title: "31% share", description: "Snapshot from a live dashboard — not a deck graphic." },
+      { src: "/klaviyo-proof/20-percent.avif", caption: "20% attribution", title: "20% attributed revenue", description: "Every account starts somewhere — this is still real money back to owned channels." },
+      { src: "/klaviyo-proof/little-label-co-from-2.2-to-7-percent-optin-rate-pop-up.avif", caption: "Little Label Co — 2.2% to 7% opt-in", title: "Little Label Co — 2.2% → 7% opt-in", description: "Pop-up optimization showing up in the numbers — better list growth, better downstream revenue." },
+    ],
+  },
+  {
+    id: "brands",
+    label: "Named Brands",
+    count: 7,
+    shots: [
+      { src: "/klaviyo-proof/bogey-bros-proof.avif", caption: "Bogey Bros", title: "Bogey Bros", description: "Named brand, real account — dashboard proof we can share on calls and in proposals." },
+      { src: "/klaviyo-proof/daily-mentor-proof.webp", caption: "The Daily Mentor", title: "The Daily Mentor", description: "Creator-led brand; Klaviyo metrics shown with the brand context intact." },
+      { src: "/klaviyo-proof/platinum-master-proof.avif", caption: "Platinum Master", title: "Platinum Master", description: "Another named win — not anonymous “Brand A” slides." },
+      { src: "/klaviyo-proof/26-percent-twosvge.webp", caption: "TWOSVGE — 26%", title: "TWOSVGE — 26% attribution", description: "Public-facing name plus a concrete attribution figure from the stack." },
+      { src: "/klaviyo-proof/30-percent-tyler-from-bap.avif", caption: "Tyler, BAP — 30%", title: "Tyler @ BAP — 30%", description: "Founder-attributed screenshot — credibility for skeptical buyers." },
+      { src: "/klaviyo-proof/nexus-supplements-proof-biggest-day-on-record.avif", caption: "Nexus Supplements", title: "Nexus Supplements", description: "Supplements vertical; biggest-day-on-record callout from their metrics." },
+      { src: "/klaviyo-proof/little-label-co-from-2.2-to-7-percent-optin-rate-pop-up.avif", caption: "Little Label Co", title: "Little Label Co", description: "Opt-in rate lift story — from pop-up through to list and revenue impact." },
+    ],
+  },
+];
+---
+
+<section
+  class="relative scroll-mt-4 overflow-hidden bg-[#050505] py-16 pb-28 md:py-24 md:pb-32"
+  id="klaviyo-proof"
+  aria-labelledby="kp-heading"
+>
+  <div
+    class="pointer-events-none absolute inset-0 bg-gradient-to-b from-gray-950 via-[#08090c] to-gray-950"
+  >
+  </div>
+  <!-- Centered ambient glow (was left-1/4 — felt visually off-axis) -->
+  <div
+    class="pointer-events-none absolute top-0 left-1/2 h-[min(520px,80vw)] w-[min(520px,80vw)] -translate-x-1/2 rounded-full bg-blue-600/[0.09] blur-[120px]"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute bottom-0 left-1/2 h-[min(420px,70vw)] w-[min(420px,70vw)] -translate-x-1/2 translate-y-1/2 rounded-full bg-indigo-600/[0.08] blur-[100px]"
+  >
+  </div>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:radial-gradient(rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:24px_24px]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative z-10 mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+
+    <div class="mx-auto mb-10 max-w-2xl text-center md:mb-12">
+      <p class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-blue-400/95">Live Klaviyo Dashboards</p>
+      <h2 id="kp-heading" class="mb-4 text-balance text-3xl font-bold leading-[1.12] tracking-tight text-white sm:text-4xl md:text-[2.75rem]">
+        Real Numbers.<br />
+        <span class="text-gray-500">Real Accounts. No Photoshop.</span>
+      </h2>
+      <p class="text-pretty text-sm leading-relaxed text-gray-400 sm:text-base md:text-lg">
+        <strong class="font-semibold text-gray-300">40+ verified screenshots</strong> from live client accounts — not mockups, not a deck. Click through every proof.
+      </p>
+    </div>
+
+    <div class="mb-8 flex flex-wrap justify-center gap-2 md:mb-10" role="tablist" aria-label="Proof categories">
+      {tabs.map((tab, i) => (
+        <button
+          type="button"
+          role="tab"
+          data-kp-tab={tab.id}
+          aria-selected={i === 0 ? "true" : "false"}
+          class={`kp-tab px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all duration-200 cursor-pointer ${
+            i === 0
+              ? "bg-white text-gray-900 border-white"
+              : "bg-transparent text-gray-500 border-gray-700 hover:border-gray-400 hover:text-white"
+          }`}
+        >
+          {tab.label}
+          <span class="ml-1.5 text-[10px] sm:text-xs opacity-50">{tab.count}</span>
+        </button>
+      ))}
+    </div>
+
+    {tabs.map((tab, i) => (
+      <div
+        id={`kp-carousel-${tab.id}`}
+        data-kp-panel={tab.id}
+        data-kp-total={tab.shots.length}
+        class={`kp-carousel mx-auto grid w-full max-w-4xl grid-cols-1 select-none overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] shadow-[0_32px_120px_rgba(0,0,0,0.45)] ring-1 ring-white/[0.06] backdrop-blur-md sm:rounded-[2rem] md:rounded-[2.5rem] ${i !== 0 ? "hidden" : ""}`}
+      >
+        <div class="hidden kp-shot-store" aria-hidden="true">
+          {tab.shots.map((shot) => (
+            <span
+              data-src={shot.src}
+              data-caption={shot.caption}
+              data-title={shot.title}
+              data-desc={shot.description}
+            />
+          ))}
+        </div>
+
+        <div class="flex min-h-0 flex-col items-center justify-center px-4 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
+          <!-- Copy: single column, same width as screenshot block -->
+          <div class="mb-6 w-full max-w-2xl text-center sm:mb-8">
+            <p class="mb-2 text-[10px] font-bold uppercase tracking-[0.22em] text-blue-400/90 sm:mb-3 sm:text-xs">
+              {tab.shots.length} proofs in this category
+            </p>
+            <h3 class="kp-win-title mb-3 text-balance text-2xl font-bold leading-snug tracking-tight text-white sm:mb-4 sm:text-3xl md:text-4xl">
+              {tab.shots[0]!.title}
+            </h3>
+            <p class="kp-win-desc mx-auto max-w-xl text-pretty text-sm leading-relaxed text-gray-400 sm:text-base">
+              {tab.shots[0]!.description}
+            </p>
+          </div>
+
+          <!-- Screenshot row: max 50vh so headline + image + controls fit in view -->
+          <div class="flex w-full max-w-3xl flex-col items-stretch gap-4 sm:gap-5">
+            <div class="flex max-h-[50vh] min-h-0 w-full items-center justify-center gap-2 sm:gap-3 md:gap-4">
+              <button
+                type="button"
+                class="kp-prev flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 sm:h-11 sm:w-11 md:h-12 md:w-12"
+                aria-label="Previous proof"
+              >
+                <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+
+              <div
+                role="button"
+                tabindex="0"
+                class="kp-zoom-trigger group relative z-10 flex min-h-0 min-w-0 flex-1 cursor-zoom-in flex-col justify-center overflow-hidden rounded-xl bg-white shadow-[0_24px_80px_rgba(0,0,0,0.6)] ring-1 ring-white/10 transition-transform duration-300 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c0d12] sm:rounded-2xl"
+                aria-label={`View fullscreen: ${tab.shots[0]!.caption}`}
+              >
+                <div class="relative flex max-h-[50vh] w-full items-center justify-center bg-white p-0.5">
+                  <img
+                    src={tab.shots[0]!.src}
+                    alt={tab.shots[0]!.caption}
+                    loading={i === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    class="kp-main-img h-auto max-h-[50vh] w-full object-contain object-center lg:max-h-[300px]"
+                  />
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="kp-next flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 sm:h-11 sm:w-11 md:h-12 md:w-12"
+                aria-label="Next proof"
+              >
+                <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Footer: centered — no left/right split that fought the headline -->
+            <div class="flex w-full flex-col items-center gap-3">
+              <div
+                class="kp-dots-row flex max-w-full justify-center gap-1.5 overflow-x-auto pb-1 [scrollbar-width:thin]"
+                role="group"
+                aria-label="Slide indicators"
+              >
+                {tab.shots.map((_, di) => (
+                  <button
+                    type="button"
+                    class={`kp-dot h-1.5 shrink-0 cursor-pointer rounded-full transition-all duration-200 ${di === 0 ? "w-6 bg-white" : "w-1.5 bg-white/25 hover:bg-white/45"}`}
+                    data-dot-index={di}
+                    aria-label={`Go to slide ${di + 1} of ${tab.shots.length}`}
+                  />
+                ))}
+              </div>
+              <div class="flex flex-col items-center gap-1.5 text-center sm:flex-row sm:gap-3">
+                <span class="font-mono text-xs tabular-nums text-gray-500">
+                  <span class="kp-counter font-semibold text-white">1</span>
+                  <span class="mx-1 text-gray-600">/</span>
+                  <span>{tab.shots.length}</span>
+                </span>
+                <span class="text-[11px] text-gray-500">Arrows, dots, or swipe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ))}
+
+  </div>
+</section>
+
+<div
+  id="kp-fullscreen"
+  class="fixed inset-0 z-[9999] hidden bg-black cursor-pointer"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Fullscreen screenshot"
+>
+  <button
+    type="button"
+    id="kp-fs-close"
+    class="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors cursor-pointer"
+    aria-label="Close fullscreen"
+  >
+    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <p id="kp-fs-caption" class="absolute top-5 left-5 z-10 text-white/50 text-xs font-bold uppercase tracking-widest max-w-[70%]"></p>
+
+  <div class="w-full h-full flex items-center justify-center p-4 md:p-10" id="kp-fs-inner">
+    <img
+      id="kp-fs-img"
+      src=""
+      alt=""
+      class="max-w-full max-h-full object-contain rounded-xl"
+      style="cursor: default;"
+    />
+  </div>
+
+  <p class="absolute bottom-5 left-0 right-0 text-center text-white/25 text-xs tracking-widest">ESC or click outside to close</p>
+</div>
+
+<script>
+  type ShotMeta = { src: string; caption: string; title: string; desc: string };
+
+  function readShots(container: HTMLElement): ShotMeta[] {
+    return Array.from(container.querySelectorAll<HTMLElement>(".kp-shot-store > span")).map((el) => ({
+      src: el.dataset.src ?? "",
+      caption: el.dataset.caption ?? "",
+      title: el.dataset.title ?? "",
+      desc: el.dataset.desc ?? "",
+    }));
+  }
+
+  function setupCarousel(container: HTMLElement) {
+    const shots = readShots(container);
+    if (!shots.length) return;
+
+    const titleEl = container.querySelector<HTMLElement>(".kp-win-title")!;
+    const descEl = container.querySelector<HTMLElement>(".kp-win-desc")!;
+    const imgEl = container.querySelector<HTMLImageElement>(".kp-main-img")!;
+    const zoomBtn = container.querySelector<HTMLButtonElement>(".kp-zoom-trigger")!;
+    const prevBtn = container.querySelector<HTMLButtonElement>(".kp-prev")!;
+    const nextBtn = container.querySelector<HTMLButtonElement>(".kp-next")!;
+    const counter = container.querySelector<HTMLElement>(".kp-counter")!;
+    const dots = Array.from(container.querySelectorAll<HTMLButtonElement>(".kp-dot"));
+    const total = shots.length;
+    let current = 0;
+
+    function apply(i: number, scrollDotIntoView = true) {
+      current = Math.max(0, Math.min(i, total - 1));
+      const s = shots[current]!;
+      titleEl.textContent = s.title;
+      descEl.textContent = s.desc;
+      imgEl.src = s.src;
+      imgEl.alt = s.caption;
+      zoomBtn.setAttribute("aria-label", `View fullscreen: ${s.caption}`);
+
+      counter.textContent = String(current + 1);
+
+      prevBtn.toggleAttribute("disabled", current === 0);
+      nextBtn.toggleAttribute("disabled", current === total - 1);
+
+      dots.forEach((dot, di) => {
+        const active = di === current;
+        dot.classList.toggle("bg-white", active);
+        dot.classList.toggle("w-6", active);
+        dot.classList.toggle("bg-white/25", !active);
+        dot.classList.toggle("hover:bg-white/45", !active);
+        dot.classList.toggle("w-1.5", !active);
+      });
+
+      // scrollIntoView on load scrolls the whole page down to this section — only
+      // run when the user actually changes slides (horizontal dot strip).
+      if (scrollDotIntoView) {
+        dots[current]?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+      }
+    }
+
+    function openFs() {
+      const s = shots[current]!;
+      openFullscreen(s.src, s.caption);
+    }
+
+    prevBtn.addEventListener("click", () => apply(current - 1));
+    nextBtn.addEventListener("click", () => apply(current + 1));
+
+    zoomBtn.addEventListener("click", openFs);
+    zoomBtn.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openFs();
+      }
+    });
+
+    dots.forEach((dot, di) => {
+      dot.addEventListener("click", () => apply(di));
+    });
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let swiping = false;
+
+    container.addEventListener(
+      "touchstart",
+      (e: TouchEvent) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        swiping = true;
+      },
+      { passive: true },
+    );
+
+    container.addEventListener(
+      "touchend",
+      (e: TouchEvent) => {
+        if (!swiping) return;
+        swiping = false;
+        const dx = touchStartX - e.changedTouches[0].clientX;
+        const dy = touchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 48) {
+          apply(dx > 0 ? current + 1 : current - 1);
+        }
+      },
+      { passive: true },
+    );
+
+    container.tabIndex = 0;
+    container.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        apply(current - 1);
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        apply(current + 1);
+      }
+    });
+
+    apply(0, false);
+  }
+
+  const fsOverlay = document.getElementById("kp-fullscreen") as HTMLElement;
+  const fsImg = document.getElementById("kp-fs-img") as HTMLImageElement;
+  const fsCaption = document.getElementById("kp-fs-caption") as HTMLElement;
+  const fsClose = document.getElementById("kp-fs-close") as HTMLButtonElement;
+  const fsInner = document.getElementById("kp-fs-inner") as HTMLElement;
+
+  function openFullscreen(src: string, cap: string) {
+    fsImg.src = src;
+    fsImg.alt = cap;
+    fsCaption.textContent = cap;
+    fsOverlay.classList.remove("hidden");
+    fsOverlay.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeFs() {
+    fsOverlay.classList.add("hidden");
+    fsOverlay.classList.remove("flex");
+    document.body.style.overflow = "";
+    fsImg.src = "";
+  }
+
+  fsOverlay.addEventListener("click", (e) => {
+    if (!fsInner.contains(e.target as Node) || e.target === fsOverlay || e.target === fsInner) {
+      closeFs();
+    }
+  });
+
+  fsClose.addEventListener("click", closeFs);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeFs();
+  });
+
+  const tabBtns = document.querySelectorAll<HTMLButtonElement>(".kp-tab");
+  const panels = document.querySelectorAll<HTMLElement>(".kp-carousel");
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = btn.dataset.kpTab!;
+
+      tabBtns.forEach((b) => {
+        const active = b.dataset.kpTab === target;
+        b.setAttribute("aria-selected", active ? "true" : "false");
+        b.className = `kp-tab px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all duration-200 cursor-pointer ${
+          active
+            ? "bg-white text-gray-900 border-white"
+            : "bg-transparent text-gray-500 border-gray-700 hover:border-gray-400 hover:text-white"
+        }`;
+      });
+
+      panels.forEach((p) => {
+        p.classList.toggle("hidden", p.dataset.kpPanel !== target);
+      });
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>(".kp-carousel").forEach(setupCarousel);
+</script>

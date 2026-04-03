@@ -518,10 +518,10 @@ function sseError(message: string): string {
 // ─────────────────────────────────────────────────────────────────────────────
 // ROUTE
 // ─────────────────────────────────────────────────────────────────────────────
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, cookies }) => {
     const adminPass = import.meta.env.ADMIN_PASS;
-    const auth = request.headers.get("x-admin-pass");
-    if (auth !== adminPass) {
+    const cookie = cookies.get("admin_auth");
+    if (!adminPass || cookie?.value !== adminPass) {
         return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
     }
 
