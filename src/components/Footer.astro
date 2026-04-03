@@ -11,22 +11,30 @@ const year = new Date().getFullYear();
     <div class="flex flex-col md:flex-row items-center justify-between gap-8">
       <!-- Brand -->
       <div class="flex items-center gap-2.5">
-        <span class="font-display text-xl font-bold text-e2-white tracking-tight">e2</span>
-        <span class="text-e2-muted/60 text-xs uppercase tracking-[0.1em]">Agency</span>
+        <span class="font-display text-xl font-bold text-e2-black tracking-tight">e2</span>
+        <span class="text-gray-600 text-xs uppercase tracking-[0.1em]">Agency</span>
       </div>
 
-      <!-- Links -->
-      <div class="flex items-center gap-8 text-sm text-e2-muted/60">
-        <a href="https://e2.agency" class="hover:text-e2-white transition-colors duration-300" rel="noopener">
+      <!-- Links — 44px min tap height on mobile -->
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm">
+        <a
+          href="https://e2.agency"
+          class="text-gray-700 hover:text-e2-black transition-colors duration-300 min-h-11 inline-flex items-center py-2"
+          rel="noopener"
+        >
           e2.agency
         </a>
-        <a href="https://getformflow.io" class="hover:text-e2-white transition-colors duration-300" rel="noopener">
+        <a
+          href="https://getformflow.io"
+          class="text-gray-700 hover:text-e2-black transition-colors duration-300 min-h-11 inline-flex items-center py-2"
+          rel="noopener"
+        >
           Formflow
         </a>
       </div>
 
       <!-- Copyright -->
-      <p class="text-xs text-e2-muted/40">
+      <p class="text-xs text-gray-600">
         © {year} e2 Agency
       </p>
     </div>

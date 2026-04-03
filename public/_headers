@@ -30,5 +30,11 @@
   Cache-Control: public, max-age=604800
 
 # HTML pages — always revalidate (server-rendered with dynamic content)
+# Security / best-practice headers (Cloudflare Pages passes these through)
 /*
   Cache-Control: public, max-age=0, must-revalidate
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains

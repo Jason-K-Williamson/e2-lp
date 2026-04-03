@@ -161,7 +161,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
         Real Numbers.<br />
         <span class="text-gray-500">Real Accounts. No Photoshop.</span>
       </h2>
-      <p class="text-pretty text-sm leading-relaxed text-gray-400 sm:text-base md:text-lg">
+      <p class="text-pretty text-sm leading-relaxed text-gray-300 sm:text-base md:text-lg">
         <strong class="font-semibold text-gray-300">40+ verified screenshots</strong> from live client accounts — not mockups, not a deck. Click through every proof.
       </p>
     </div>
@@ -173,7 +173,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
           role="tab"
           data-kp-tab={tab.id}
           aria-selected={i === 0 ? "true" : "false"}
-          class={`kp-tab px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all duration-200 cursor-pointer ${
+          class={`kp-tab min-h-11 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold border transition-all duration-200 cursor-pointer inline-flex items-center justify-center ${
             i === 0
               ? "bg-white text-gray-900 border-white"
               : "bg-transparent text-gray-500 border-gray-700 hover:border-gray-400 hover:text-white"
@@ -212,7 +212,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
             <h3 class="kp-win-title mb-3 text-balance text-2xl font-bold leading-snug tracking-tight text-white sm:mb-4 sm:text-3xl md:text-4xl">
               {tab.shots[0]!.title}
             </h3>
-            <p class="kp-win-desc mx-auto max-w-xl text-pretty text-sm leading-relaxed text-gray-400 sm:text-base">
+            <p class="kp-win-desc mx-auto max-w-xl text-pretty text-sm leading-relaxed text-gray-300 sm:text-base">
               {tab.shots[0]!.description}
             </p>
           </div>
@@ -222,7 +222,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
             <div class="flex max-h-[50vh] min-h-0 w-full items-center justify-center gap-2 sm:gap-3 md:gap-4">
               <button
                 type="button"
-                class="kp-prev flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 sm:h-11 sm:w-11 md:h-12 md:w-12"
+                class="kp-prev flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 md:h-12 md:w-12"
                 aria-label="Previous proof"
               >
                 <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -240,6 +240,8 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
                   <img
                     src={tab.shots[0]!.src}
                     alt={tab.shots[0]!.caption}
+                    width={960}
+                    height={600}
                     loading={i === 0 ? "eager" : "lazy"}
                     decoding="async"
                     class="kp-main-img h-auto max-h-[50vh] w-full object-contain object-center lg:max-h-[300px]"
@@ -249,7 +251,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
 
               <button
                 type="button"
-                class="kp-next flex h-10 w-10 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 sm:h-11 sm:w-11 md:h-12 md:w-12"
+                class="kp-next flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border border-white/15 bg-gray-900/90 text-white shadow-[0_4px_20px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all duration-200 hover:scale-[1.03] hover:bg-gray-800 disabled:pointer-events-none disabled:opacity-0 md:h-12 md:w-12"
                 aria-label="Next proof"
               >
                 <svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -268,10 +270,15 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
                 {tab.shots.map((_, di) => (
                   <button
                     type="button"
-                    class={`kp-dot h-1.5 shrink-0 cursor-pointer rounded-full transition-all duration-200 ${di === 0 ? "w-6 bg-white" : "w-1.5 bg-white/25 hover:bg-white/45"}`}
+                    class="kp-dot flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-full border-0 bg-transparent p-0"
                     data-dot-index={di}
                     aria-label={`Go to slide ${di + 1} of ${tab.shots.length}`}
-                  />
+                  >
+                    <span
+                      class={`kp-dot-inner block h-1.5 rounded-full transition-all duration-200 ${di === 0 ? "w-6 bg-white" : "w-1.5 bg-white/25 hover:bg-white/45"}`}
+                      aria-hidden="true"
+                    />
+                  </button>
                 ))}
               </div>
               <div class="flex flex-col items-center gap-1.5 text-center sm:flex-row sm:gap-3">
@@ -301,7 +308,7 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
   <button
     type="button"
     id="kp-fs-close"
-    class="absolute top-5 right-5 z-10 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors cursor-pointer"
+    class="absolute top-5 right-5 z-10 min-h-11 min-w-11 rounded-full bg-white/10 hover:bg-white/25 flex items-center justify-center text-white transition-colors cursor-pointer"
     aria-label="Close fullscreen"
   >
     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -316,6 +323,8 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
       id="kp-fs-img"
       src=""
       alt=""
+      width="960"
+      height="600"
       class="max-w-full max-h-full object-contain rounded-xl"
       style="cursor: default;"
     />
@@ -366,12 +375,14 @@ const tabs: { id: string; label: string; count: number; shots: Shot[] }[] = [
       nextBtn.toggleAttribute("disabled", current === total - 1);
 
       dots.forEach((dot, di) => {
+        const inner = dot.querySelector<HTMLElement>(".kp-dot-inner");
+        if (!inner) return;
         const active = di === current;
-        dot.classList.toggle("bg-white", active);
-        dot.classList.toggle("w-6", active);
-        dot.classList.toggle("bg-white/25", !active);
-        dot.classList.toggle("hover:bg-white/45", !active);
-        dot.classList.toggle("w-1.5", !active);
+        inner.classList.toggle("bg-white", active);
+        inner.classList.toggle("w-6", active);
+        inner.classList.toggle("bg-white/25", !active);
+        inner.classList.toggle("hover:bg-white/45", !active);
+        inner.classList.toggle("w-1.5", !active);
       });
 
       // scrollIntoView on load scrolls the whole page down to this section — only

@@ -14,5 +14,9 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-  }
+    build: {
+      // Smaller client bundles; modern browsers only (no legacy polyfill bloat in lab “Legacy JS” audit)
+      target: 'es2022',
+    },
+  },
 });
