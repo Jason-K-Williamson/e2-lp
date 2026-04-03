@@ -67,9 +67,9 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <!-- Preload first logo in logo cloud (eager, above fold on most viewports) -->
     <link rel="preload" href="/brand-logos/the-oodie.webp" as="image" type="image/webp" />
 
-    <!-- Warm connections for third-party origins used above the fold -->
-    <link rel="preconnect" href="https://vz-e4e7db1f-2fb.b-cdn.net" crossorigin />
-    <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
+    <!-- Bunny Stream: dns-prefetch only — avoids PSI “unused preconnect” (posters load lazy / below fold) -->
+    <link rel="dns-prefetch" href="https://vz-e4e7db1f-2fb.b-cdn.net" />
+    <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
     <!-- Formflow loads only when modal opens — dns-prefetch is enough -->
     <link rel="dns-prefetch" href="https://myformflow.io" />
