@@ -1,8 +1,21 @@
 ---
-// PixelFlow — loads on all pages that use BaseLayout (same placement as Framer "End of <head>")
+// PixelFlow — deferred until window load so it never blocks FCP/LCP.
+// The stub queues events fired before the script lands.
 ---
-<!-- PixelFlow Script -->
 <script is:inline>
-    !(function(p,i,x,f,l,o,w){p["PixelFlowObject"]=f;p[f]=p[f]||function(){(p[f].q=p[f].q||[]).push(arguments);};p[f].l=1*new Date();o=i.createElement(x);w=i.getElementsByTagName(x)[0];o.src=l;o.async=1;p[f].apiKey="4a9cfe8b0a9a4548ac593d9975424aac5dc168056828240d7e9f9b23a3c04220";p[f].siteId="1774671754859yimkiuazkjr";p[f].apiEndpoint="https://api.pixelflow.so/event";w.parentNode.insertBefore(o,w);})(window,document,"script","pixelFlow","https://slrgkgulru.pixelflow.so/pfm.js");
+(function(){
+  var f="pixelFlow";
+  window[f]=window[f]||function(){(window[f].q=window[f].q||[]).push(arguments);};
+  window[f].l=1*new Date();
+  window[f].apiKey="4a9cfe8b0a9a4548ac593d9975424aac5dc168056828240d7e9f9b23a3c04220";
+  window[f].siteId="1774671754859yimkiuazkjr";
+  window[f].apiEndpoint="https://api.pixelflow.so/event";
+  window["PixelFlowObject"]=f;
+  window.addEventListener('load',function(){
+    var s=document.createElement('script');
+    s.async=1;
+    s.src='https://slrgkgulru.pixelflow.so/pfm.js';
+    document.head.appendChild(s);
+  },{once:true});
+})();
 </script>
-<!-- End PixelFlow Script -->

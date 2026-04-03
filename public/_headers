@@ -1,0 +1,34 @@
+# Cloudflare Pages _headers — cache rules for static assets
+# Hashed assets get 1yr immutable; unhashed get shorter TTL.
+
+# Astro build output — content-hashed filenames → 1 year immutable
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts — content is stable, 1 year
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Brand logos — 30 days (may be updated)
+/brand-logos/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# EDM design images — 30 days
+/edm-designs/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Klaviyo proof screenshots — 30 days
+/klaviyo-proof/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Other images in /images
+/images/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Favicon — 1 week
+/favicon.*
+  Cache-Control: public, max-age=604800
+
+# HTML pages — always revalidate (server-rendered with dynamic content)
+/*
+  Cache-Control: public, max-age=0, must-revalidate

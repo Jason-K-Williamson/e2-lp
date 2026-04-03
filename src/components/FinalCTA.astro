@@ -101,13 +101,16 @@ const editProps = (field: string) =>
                 </p>
             </div>
 
-            <!-- GetFormFlow Embed (no loading="lazy" — lazy iframes often never fetch on #qualify hash navigation) -->
+            <!-- GetFormFlow Embed: loaded lazily via IntersectionObserver.
+                 data-src is swapped to src when the section enters the viewport
+                 (or immediately if the user navigates via #qualify anchor). -->
             <div
                 id="qualify"
                 class="w-full max-w-2xl mx-auto scroll-mt-28 overflow-hidden"
             >
                 <iframe
-                    src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
+                    id="qualify-frame"
+                    data-src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
                     class="block min-h-[580px] w-full border-0 bg-white"
                     title="See if you qualify"
                     allow="clipboard-write"
@@ -186,20 +189,45 @@ const editProps = (field: string) =>
     </div>
 </section>
 
-<!-- Match Formflow widget.js: embed posts resize height to parent window -->
 <script is:inline>
   (function () {
-    var iframe = document.querySelector("#qualify iframe");
-    if (!iframe) return;
-    window.addEventListener(
-      "message",
-      function (e) {
-        if (e.origin !== "https://myformflow.io") return;
-        if (e.data && e.data.event === "resize" && e.data.height) {
-          iframe.style.height = e.data.height + "px";
+    var frame = document.getElementById("qualify-frame");
+    if (!frame) return;
+
+    function loadFrame() {
+      if (frame.src) return; // already loaded
+      var src = frame.getAttribute("data-src");
+      if (src) frame.src = src;
+    }
+
+    // Load immediately if #qualify is in the URL (hash navigation)
+    if (window.location.hash === "#qualify") {
+      loadFrame();
+    } else if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          loadFrame();
+          io.disconnect();
         }
-      },
-      false
-    );
+      }, { rootMargin: "200px" });
+      io.observe(frame);
+    } else {
+      // Fallback for old browsers
+      loadFrame();
+    }
+
+    // Handle resize messages from Formflow
+    window.addEventListener("message", function (e) {
+      if (e.origin !== "https://myformflow.io") return;
+      if (e.data && e.data.event === "resize" && e.data.height) {
+        frame.style.height = e.data.height + "px";
+      }
+    }, false);
+
+    // Also load if user clicks #qualify anchor
+    document.addEventListener("click", function (e) {
+      var el = e.target && e.target.closest('a[href="#qualify"]');
+      if (el) loadFrame();
+    });
   })();
 </script>

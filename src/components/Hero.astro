@@ -1,6 +1,6 @@
 ---
 import { DEFAULT_VARIANT } from "../lib/supabase";
-import { LogoCloud } from "./ui/logo-cloud-2";
+import LogoCloud from "./ui/LogoCloud.astro";
 
 interface Props {
   badge?: string;
@@ -230,7 +230,7 @@ const editProps = (field: string) =>
       <p class="text-base text-gray-400 font-medium text-center mb-6">
         Join 750+ brands who've scaled their email & SMS with e2
       </p>
-      <LogoCloud client:load className="w-full" />
+      <LogoCloud />
     </div>
   </div>
 </section>

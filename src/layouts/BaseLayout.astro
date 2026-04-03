@@ -25,8 +25,7 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <PostHog />
-    <PixelFlow />
+    <!-- charset MUST be first — before any scripts or external resources -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -51,8 +50,8 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
 
     <!--
       PERFORMANCE: Self-hosted fonts — zero external DNS lookups.
-      Preload only the critical display weight (Syne 800 for hero headline).
-      DM Sans loads via @font-face in CSS with font-display:swap — no FOIT.
+      Preload only the critical weight (DM Sans 400 for body text).
+      Others load via @font-face with font-display:swap — no FOIT.
     -->
     <link
       rel="preload"
@@ -61,32 +60,35 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
       type="font/woff2"
       crossorigin
     />
-    <link
-      rel="preload"
-      href="/fonts/DMSans-500.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/DMSans-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Bunny Stream: warm connections for poster JPEGs + iframe embeds (no JS until hover) -->
+    <!-- Preload first logo in logo cloud (eager, above fold on most viewports) -->
+    <link rel="preload" href="/brand-logos/the-oodie.webp" as="image" type="image/webp" />
+
+    <!-- Warm connections for third-party origins used above the fold -->
     <link rel="preconnect" href="https://vz-e4e7db1f-2fb.b-cdn.net" crossorigin />
     <link rel="preconnect" href="https://iframe.mediadelivery.net" crossorigin />
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
     <link rel="preconnect" href="https://myformflow.io" crossorigin />
+    <!-- Analytics origins — preconnect only; scripts load deferred -->
+    <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
+    <link rel="dns-prefetch" href="https://slrgkgulru.pixelflow.so" />
 
-    <!-- Formflow: widget injects iframe into #formflow-embed (FormflowModal); FinalCTA uses a second inline iframe -->
-    <script src="https://myformflow.io/embed/widget.js" async></script>
+    <!-- Analytics stubs (deferred — load after window load event, never blocks FCP) -->
+    <PostHog />
+    <PixelFlow />
+
+    <!-- Formflow widget: deferred via JS, injected only after page is interactive -->
+    <script is:inline>
+      window.addEventListener('load', function() {
+        var s = document.createElement('script');
+        s.src = 'https://myformflow.io/embed/widget.js';
+        s.async = true;
+        document.head.appendChild(s);
+      }, { once: true });
+    </script>
 
     <!--
       CRITICAL CSS: Inlined to prevent FOUC while the full CSS bundle loads async.
@@ -179,14 +181,14 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
       Deferred by browser since it's a module script.
     -->
     <script>
-      // Fallback: reveal content if GSAP never fires (in < 3s)
+      // Fallback: reveal content if GSAP is slow (1s limit — don't hold LCP hostage)
       (function () {
         var t = setTimeout(function () {
           document.querySelectorAll("[data-animate]").forEach(function (el) {
             (el as HTMLElement).style.opacity = "1";
             (el as HTMLElement).style.transform = "none";
           });
-        }, 3000);
+        }, 1000);
         (window as any).__gsapFallbackTimer = t;
       })();
     </script>
