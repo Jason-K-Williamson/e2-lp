@@ -116,37 +116,38 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                     >
                         Founder, The Oodie ($800M+)
                     </div>
-                    <div
-                        class="mt-3 pt-3 border-t border-slate-100 flex flex-col gap-2 max-w-[min(100%,280px)] sm:max-w-none"
-                    >
-                        <span
-                            class="text-[10px] uppercase tracking-[0.14em] text-slate-500 font-bold"
-                            >Maybe seen on</span
+                    <div class="mt-3.5 pt-3.5 border-t border-slate-200/90">
+                        <p
+                            class="flex flex-wrap items-center gap-x-2 sm:gap-x-2.5 gap-y-1.5 text-[12px] sm:text-[13px] leading-snug"
                         >
-                        <picture>
-                            <source
-                                srcset="/brand/shark-tank.avif"
-                                type="image/avif"
-                            />
-                            <source
-                                srcset="/brand/shark-tank.webp"
-                                type="image/webp"
-                            />
-                            <img
-                                src="/brand/shark-tank.webp"
-                                alt="Shark Tank"
-                                width="300"
-                                height="169"
-                                loading="lazy"
-                                decoding="async"
-                                class="h-8 sm:h-9 w-auto object-contain object-left"
-                            />
-                        </picture>
-                        <p class="text-[11px] sm:text-xs text-slate-600 leading-snug">
-                            <span class="font-semibold text-slate-800"
-                                >Shark Tank</span
+                            <span
+                                class="font-semibold tracking-tight text-slate-800 shrink-0"
+                                >As seen on:</span
                             >
-                            — as a Shark
+                            <picture
+                                class="inline-flex shrink-0 translate-y-[0.06em]"
+                            >
+                                <source
+                                    srcset="/brand/shark-tank-logo.webp"
+                                    type="image/webp"
+                                />
+                                <img
+                                    src="/brand/shark-tank-logo.png"
+                                    alt="Shark Tank"
+                                    width="320"
+                                    height="265"
+                                    loading="lazy"
+                                    decoding="async"
+                                    class="h-[2.35rem] sm:h-[2.65rem] w-auto max-w-[9.5rem] sm:max-w-[10.5rem] object-contain object-left"
+                                />
+                            </picture>
+                            <span
+                                class="font-medium text-slate-400 shrink-0 select-none"
+                                aria-hidden="true">&mdash;</span
+                            >
+                            <span class="font-medium text-slate-700"
+                                >as a Shark</span
+                            >
                         </p>
                     </div>
                 </div>
