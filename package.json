@@ -26,6 +26,7 @@
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "claude-code-templates": "^1.28.16"
+    "claude-code-templates": "^1.28.16",
+    "sharp": "^0.34.5"
   }
 }
