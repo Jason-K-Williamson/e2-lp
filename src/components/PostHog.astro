@@ -13,9 +13,24 @@
   _ph._i=[];
   _ph.__SV=1;
   _ph.init=function(i,s,a){
-    function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]);t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))};}
-    var u=_ph;for(void 0!==a?u=_ph[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},
-    "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" ").forEach(function(m){g(u,m)});
+    function g(t,e){
+      var o=e.split(".");
+      if(o.length===2){t=t[o[0]];e=o[1];}
+      t[e]=function(){
+        t.push([e].concat(Array.prototype.slice.call(arguments,0)));
+      };
+    }
+    var u=_ph;
+    if(void 0!==a){u=_ph[a]=[];}else{a="posthog";}
+    u.people=u.people||[];
+    u.toString=function(t){
+      var e="posthog";
+      if(a!=="posthog"){e+="."+a;}
+      if(!t){e+=" (stub)";}
+      return e;
+    };
+    u.people.toString=function(){return u.toString(1)+".people (stub)";};
+    "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" ").forEach(function(m){g(u,m);});
     _ph._i.push([i,s,a]);
   };
   // After load: idle-defer array.js so it doesn't stack with GSAP / first paint work (lower TBT in lab).
