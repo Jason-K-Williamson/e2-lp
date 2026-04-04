@@ -96,29 +96,31 @@ import BunnyVideo from "./video/BunnyVideo.astro";
             </div>
         </div>
 
-        <!-- Metric Bar — 3-col grid on mobile so stats never wrap awkwardly -->
+        <!-- Attribution + metrics: identity left / stats right on large screens -->
         <div
-            class="grid grid-cols-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center gap-y-3 sm:gap-x-12 border-t border-slate-100 pt-5 sm:pt-6 w-full max-w-3xl shrink-0 mt-2"
+            class="w-full max-w-3xl shrink-0 mt-2 border-t border-slate-200/90 pt-6 sm:pt-7"
         >
-            <!-- Avatar & Details -->
-            <div class="flex items-center gap-2 sm:gap-2.5 col-span-3 sm:col-span-1 justify-center sm:justify-start mb-1 sm:mb-0">
-                <div
-                    class="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-slate-900 flex items-center justify-center text-white text-base sm:text-lg font-black shrink-0 shadow-sm"
-                >
-                    D
-                </div>
-                <div class="text-left">
-                    <div class="text-sm sm:text-base font-bold text-slate-900">
-                        Davie Fogarty
+            <div
+                class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-14"
+            >
+                <div class="flex-1 min-w-0 text-center lg:text-left space-y-4">
+                    <div>
+                        <div
+                            class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight"
+                        >
+                            Davie Fogarty
+                        </div>
+                        <p
+                            class="text-xs sm:text-sm font-semibold text-blue-600 mt-1.5"
+                        >
+                            Founder, The Oodie ($800M+)
+                        </p>
                     </div>
                     <div
-                        class="text-[11px] sm:text-[13px] font-semibold text-blue-600"
+                        class="rounded-xl bg-slate-50/90 border border-slate-100/90 px-3.5 py-2.5 sm:px-4 sm:py-3 inline-flex lg:block w-full max-w-md mx-auto lg:mx-0 lg:max-w-lg"
                     >
-                        Founder, The Oodie ($800M+)
-                    </div>
-                    <div class="mt-3.5 pt-3.5 border-t border-slate-200/90">
                         <p
-                            class="flex flex-wrap items-center gap-x-2 sm:gap-x-2.5 gap-y-1.5 text-[12px] sm:text-[13px] leading-snug"
+                            class="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 sm:gap-x-2.5 gap-y-1.5 text-[12px] sm:text-[13px] leading-snug text-slate-600"
                         >
                             <span
                                 class="font-semibold tracking-tight text-slate-800 shrink-0"
@@ -138,7 +140,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                                     height="265"
                                     loading="lazy"
                                     decoding="async"
-                                    class="h-[2.35rem] sm:h-[2.65rem] w-auto max-w-[9.5rem] sm:max-w-[10.5rem] object-contain object-left"
+                                    class="h-[2.1rem] sm:h-[2.4rem] w-auto max-w-[8.75rem] sm:max-w-[9.5rem] object-contain object-left"
                                 />
                             </picture>
                             <span
@@ -151,47 +153,46 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         </p>
                     </div>
                 </div>
-            </div>
 
-            <!-- Stat 1 -->
-            <div class="text-center sm:text-left">
                 <div
-                    class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
+                    class="grid grid-cols-3 gap-4 sm:gap-8 lg:gap-10 w-full max-w-lg mx-auto lg:mx-0 lg:w-auto lg:max-w-none lg:shrink-0 lg:pt-1"
                 >
-                    $25M+
-                </div>
-                <div
-                    class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
-                >
-                    SMS Revenue
-                </div>
-            </div>
-
-            <!-- Stat 2 -->
-            <div class="text-center sm:text-left">
-                <div
-                    class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
-                >
-                    $0
-                </div>
-                <div
-                    class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
-                >
-                    Start Point
-                </div>
-            </div>
-
-            <!-- Stat 3 -->
-            <div class="text-center sm:text-left">
-                <div
-                    class="text-lg sm:text-2xl font-black text-emerald-600 tabular-nums tracking-tight"
-                >
-                    &lt;2 yrs
-                </div>
-                <div
-                    class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
-                >
-                    Timeframe
+                    <div class="text-center lg:text-left">
+                        <div
+                            class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
+                        >
+                            $25M+
+                        </div>
+                        <div
+                            class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
+                        >
+                            SMS Revenue
+                        </div>
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <div
+                            class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
+                        >
+                            $0
+                        </div>
+                        <div
+                            class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
+                        >
+                            Start Point
+                        </div>
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <div
+                            class="text-lg sm:text-2xl font-black text-emerald-600 tabular-nums tracking-tight"
+                        >
+                            &lt;2 yrs
+                        </div>
+                        <div
+                            class="text-[9px] sm:text-[10px] text-slate-400 uppercase font-bold tracking-[0.12em] sm:tracking-[0.15em] mt-0.5 leading-tight"
+                        >
+                            Timeframe
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

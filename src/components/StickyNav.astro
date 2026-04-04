@@ -4,6 +4,7 @@
  * Per 2026 playbook: sticky CTA bar following scroll, cold-traffic temperature copy
  * CTA links to #qualify (GetFormFlow form anchor)
  */
+import StrategyCallStatus from "./StrategyCallStatus.astro";
 ---
 
 <div
@@ -34,9 +35,10 @@
         <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"
         ></span>
       </span>
-      <span class="text-xs font-semibold text-gray-700 whitespace-nowrap truncate"
-        >2 spots left this month</span
-      >
+      <StrategyCallStatus
+        surface="sticky"
+        class="text-xs font-semibold text-gray-700 min-w-0 truncate"
+      />
     </div>
 
     <!-- Separator — only on sm+ -->

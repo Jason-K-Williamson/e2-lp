@@ -707,7 +707,12 @@ export default function VariantEditor({ variant, products = [] }: Props) {
                         {/* ── Hero tab ── */}
                         {activeTab === "hero" && (
                             <>
-                                <Field label="Badge" value={heroBadge} onChange={setHeroBadge} placeholder="2 Spots Left — Intake Closes Friday" />
+                                <Field
+                                    label="Badge"
+                                    value={heroBadge}
+                                    onChange={setHeroBadge}
+                                    placeholder="Homepage uses live intake line (StrategyCallStatus); this field is for other routes / legacy"
+                                />
                                 <Field label="Headline" value={heroHeadline} onChange={setHeroHeadline} rows={2} placeholder="Generic Flows Are Why You're Still Addicted to Ads." />
                                 <Field label="Subheadline" value={heroSub} onChange={setHeroSub} rows={3} placeholder="We build flows around your unique formulation, not Klaviyo templates." />
                                 <Field label="Primary CTA" value={heroCtaP} onChange={setHeroCtaP} placeholder="See If You Qualify →" />

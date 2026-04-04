@@ -1,0 +1,21 @@
+---
+/**
+ * Reusable strategy-call scarcity line (hero, sticky, final CTA).
+ * Copy is generated in src/lib/strategy-intake.ts — edit spots / timezone there.
+ */
+import { getStrategyIntakeCopy } from "../lib/strategy-intake";
+
+type Surface = "hero" | "sticky" | "finalCta";
+
+interface Props {
+  surface: Surface;
+  class?: string;
+}
+
+const { surface, class: className } = Astro.props;
+const copy = getStrategyIntakeCopy();
+const text =
+  surface === "finalCta" ? copy.finalCtaUrgency : copy.primaryLine;
+---
+
+<span class={className}>{text}</span>

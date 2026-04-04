@@ -15,6 +15,9 @@ import {
   DEFAULT_VARIANT,
   type PageVariant,
 } from "../../lib/supabase";
+import { getStrategyIntakeCopy } from "../../lib/strategy-intake";
+
+const strategyIntake = getStrategyIntakeCopy();
 
 const { concept, tam } = Astro.params;
 const isAdmin = !!(Astro.locals as any).isAdmin;
@@ -51,7 +54,7 @@ const v = (data ?? {}) as PageVariant;
   <StickyNav />
 
   <Hero
-    badge={v.hero_badge}
+    badge={strategyIntake.primaryLine}
     headline={v.hero_headline}
     subheadline={v.hero_subheadline}
     ctaPrimary={v.hero_cta_primary}

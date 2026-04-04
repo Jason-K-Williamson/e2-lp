@@ -145,8 +145,9 @@ export interface Outreach {
 export const DEFAULT_VARIANT = {
   brief: "",
   // ── Hero ─────────────────────────────────────────────────────────────────
-  hero_badge: "1 Free Strategy Call · March Intake · 2 Spots Left",
-  hero_headline: "Ethically Steal Our $200M Email Playbook. Free in 1 Strategy Call.",
+  hero_badge: "Free Strategy Call · (live date) Intake · 2 spots left",
+  hero_headline:
+    "Ethically Steal Our $200M Email Playbook. Free on a strategy call.",
   hero_subheadline: "Without wasting more money on the Andromeda Roller Coaster. Get the exact 6-flow system that generated $225,669,414 for eCom brands and see if we can build it for yours. No pitch. 60 minutes. 100% free.",
   hero_cta_primary: "Steal the Playbook →",
   hero_cta_secondary: "See the Results First",

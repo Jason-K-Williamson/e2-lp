@@ -11,9 +11,11 @@ import HeroTestimonial from "../components/HeroTestimonial.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import Footer from "../components/Footer.astro";
 import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+import { getStrategyIntakeCopy } from "../lib/strategy-intake";
 import KlaviyoProof from "../components/KlaviyoProof.astro";
 
 const isAdmin = !!(Astro.locals as any).isAdmin;
+const strategyIntake = getStrategyIntakeCopy();
 
 // ── Resolve variant row: always read from DB when possible ───────────────────
 // This is what powers the visual editor round-trip: we save via PUT /api/variants/:id
@@ -66,7 +68,7 @@ const description =
 
      <!-- 1. HERO — VSL + logo bar -->
      <Hero
-          badge={variant.hero_badge}
+          badge={strategyIntake.primaryLine}
           headline={variant.hero_headline}
           subheadline={variant.hero_subheadline}
           ctaPrimary={variant.hero_cta_primary}

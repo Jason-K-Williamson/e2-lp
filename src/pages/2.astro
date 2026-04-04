@@ -15,6 +15,9 @@ import FAQ from "../components/FAQ.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import Footer from "../components/Footer.astro";
 import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+import { getStrategyIntakeCopy } from "../lib/strategy-intake";
+
+const strategyIntake = getStrategyIntakeCopy();
 
 // ── Variant resolution ────────────────────────────────────────────────────────
 // The only exception is ?v=<id> for admin preview of a specific variant.
@@ -56,7 +59,7 @@ const description =
 
     <!-- 1. HERO — Benefit headline + VSL + trust logos -->
     <Hero
-        badge={variant.hero_badge}
+        badge={strategyIntake.primaryLine}
         headline={variant.hero_headline}
         subheadline={variant.hero_subheadline}
         ctaPrimary={variant.hero_cta_primary}

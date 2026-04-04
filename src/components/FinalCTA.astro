@@ -8,6 +8,7 @@
  * - Micro-copy: no contracts, results guaranteed
  */
 import { DEFAULT_VARIANT } from "../lib/supabase";
+import StrategyCallStatus from "./StrategyCallStatus.astro";
 
 interface Props {
     heading?: string;
@@ -84,7 +85,7 @@ const editProps = (field: string) =>
                             class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"
                         ></span>
                     </span>
-                    March Intake. 2 Spots Remaining
+                    <StrategyCallStatus surface="finalCta" />
                 </div>
 
                 <h2
