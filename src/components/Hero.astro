@@ -31,7 +31,7 @@ const editProps = (field: string) =>
 ---
 
 <section
-  class="relative min-h-screen flex flex-col justify-center pt-16 pb-24 overflow-x-hidden"
+  class="relative flex flex-col justify-start min-h-0 sm:min-h-[100svh] pt-6 sm:pt-8 pb-16 sm:pb-20 overflow-x-hidden"
 >
   <!-- Multi-layer ambient background — overflow:hidden prevents horizontal bleed -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
@@ -52,7 +52,7 @@ const editProps = (field: string) =>
     <a
       href="/"
       data-animate
-      class="inline-flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 rounded-md mb-5 sm:mb-7"
+      class="inline-flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 rounded-md mb-2 sm:mb-2.5"
       aria-label="e2 agency home"
     >
       <img
@@ -60,7 +60,7 @@ const editProps = (field: string) =>
         alt="e² agency"
         width="1024"
         height="185"
-        class="h-8 w-auto sm:h-10 select-none"
+        class="h-5 w-auto sm:h-6 select-none"
         decoding="async"
         fetchpriority="high"
       />
@@ -69,7 +69,7 @@ const editProps = (field: string) =>
     <!-- Badge -->
     <div
       data-animate
-      class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-xs font-bold text-gray-900 mb-6 sm:mb-8 shadow-sm tracking-wide max-w-full"
+      class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-[11px] sm:text-xs font-bold text-gray-900 mb-3 sm:mb-4 shadow-sm tracking-wide max-w-full"
     >
       <span class="relative flex h-2 w-2 flex-shrink-0">
         <span
@@ -85,7 +85,7 @@ const editProps = (field: string) =>
     <h1
       id="hero-headline"
       data-animate
-      class="max-w-3xl font-bold text-[clamp(1.75rem,4.5vw,3.5rem)] leading-[1.08] tracking-tight text-e2-black mb-4 sm:mb-5 text-balance"
+      class="max-w-3xl font-bold text-[clamp(1.65rem,4.2vw,3.25rem)] leading-[1.08] tracking-tight text-e2-black mb-3 sm:mb-3.5 text-balance"
       {...editProps("hero_headline")}
     >
       {headline}
@@ -94,7 +94,7 @@ const editProps = (field: string) =>
     <!-- Subheadline -->
     <p
       data-animate
-      class="text-base md:text-lg text-gray-600 max-w-xl mx-auto mb-6 sm:mb-8 leading-relaxed font-normal text-balance"
+      class="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto mb-4 sm:mb-5 leading-snug sm:leading-relaxed font-normal text-balance"
       {...editProps("hero_subheadline")}
     >
       {subheadline}
@@ -103,13 +103,13 @@ const editProps = (field: string) =>
     <!-- CTA Group — full-width stacked on mobile (max tap surface + higher CVR) -->
     <div
       data-animate
-      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-3 sm:mb-4"
+      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mb-2 sm:mb-2.5"
     >
       <a
         href="#qualify"
         id="hero-cta-primary"
         class="group w-full sm:w-auto px-9 bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
-        style="min-height: 56px;"
+        style="min-height: 52px;"
         {...editProps("hero_cta_primary")}
       >
         <span class="relative z-10">{ctaPrimary}</span>
@@ -120,20 +120,95 @@ const editProps = (field: string) =>
       <a
         href="#how-it-works"
         class="w-full sm:w-auto px-7 bg-white/80 backdrop-blur-sm text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-white hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
-        style="min-height: 56px;"
+        style="min-height: 52px;"
         {...editProps("hero_cta_secondary")}
       >
         {ctaSecondary}
       </a>
     </div>
 
-    <!-- Micro-copy trust line -->
-    <p
+    <!-- Partner / platform proof (compact, inline label — trust near CTA per CRO) -->
+    <div
       data-animate
-      class="text-xs text-gray-600 font-medium mb-10 sm:mb-16 tracking-wide"
+      class="w-full max-w-3xl mx-auto mt-4 sm:mt-5 mb-5 sm:mb-7 px-1 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-3 gap-y-2"
+      aria-label="Partner platforms"
     >
-      No obligation &nbsp;·&nbsp; 30 minutes &nbsp;·&nbsp; Custom growth plan
-    </p>
+      <span
+        class="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] text-gray-500 shrink-0"
+      >
+        Partners with:
+      </span>
+      <ul
+        class="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1.5 list-none p-0 m-0"
+        role="list"
+      >
+        <li
+          class="flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity"
+        >
+          <img
+            src="/partners/shopify.svg"
+            alt=""
+            width="24"
+            height="24"
+            class="h-5 w-5 shrink-0"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true"
+          />
+          <span
+            class="text-xs sm:text-sm font-semibold text-gray-800 tracking-tight"
+            >Shopify</span
+          >
+        </li>
+        <li
+          class="opacity-90 hover:opacity-100 transition-opacity max-w-[min(100%,180px)] sm:max-w-[200px]"
+        >
+          <img
+            src="/partners/klaviyo-master-platinum.png"
+            alt="Klaviyo Master Platinum partner"
+            width="220"
+            height="80"
+            class="h-7 sm:h-8 w-auto max-w-full object-contain object-center"
+            loading="lazy"
+            decoding="async"
+          />
+        </li>
+        <li
+          class="flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity"
+        >
+          <div
+            class="w-6 h-6 rounded-lg bg-gradient-to-br from-[#ff5a1f] to-[#e84600] flex items-center justify-center shadow-sm shrink-0"
+            aria-hidden="true"
+          >
+            <svg
+              class="w-3.5 h-3.5 text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <path d="M7 7h10M7 12h6M7 17h10"></path>
+            </svg>
+          </div>
+          <span
+            class="text-xs sm:text-sm font-semibold text-gray-800 tracking-tight"
+            >OptiMonk</span
+          >
+        </li>
+        <li class="opacity-90 hover:opacity-100 transition-opacity">
+          <img
+            src="/partners/postscript.png"
+            alt="Postscript SMS partner"
+            width="200"
+            height="64"
+            class="h-7 sm:h-8 w-auto max-w-[150px] sm:max-w-[170px] object-contain object-center"
+            loading="lazy"
+            decoding="async"
+          />
+        </li>
+      </ul>
+    </div>
 
     <!-- VSL — 16:9 on mobile (shorter, CTA in view faster), 4:3 on md+ -->
     <div
@@ -239,7 +314,7 @@ const editProps = (field: string) =>
     </div>
 
     <!-- Below VSL social proof row -->
-    <div class="mt-10 w-full max-w-3xl">
+    <div class="mt-7 sm:mt-8 w-full max-w-3xl">
       <p
         class="text-base uppercase tracking-widest text-gray-600 font-semibold mb-2 text-center"
       >

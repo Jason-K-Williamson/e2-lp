@@ -16,10 +16,10 @@ const testimonials = [
     metricLabel: "SMS revenue + conversion rates",
   },
   {
-    quote: "Jason has been advising brands within our ecommerce mentorship community for 6 months now, and I don't think there's a better person to help founders grow their brands through email and SMS. He doesn't just advise from a distance, he gets his hands dirty coaching founders not just on what to do, but how to do it. The results founders are getting is WILD.",
+    quote: "Jason has been advising brands inside The Daily Mentor community for 6 months now, and I don't think there's a better person to help founders grow their brands through email and SMS. He doesn't just advise from a distance, he gets his hands dirty coaching founders not just on what to do, but how to do it. The results founders are getting is WILD.",
     author: "KC Holiday",
-    role: "CEO",
-    company: "The Daily Mentor",
+    role: "Former CEO",
+    company: "The Daily Mentor · Founder, Cashmere Wolf",
     before: "Good",
     after: "WILD",
     metricLabel: "Community-wide results",
@@ -127,51 +127,146 @@ const testimonials = [
 ];
 ---
 
-<section class="py-32 relative">
-  <div class="section-container">
+<section class="py-32 relative w-full overflow-x-hidden">
+  <div class="section-container w-full min-w-0 max-w-full">
 
-    <div class="max-w-3xl mx-auto text-center mb-16">
+    <div class="max-w-3xl mx-auto text-center mb-10 sm:mb-16 px-0.5">
       <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">Client Results</p>
-      <h2 class="font-bold text-4xl md:text-5xl text-e2-black tracking-tight mb-4 text-balance">
+      <h2 class="font-bold text-[clamp(1.5rem,6vw,3rem)] md:text-5xl text-e2-black tracking-tight mb-4 text-balance">
         750+ Build-Outs.<br/>
         <span class="text-gray-600">Here's What Happened.</span>
       </h2>
     </div>
 
-    <!-- Masonry grid -->
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Horse Education — same card pattern as grid; screenshot sits under quote -->
+    <div class="mb-10 sm:mb-14 w-full min-w-0 max-w-full">
+      <div
+        class="glass-panel p-5 sm:p-8 rounded-[2rem] hover:bg-white hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 group flex flex-col w-full min-w-0 max-w-full overflow-hidden border border-gray-100"
+      >
+        <div
+          class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-5 sm:mb-6 w-full min-w-0"
+        >
+          <div class="flex-1 min-w-0 text-center w-full">
+            <div
+              class="text-lg sm:text-xl font-black text-gray-600 tracking-tight break-words"
+            >
+              Overwhelmed
+            </div>
+            <div
+              class="text-[10px] text-gray-600 font-bold uppercase tracking-widest"
+            >
+              Before
+            </div>
+          </div>
+          <svg
+            class="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 flex-shrink-0 rotate-90 sm:rotate-0"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+          <div class="flex-1 min-w-0 text-center w-full">
+            <div
+              class="text-xl sm:text-2xl font-black text-e2-black tracking-tight break-words"
+            >
+              Present
+            </div>
+            <div
+              class="text-[10px] text-gray-600 font-bold uppercase tracking-widest"
+            >
+              After
+            </div>
+          </div>
+        </div>
+
+        <p
+          class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mb-4 text-center sm:text-left break-words leading-snug"
+        >
+          Holiday season · email program
+        </p>
+
+        <blockquote
+          class="text-gray-600 leading-relaxed mb-6 flex-1 text-sm min-w-0 break-words text-pretty"
+        >
+          &ldquo;Thank you merry Christmas to you all and thanks for all the
+          great work- we got so many compliments on the emails and you made a
+          huge difference in my life. Last year I was in constant tears this
+          time of year and this year I have actually gotten to have a life and
+          enjoy the holiday myself a little. xx&rdquo;
+        </blockquote>
+
+        <figure
+          class="rounded-2xl overflow-hidden border border-gray-200/80 bg-gray-50 mb-6 w-full min-w-0"
+        >
+          <img
+            src="/case-studies/horse-education-slack-proof.png"
+            width="1024"
+            height="240"
+            alt="Original message from Sara at Horse Education."
+            class="w-full h-auto block"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <div
+          class="flex items-start gap-3 mt-auto pt-4 border-t border-gray-100 min-w-0"
+        >
+          <div
+            class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-sm font-black text-gray-600 flex-shrink-0"
+          >
+            S
+          </div>
+          <div class="text-sm min-w-0 flex-1">
+            <span class="font-bold text-e2-black block break-words">Sara</span>
+            <span class="text-gray-600 text-xs block break-words leading-snug"
+              >Horse Education</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Masonry grid — min-w-0 so grid items respect viewport (fixes mobile horizontal clip) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full min-w-0">
       {
         testimonials.map((t) => (
-          <div class="glass-panel p-8 rounded-[2rem] hover:bg-white hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 group flex flex-col">
+          <div class="glass-panel p-5 sm:p-8 rounded-[2rem] hover:bg-white hover:shadow-xl hover:shadow-gray-100/50 transition-all duration-300 group flex flex-col w-full min-w-0 max-w-full overflow-hidden">
 
-            <!-- Before → After metric -->
-            <div class="flex items-center gap-3 mb-6">
-              <div class="flex-1 text-center">
-                <div class="text-xl font-black text-gray-600 tracking-tight">{t.before}</div>
+            <!-- Before → After: vertical on mobile (no horizontal squeeze), row on sm+ -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 mb-5 sm:mb-6 w-full min-w-0">
+              <div class="flex-1 min-w-0 text-center w-full">
+                <div class="text-lg sm:text-xl font-black text-gray-600 tracking-tight break-words">{t.before}</div>
                 <div class="text-[10px] text-gray-600 font-bold uppercase tracking-widest">Before</div>
               </div>
-              <svg class="w-8 h-8 text-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg class="w-7 h-7 sm:w-8 sm:h-8 text-blue-600 flex-shrink-0 rotate-90 sm:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-              <div class="flex-1 text-center">
-                <div class="text-2xl font-black text-e2-black tracking-tight">{t.after}</div>
+              <div class="flex-1 min-w-0 text-center w-full">
+                <div class="text-xl sm:text-2xl font-black text-e2-black tracking-tight break-words">{t.after}</div>
                 <div class="text-[10px] text-gray-600 font-bold uppercase tracking-widest">After</div>
               </div>
             </div>
 
-            <p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mb-4">{t.metricLabel}</p>
+            <p class="text-[10px] text-blue-600 font-bold uppercase tracking-widest mb-4 text-center sm:text-left break-words leading-snug">{t.metricLabel}</p>
 
-            <blockquote class="text-gray-600 leading-relaxed mb-6 flex-1 text-sm">
+            <blockquote class="text-gray-600 leading-relaxed mb-6 flex-1 text-sm min-w-0 break-words text-pretty">
               "{t.quote}"
             </blockquote>
 
-            <div class="flex items-center gap-3 mt-auto pt-4 border-t border-gray-100">
+            <div class="flex items-start gap-3 mt-auto pt-4 border-t border-gray-100 min-w-0">
               <div class="w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-sm font-black text-gray-600 flex-shrink-0">
                 {t.author.charAt(0)}
               </div>
-              <div class="text-sm min-w-0">
-                <span class="font-bold text-e2-black block">{t.author}</span>
-                <span class="text-gray-600 text-xs truncate block">{t.role}, {t.company}</span>
+              <div class="text-sm min-w-0 flex-1">
+                <span class="font-bold text-e2-black block break-words">{t.author}</span>
+                <span class="text-gray-600 text-xs block break-words leading-snug">{t.role}, {t.company}</span>
               </div>
             </div>
           </div>
@@ -180,8 +275,8 @@ const testimonials = [
     </div>
 
     <!-- Aggregate trust metric -->
-    <div class="mt-12 text-center">
-      <p class="text-sm text-gray-600">
+    <div class="mt-12 text-center px-0.5">
+      <p class="text-sm text-gray-600 text-balance break-words">
         Based on <strong class="text-e2-black">750+</strong> flow builds across eCom brands in AU, NZ, UK &amp; USA.
         Average client email contribution to revenue <strong class="text-e2-black">increases 31%</strong> within 90 days.
       </p>

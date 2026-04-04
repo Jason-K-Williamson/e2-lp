@@ -96,14 +96,51 @@ import BunnyVideo from "./video/BunnyVideo.astro";
             </div>
         </div>
 
-        <!-- Attribution + metrics: identity left / stats right on large screens -->
+        <div
+            class="rounded-xl bg-slate-50/90 border border-slate-100/90 px-3.5 py-2.5 sm:px-4 sm:py-3 flex flex-col items-center w-full max-w-lg mx-auto"
+        >
+            <p
+                class="flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-2.5 gap-y-1.5 text-[12px] sm:text-[13px] leading-snug text-slate-600"
+            >
+                <span
+                    class="font-semibold tracking-tight text-slate-800 shrink-0"
+                    >As seen on:</span
+                >
+                <picture
+                    class="inline-flex shrink-0 translate-y-[0.06em]"
+                >
+                    <source
+                        srcset="/brand/shark-tank-logo.webp"
+                        type="image/webp"
+                    />
+                    <img
+                        src="/brand/shark-tank-logo.png"
+                        alt="Shark Tank"
+                        width="320"
+                        height="265"
+                        loading="lazy"
+                        decoding="async"
+                        class="h-[2.1rem] sm:h-[2.4rem] w-auto max-w-[8.75rem] sm:max-w-[9.5rem] object-contain object-center"
+                    />
+                </picture>
+                <span
+                    class="font-medium text-slate-400 shrink-0 select-none"
+                    aria-hidden="true">&mdash;</span
+                >
+                <span class="font-medium text-slate-700"
+                    >as a Shark</span
+                >
+            </p>
+        </div>
+
+        <!-- Attribution + metrics -->
         <div
             class="w-full max-w-3xl shrink-0 mt-2 border-t border-slate-200/90 pt-6 sm:pt-7"
         >
             <div
-                class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-14"
+                class="flex flex-col items-center gap-8 lg:gap-14"
             >
-                <div class="flex-1 min-w-0 text-center lg:text-left space-y-4">
+                <div class="w-full min-w-0 text-center space-y-4">
                     <div>
                         <div
                             class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight"
@@ -116,48 +153,12 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                             Founder, The Oodie ($800M+)
                         </p>
                     </div>
-                    <div
-                        class="rounded-xl bg-slate-50/90 border border-slate-100/90 px-3.5 py-2.5 sm:px-4 sm:py-3 inline-flex lg:block w-full max-w-md mx-auto lg:mx-0 lg:max-w-lg"
-                    >
-                        <p
-                            class="flex flex-wrap items-center justify-center lg:justify-start gap-x-2 sm:gap-x-2.5 gap-y-1.5 text-[12px] sm:text-[13px] leading-snug text-slate-600"
-                        >
-                            <span
-                                class="font-semibold tracking-tight text-slate-800 shrink-0"
-                                >As seen on:</span
-                            >
-                            <picture
-                                class="inline-flex shrink-0 translate-y-[0.06em]"
-                            >
-                                <source
-                                    srcset="/brand/shark-tank-logo.webp"
-                                    type="image/webp"
-                                />
-                                <img
-                                    src="/brand/shark-tank-logo.png"
-                                    alt="Shark Tank"
-                                    width="320"
-                                    height="265"
-                                    loading="lazy"
-                                    decoding="async"
-                                    class="h-[2.1rem] sm:h-[2.4rem] w-auto max-w-[8.75rem] sm:max-w-[9.5rem] object-contain object-left"
-                                />
-                            </picture>
-                            <span
-                                class="font-medium text-slate-400 shrink-0 select-none"
-                                aria-hidden="true">&mdash;</span
-                            >
-                            <span class="font-medium text-slate-700"
-                                >as a Shark</span
-                            >
-                        </p>
-                    </div>
                 </div>
 
                 <div
-                    class="grid grid-cols-3 gap-4 sm:gap-8 lg:gap-10 w-full max-w-lg mx-auto lg:mx-0 lg:w-auto lg:max-w-none lg:shrink-0 lg:pt-1"
+                    class="grid grid-cols-3 gap-4 sm:gap-8 lg:gap-10 w-full max-w-lg mx-auto shrink-0"
                 >
-                    <div class="text-center lg:text-left">
+                    <div class="text-center">
                         <div
                             class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
                         >
@@ -169,7 +170,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                             SMS Revenue
                         </div>
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div class="text-center">
                         <div
                             class="text-lg sm:text-2xl font-black text-slate-900 tabular-nums tracking-tight"
                         >
@@ -181,7 +182,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                             Start Point
                         </div>
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div class="text-center">
                         <div
                             class="text-lg sm:text-2xl font-black text-emerald-600 tabular-nums tracking-tight"
                         >

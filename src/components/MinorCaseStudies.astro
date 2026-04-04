@@ -48,7 +48,7 @@ const cases = [
         class="flex flex-col lg:flex-row gap-0 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-rose-500/5"
       >
         <div
-          class="lg:w-[45%] bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+          class="lg:w-[45%] w-full min-w-0 bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-5 sm:p-8 md:p-14 flex flex-col justify-between"
         >
           <div>
             <div class="flex items-center gap-3 mb-8">
@@ -63,15 +63,22 @@ const cases = [
               >
             </div>
             <h3
-              class="font-black text-white text-3xl md:text-4xl leading-none tracking-tight mb-4"
+              class="font-black text-white text-[clamp(1.5rem,5vw,2.25rem)] md:text-4xl leading-[1.1] tracking-tight mb-4 text-balance"
             >
-              421% YoY BFCM<br />Email Revenue
+              <span class="text-rose-300">A$844k+</span> More BFCM Email Revenue.
+              One Season.
             </h3>
             <p class="text-gray-600 text-lg leading-relaxed mb-8">
-              A Nail Cosmetics brand came to us after a flat BFCM season:
-              diluted messaging, low volume, poor deliverability. We rebuilt
-              everything and took them from A$200k to over A$1M in email revenue
-              in a single BFCM period.
+              A Nail Cosmetics brand came to us after a flat BFCM: diluted
+              messaging, low send volume, weak deliverability. We rebuilt the
+              program and turned email from
+              <strong class="text-gray-400 font-semibold">~A$201k</strong> into
+              <strong class="text-gray-400 font-semibold">over A$1.05M</strong>
+              in one BFCM window —
+              <strong class="text-gray-400 font-semibold"
+                >~A$844k more vs the prior year</strong
+              >
+              on email alone (421% YoY on the same window).
             </p>
             <div class="flex flex-col gap-3">
               <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -95,50 +102,88 @@ const cases = [
           </div>
         </div>
         <div
-          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-10 md:p-14 flex flex-col justify-center"
+          class="lg:w-[55%] w-full min-w-0 bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-5 sm:p-8 md:p-14 flex flex-col justify-center"
         >
-          <div class="grid grid-cols-2 gap-4 mb-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5 w-full min-w-0">
             <div
-              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-6"
+              class="col-span-1 sm:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden"
             >
-              <div class="flex items-baseline gap-3 mb-1">
-                <div class="text-xl font-black text-gray-600">A$200,732</div>
-                <div class="text-gray-600">→</div>
-                <div class="text-4xl font-black text-rose-400">A$1,045,096</div>
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-rose-400/90 mb-3"
+              >
+                Email · BFCM (same window YoY)
+              </p>
+              <div class="flex flex-col gap-3 w-full min-w-0 sm:max-w-xl">
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-0.5"
+                  >
+                    Before
+                  </p>
+                  <p
+                    class="text-lg sm:text-xl font-black text-gray-500 tabular-nums break-all leading-tight"
+                  >
+                    A$200,732
+                  </p>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-rose-300 mb-0.5"
+                  >
+                    After
+                  </p>
+                  <p
+                    class="text-xl sm:text-2xl font-black text-rose-400 tabular-nums break-all leading-tight"
+                  >
+                    A$1,045,096
+                  </p>
+                </div>
+              </div>
+              <p
+                class="mt-3 pt-3 border-t border-white/10 text-sm font-black text-rose-200 tabular-nums leading-tight"
+              >
+                +A$844,364 more vs prior BFCM
+              </p>
+              <p
+                class="text-[10px] text-gray-600 uppercase font-semibold tracking-wide mt-1.5 leading-snug"
+              >
+                421% YoY on email revenue
+              </p>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1"
+              >
+                List health
+              </p>
+              <div class="text-2xl sm:text-3xl font-black text-white mb-1 tabular-nums">
+                48.5%↓
               </div>
               <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide"
+                class="text-[10px] sm:text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1 leading-snug"
               >
-                Email Revenue · BFCM Period
+                Unsubscribe rate vs prior BFCM
               </div>
             </div>
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-3xl font-black text-white mb-1">421%</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1"
               >
-                YoY Revenue Growth
+                Storefront · peak window
+              </p>
+              <div class="text-xl sm:text-2xl md:text-3xl font-black text-white mb-1 tabular-nums break-all leading-tight">
+                A$3,748,975
               </div>
-            </div>
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-3xl font-black text-white mb-1">48.5%↓</div>
               <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+                class="text-[10px] sm:text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1 leading-snug"
               >
-                Unsubscribe Rate
-              </div>
-            </div>
-            <div
-              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
-            >
-              <div class="text-3xl font-black text-white mb-1">A$3,748,975</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
-              >
-                Total BFCM Revenue (Email Was the #1 Driver)
+                Total BFCM revenue · email #1 driver
               </div>
             </div>
           </div>
+          <p class="text-xs text-gray-600 italic text-center mb-5">
+            Email figures verified via Klaviyo · same BFCM window YoY
+          </p>
           <div class="rounded-2xl bg-rose-500/5 border border-rose-500/20 p-5">
             <p class="text-sm text-rose-300/80 leading-relaxed italic">
               "A single launch email generated A$80,198. Black Friday is won
@@ -159,7 +204,7 @@ const cases = [
         class="flex flex-col lg:flex-row-reverse gap-0 rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl shadow-indigo-500/5"
       >
         <div
-          class="lg:w-[45%] bg-gradient-to-bl from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+          class="lg:w-[45%] w-full min-w-0 bg-gradient-to-bl from-gray-900 via-gray-900 to-gray-950 p-5 sm:p-8 md:p-14 flex flex-col justify-between"
         >
           <div>
             <div class="flex items-center gap-3 mb-8">
@@ -174,15 +219,27 @@ const cases = [
               >
             </div>
             <h3
-              class="font-black text-white text-3xl md:text-4xl leading-none tracking-tight mb-4"
+              class="font-black text-white text-[clamp(1.5rem,5vw,2.25rem)] md:text-4xl leading-[1.1] tracking-tight mb-4 text-balance"
             >
-              128% More Retention Revenue. One BFCM.
+              <span class="text-indigo-300">$2.6M+</span> New Retention Revenue
+              Unlocked. One BFCM.
             </h3>
             <p class="text-gray-600 text-lg leading-relaxed mb-8">
               A major Eyewear brand had plateaued at $1.5M email BFCM revenue.
               Solid strategy, but missing the 10% that adds millions. We rebuilt
-              frequency, segmentation, timezone targeting, and SMS and unlocked
-              $2.6M in new retention revenue.
+              frequency, segmentation, timezone targeting, and SMS — and put
+              <strong class="text-gray-400 font-semibold"
+                >over $1M extra on email</strong
+              >
+              and
+              <strong class="text-gray-400 font-semibold"
+                >$1.5M+ extra on SMS</strong
+              >
+              vs the prior BFCM, on the way to
+              <strong class="text-gray-400 font-semibold"
+                >$2.6M+ new retention revenue</strong
+              >
+              in a single window.
             </p>
             <div class="flex flex-col gap-3">
               <div class="flex items-center gap-2 text-sm text-gray-600">
@@ -206,56 +263,171 @@ const cases = [
           </div>
         </div>
         <div
-          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-r border-white/10 p-10 md:p-14 flex flex-col justify-center"
+          class="lg:w-[55%] w-full min-w-0 bg-gray-950/50 border-t lg:border-t-0 lg:border-r border-white/10 p-5 sm:p-8 md:p-14 flex flex-col justify-center"
         >
-          <div class="grid grid-cols-2 gap-4 mb-5">
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-base font-black text-gray-600 mb-0.5">
-                $1.52M →
-              </div>
-              <div class="text-3xl font-black text-indigo-400">$2.59M</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-5 w-full min-w-0">
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-indigo-400/90 mb-3"
               >
-                Email (+70% YoY)
+                Email · BFCM retention
+              </p>
+              <div class="flex flex-col gap-3 w-full min-w-0">
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-0.5"
+                  >
+                    Before
+                  </p>
+                  <p
+                    class="text-lg sm:text-xl font-black text-gray-500 tabular-nums break-all leading-tight"
+                  >
+                    $1.52M
+                  </p>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-0.5"
+                  >
+                    After
+                  </p>
+                  <p
+                    class="text-xl sm:text-2xl font-black text-indigo-400 tabular-nums break-all leading-tight"
+                  >
+                    $2.59M
+                  </p>
+                </div>
               </div>
+              <p
+                class="mt-3 pt-3 border-t border-white/10 text-sm font-black text-indigo-200 tabular-nums leading-tight"
+              >
+                +$1.07M more vs prior BFCM
+              </p>
+              <p
+                class="text-[10px] text-gray-600 uppercase font-semibold tracking-wide mt-1.5 leading-snug"
+              >
+                +70% YoY (same window)
+              </p>
             </div>
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-base font-black text-gray-600 mb-0.5">
-                $525k →
-              </div>
-              <div class="text-3xl font-black text-indigo-400">$2.09M</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-indigo-400/90 mb-3"
               >
-                SMS (+298% YoY)
+                SMS · BFCM retention
+              </p>
+              <div class="flex flex-col gap-3 w-full min-w-0">
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-0.5"
+                  >
+                    Before
+                  </p>
+                  <p
+                    class="text-lg sm:text-xl font-black text-gray-500 tabular-nums break-all leading-tight"
+                  >
+                    $525k
+                  </p>
+                </div>
+                <div class="min-w-0">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-0.5"
+                  >
+                    After
+                  </p>
+                  <p
+                    class="text-xl sm:text-2xl font-black text-indigo-400 tabular-nums break-all leading-tight"
+                  >
+                    $2.09M
+                  </p>
+                </div>
               </div>
+              <p
+                class="mt-3 pt-3 border-t border-white/10 text-sm font-black text-indigo-200 tabular-nums leading-tight"
+              >
+                +$1.56M more vs prior BFCM
+              </p>
+              <p
+                class="text-[10px] text-gray-600 uppercase font-semibold tracking-wide mt-1.5 leading-snug"
+              >
+                +298% YoY (same window)
+              </p>
             </div>
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-3xl font-black text-white mb-1">128.93%</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1"
               >
-                Retention Revenue Growth
+                Retention · total lift
+              </p>
+              <div class="text-2xl sm:text-3xl font-black text-white mb-1 tabular-nums leading-tight">
+                $2.6M+
               </div>
-            </div>
-            <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
-              <div class="text-3xl font-black text-white mb-1">$9.78M</div>
               <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+                class="text-[10px] sm:text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1 leading-snug"
               >
-                Total BFCM 2025 Revenue
+                New retention revenue unlocked · one BFCM
+              </div>
+              <p
+                class="text-xs text-gray-500 mt-2 font-semibold tabular-nums"
+              >
+                128.93% YoY on retention
+              </p>
+            </div>
+            <div class="rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden">
+              <div class="text-2xl sm:text-3xl font-black text-white mb-1 tabular-nums break-all">
+                $9.78M
+              </div>
+              <div
+                class="text-[10px] sm:text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1 leading-snug"
+              >
+                Total BFCM 2025 revenue
               </div>
             </div>
             <div
-              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
+              class="col-span-1 sm:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-5 min-w-0 overflow-hidden"
             >
-              <div class="text-3xl font-black text-white mb-1">54.6%↑</div>
-              <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide mt-1"
+              <p
+                class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3"
               >
-                Total Company Revenue Growth YoY · $6.3M → $9.78M
+                Total company revenue · YoY
+              </p>
+              <div
+                class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between w-full min-w-0"
+              >
+                <div class="min-w-0 flex-1 text-center sm:text-left">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-0.5"
+                  >
+                    Before
+                  </p>
+                  <p
+                    class="text-xl sm:text-2xl font-black text-gray-500 tabular-nums break-all"
+                  >
+                    $6.3M
+                  </p>
+                </div>
+                <div class="min-w-0 flex-1 text-center sm:text-right">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-indigo-300 mb-0.5"
+                  >
+                    After
+                  </p>
+                  <p
+                    class="text-xl sm:text-2xl font-black text-white tabular-nums break-all"
+                  >
+                    $9.78M
+                  </p>
+                </div>
               </div>
+              <p
+                class="mt-3 pt-3 border-t border-white/10 text-sm font-black text-white tabular-nums"
+              >
+                +$3.48M more company revenue YoY
+              </p>
+              <p
+                class="text-[10px] text-gray-600 uppercase font-semibold tracking-wide mt-1.5 leading-snug"
+              >
+                54.6%↑ YoY (period over period)
+              </p>
             </div>
           </div>
           <p class="text-xs text-gray-600 italic text-center">
@@ -272,7 +444,7 @@ const cases = [
       >
         <!-- Left: story -->
         <div
-          class="lg:w-[45%] bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-10 md:p-14 flex flex-col justify-between"
+          class="lg:w-[45%] w-full min-w-0 bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 p-5 sm:p-8 md:p-14 flex flex-col justify-between"
         >
           <div>
             <div class="flex items-center gap-3 mb-8">
@@ -321,23 +493,52 @@ const cases = [
 
         <!-- Right: full testimonial + metrics -->
         <div
-          class="lg:w-[55%] bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-10 md:p-14 flex flex-col justify-center"
+          class="lg:w-[55%] w-full min-w-0 bg-gray-950/50 border-t lg:border-t-0 lg:border-l border-white/10 p-5 sm:p-8 md:p-14 flex flex-col justify-center"
         >
           <!-- Key metrics -->
-          <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8 w-full min-w-0">
             <div
-              class="col-span-2 rounded-2xl bg-white/5 border border-white/10 p-6"
+              class="col-span-1 sm:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-4 sm:p-6 w-full min-w-0 overflow-hidden"
             >
-              <div class="flex items-baseline gap-3 mb-1">
-                <div class="text-xl font-black text-gray-600">21%</div>
-                <div class="text-gray-600">→</div>
-                <div class="text-4xl font-black text-emerald-400">40%</div>
-              </div>
               <div
-                class="text-xs text-gray-600 uppercase font-semibold tracking-wide"
+                class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between w-full min-w-0"
               >
-                Email Contribution to Revenue · 90 Days
+                <div class="min-w-0 flex-1 text-center sm:text-left">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-1"
+                  >
+                    Before
+                  </p>
+                  <p
+                    class="text-2xl sm:text-3xl md:text-4xl font-black text-gray-600 tabular-nums"
+                  >
+                    21%
+                  </p>
+                </div>
+                <div
+                  class="hidden sm:flex items-end pb-1 text-gray-500 text-xl font-bold flex-shrink-0"
+                  aria-hidden="true"
+                >
+                  →
+                </div>
+                <div class="min-w-0 flex-1 text-center sm:text-right">
+                  <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-emerald-300 mb-1"
+                  >
+                    After
+                  </p>
+                  <p
+                    class="text-2xl sm:text-3xl md:text-4xl font-black text-emerald-400 tabular-nums"
+                  >
+                    40%
+                  </p>
+                </div>
               </div>
+              <p
+                class="text-[10px] sm:text-xs text-gray-600 uppercase font-semibold tracking-wide mt-3 text-center sm:text-left leading-snug"
+              >
+                Email contribution to revenue · 90 days
+              </p>
             </div>
             <div class="rounded-2xl bg-white/5 border border-white/10 p-5">
               <div class="text-3xl font-black text-white mb-1">+100%</div>
