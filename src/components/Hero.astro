@@ -51,7 +51,6 @@ const editProps = (field: string) =>
     <!-- Brand lockup (black on light hero) -->
     <a
       href="/"
-      data-animate
       class="inline-flex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-600 rounded-md mb-2 sm:mb-2.5"
       aria-label="e2 agency home"
     >
@@ -68,7 +67,6 @@ const editProps = (field: string) =>
 
     <!-- Badge -->
     <div
-      data-animate
       class="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full border border-gray-200/70 bg-white/60 backdrop-blur-md text-[11px] sm:text-xs font-bold text-gray-900 mb-3 sm:mb-4 shadow-sm tracking-wide max-w-full"
     >
       <span class="relative flex h-2 w-2 flex-shrink-0">
@@ -84,7 +82,6 @@ const editProps = (field: string) =>
     <!-- Headline: clamp starts 1.75rem on phones — full text reads without cutting -->
     <h1
       id="hero-headline"
-      data-animate
       class="max-w-3xl font-bold text-[clamp(1.65rem,4.2vw,3.25rem)] leading-[1.08] tracking-tight text-e2-black mb-3 sm:mb-3.5 text-balance"
       {...editProps("hero_headline")}
     >
@@ -93,7 +90,6 @@ const editProps = (field: string) =>
 
     <!-- Subheadline -->
     <p
-      data-animate
       class="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto mb-4 sm:mb-5 leading-snug sm:leading-relaxed font-normal text-balance"
       {...editProps("hero_subheadline")}
     >
@@ -102,7 +98,6 @@ const editProps = (field: string) =>
 
     <!-- CTA Group — full-width stacked on mobile (max tap surface + higher CVR) -->
     <div
-      data-animate
       class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mb-2 sm:mb-2.5"
     >
       <a
@@ -129,7 +124,6 @@ const editProps = (field: string) =>
 
     <!-- Partner / platform proof (compact, inline label — trust near CTA per CRO) -->
     <div
-      data-animate
       class="w-full max-w-3xl mx-auto mt-4 sm:mt-5 mb-5 sm:mb-7 px-1 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-3 gap-y-2"
       aria-label="Partner platforms"
     >
@@ -164,10 +158,10 @@ const editProps = (field: string) =>
           class="opacity-90 hover:opacity-100 transition-opacity max-w-[min(100%,180px)] sm:max-w-[200px]"
         >
           <img
-            src="/partners/klaviyo-master-platinum.png"
+            src="/partners/klaviyo-master-platinum.webp"
             alt="Klaviyo Master Platinum partner"
-            width="220"
-            height="80"
+            width="232"
+            height="98"
             class="h-7 sm:h-8 w-auto max-w-full object-contain object-center"
             loading="lazy"
             decoding="async"
@@ -198,10 +192,10 @@ const editProps = (field: string) =>
         </li>
         <li class="opacity-90 hover:opacity-100 transition-opacity">
           <img
-            src="/partners/postscript.png"
+            src="/partners/postscript.webp"
             alt="Postscript SMS partner"
-            width="200"
-            height="64"
+            width="220"
+            height="88"
             class="h-7 sm:h-8 w-auto max-w-[150px] sm:max-w-[170px] object-contain object-center"
             loading="lazy"
             decoding="async"
@@ -212,7 +206,6 @@ const editProps = (field: string) =>
 
     <!-- VSL — 16:9 on mobile (shorter, CTA in view faster), 4:3 on md+ -->
     <div
-      data-animate
       class="w-full max-w-4xl mx-auto shrink-0 relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer aspect-video md:aspect-[4/3]"
       id="vsl-player"
       role="button"

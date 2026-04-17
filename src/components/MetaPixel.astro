@@ -1,0 +1,71 @@
+---
+/**
+ * MetaPixel.astro
+ * ------------------------------------------------------------
+ * Deferred Meta pixel — same loading strategy as PostHog/PixelFlow so it
+ * never blocks FCP/LCP. The `fbq()` stub is installed immediately so any
+ * later code (FormflowTracking) can call fbq() safely; real pixel flushes
+ * the queue on load.
+ *
+ * Fires `PageView` on init. Dedup with PostHog's PostHog→Meta-CAPI
+ * destination is handled at the Lead event in FormflowTracking.astro —
+ * PageView is low-stakes enough that double-counting is fine (Meta does
+ * not count PageViews toward CPA).
+ *
+ * Set `PUBLIC_META_PIXEL_ID` in your .env. If unset, this component
+ * renders nothing — useful for preview / local dev without a pixel.
+ * ------------------------------------------------------------ */
+
+const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
+---
+
+{
+  pixelId && (
+    <script is:inline define:vars={{ pixelId }}>
+      {`
+        (function () {
+          if (window.fbq) return;
+          var n = window.fbq = function () {
+            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+          };
+          if (!window._fbq) window._fbq = n;
+          n.push = n;
+          n.loaded = true;
+          n.version = "2.0";
+          n.queue = [];
+
+          function boot() {
+            var s = document.createElement("script");
+            s.async = true;
+            s.src = "https://connect.facebook.net/en_US/fbevents.js";
+            document.head.appendChild(s);
+
+            fbq("init", ${JSON.stringify(pixelId)});
+            fbq("track", "PageView");
+          }
+
+          window.addEventListener(
+            "load",
+            function () {
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(boot, { timeout: 4000 });
+              } else {
+                setTimeout(boot, 2000);
+              }
+            },
+            { once: true }
+          );
+        })();
+      `}
+    </script>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        alt=""
+        src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+      />
+    </noscript>
+  )
+}

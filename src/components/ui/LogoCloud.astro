@@ -17,24 +17,27 @@ const logos: Logo[] = [
   { src: "/brand-logos/otaa.webp",              alt: "OTAA",           width: 56,  height: 94  },
   { src: "/brand-logos/bogey-bros.webp",        alt: "Bogey Bros",     width: 140, height: 53  },
   { src: "/brand-logos/daily-mentor.avif",      alt: "Daily Mentor",   width: 140, height: 53  },
-  { alt: "Candy Claws" },
-  { alt: "Canvas Cultures" },
+  { src: "/brand-logos/candyclaws.svg",          alt: "Candy Claws",    width: 140, height: 53,  invert: true },
+  { src: "/brand-logos/Atoms_Logo_White 1.svg",  alt: "ATOMS",          width: 140, height: 53,  invert: true },
   { src: "/brand-logos/void.webp",              alt: "VOID",           width: 140, height: 53,  invert: true },
 ];
 ---
 
 <div class="relative grid grid-cols-2 md:grid-cols-4">
   {logos.map((logo, i) => {
-    const isRightBorder = i % 2 === 0;               // desktop right border on col 1 & 3
-    const isBottomRow   = i >= logos.length - 2;     // last 2 items — no bottom border on mobile
+    const isRightBorderMobile = i % 2 === 0;         // left column in 2-col mobile grid
+    const isBottomBorderMobile = i < logos.length - 2; // all but last mobile row
+    const isRightBorderDesktop = i % 4 !== 3;        // cols 1-3 in 4-col desktop grid
+    const isBottomBorderDesktop = i < 4;             // only top desktop row
     const needsPlusTopRight    = i === 0;
     const needsPlusBottomRight = i === 2;
     const needsPlusBottomLeft  = i === 2;
 
     const borderClasses = [
-      isRightBorder ? "border-r border-black/10" : "",
-      i < logos.length - 2 ? "border-b border-black/10" : "",
-      i === 1 ? "md:border-r md:border-black/10" : "",
+      isRightBorderMobile ? "border-r border-black/10" : "",
+      isBottomBorderMobile ? "border-b border-black/10" : "",
+      isRightBorderDesktop ? "md:border-r md:border-black/10" : "md:border-r-0",
+      isBottomBorderDesktop ? "md:border-b md:border-black/10" : "md:border-b-0",
     ].filter(Boolean).join(" ");
 
     return (
@@ -68,7 +71,4 @@ const logos: Logo[] = [
       </div>
     );
   })}
-
-  <!-- Bottom full-width border -->
-  <div class="-translate-x-1/2 -bottom-px pointer-events-none absolute left-1/2 w-screen border-b border-black/10"></div>
 </div>

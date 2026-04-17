@@ -143,26 +143,41 @@ h6 {
     0 0 20px -10px rgba(0, 0, 0, 0.02);
 }
 
-/* 
- * ANIMATION: Premium easings
+/*
+ * SCROLL-TRIGGERED REVEAL
+ * ──────────────────────────────────────────────────────────────────────────
+ * Pure CSS fade-in-up driven by `.is-visible` class added by a tiny
+ * IntersectionObserver in BaseLayout.astro (~20 LOC). GSAP removed entirely:
+ *   - saved ~40 KB of JS
+ *   - killed the 0.2-1s "loading flash" where hero elements were invisible
+ *     while GSAP dynamic-imported
+ *   - no race condition / fallback timer needed
+ *
+ * Hero content no longer uses [data-animate] — it paints instantly for
+ * optimal LCP. This reveal system is reserved for below-fold sections.
+ *
+ * `prefers-reduced-motion` skips the transform/opacity entirely.
  */
 [data-animate] {
   opacity: 0;
-  transform: translate3d(0, 24px, 0);
-  /* GPU-composited layer */
+  transform: translate3d(0, 20px, 0);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
-  backface-visibility: hidden;
 }
 
-/*
- * LCP FIX: The hero headline MUST be visible on first paint.
- * Lighthouse reports NO_LCP when the LCP candidate starts at opacity:0.
- * This override ensures h1#hero-headline bypasses the fade-in initial state.
- */
-#hero-headline[data-animate] {
+[data-animate].is-visible {
   opacity: 1;
-  transform: none;
-  will-change: auto;
+  transform: translate3d(0, 0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-animate] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 /* ─── Admin inline editing ─────────────────────────────────────────────── */

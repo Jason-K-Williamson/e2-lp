@@ -12,6 +12,13 @@ export default defineConfig({
   adapter: cloudflare(),
   integrations: [react()],
 
+  build: {
+    // Inline every CSS chunk directly into the HTML <head>.
+    // Eliminates render-blocking stylesheet requests AND cache-miss FOUC
+    // on first visit. At ~10 KB gz the cost is trivial vs. the LCP win.
+    inlineStylesheets: 'always',
+  },
+
   vite: {
     plugins: [tailwindcss()],
     build: {

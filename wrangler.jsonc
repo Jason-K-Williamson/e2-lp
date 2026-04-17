@@ -1,0 +1,65 @@
+/**
+ * Cloudflare Workers config for e2-landing.
+ * ------------------------------------------------------------------------
+ * Managed by Astro 6's @astrojs/cloudflare adapter. Astro auto-generates a
+ * `dist/server/wrangler.json` at build time by merging this file with the
+ * bindings it discovers during the build (e.g. the `IMAGES` binding for
+ * its new cloudflare-binding image service default). Do NOT hand-edit
+ * `dist/server/wrangler.json` — edit this file and rebuild.
+ *
+ * Deployment:
+ *   npm run build
+ *   npx wrangler deploy
+ *
+ * Secrets (NOT stored here — set once with `wrangler secret put NAME`):
+ *   - ADMIN_PASS
+ *   - SUPABASE_SERVICE_ROLE_KEY
+ *   - ANTHROPIC_API_KEY
+ *   - APIFY_API_TOKEN
+ *
+ * Public vars (inlined at build + also set below for runtime access):
+ *   - PUBLIC_SUPABASE_URL
+ *   - PUBLIC_SUPABASE_ANON_KEY
+ *   - PUBLIC_META_PIXEL_ID
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "e2-landing",
+	// Astro 6 adapter ships a unified entrypoint that handles both dev & prod.
+	// This replaces the old v12 pattern of pointing at `dist/_worker.js/index.js`.
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"compatibility_date": "2025-05-21",
+	"compatibility_flags": ["nodejs_compat"],
+	"account_id": "c1d72867c2217c519e52d4d575609eb0",
+	// Static assets built by Astro (images, fonts, etc.).
+	// Astro's adapter sets the ASSETS binding automatically.
+	"assets": {
+		"binding": "ASSETS",
+		"directory": "./dist/client"
+	},
+	// Astro 6 sessions feature requires a KV namespace bound as SESSION.
+	// Namespace created via MCP: e2-landing-SESSION.
+	"kv_namespaces": [
+		{
+			"binding": "SESSION",
+			"id": "59f5d7d56d9a4da9aebaee71e8ea7e61"
+		}
+	],
+	// Cloudflare Images binding (default image service in adapter v13).
+	// No cost unless we actually transform images via astro:assets.
+	"images": {
+		"binding": "IMAGES"
+	},
+	// Turn on Workers Logs for debuggability in production.
+	// Free tier: 10k events/day, 7d retention.
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	// Public vars — also inlined at build by Vite. Safe to leave here.
+	"vars": {
+		"PUBLIC_SUPABASE_URL": "https://gvttvfheznfllrsgqsfk.supabase.co",
+		"PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2dHR2Zmhlem5mbGxyc2dxc2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNTU3OTcsImV4cCI6MjA4NzkzMTc5N30.HlzxYtjbwkOyuZVrlGxCAuwlxPbspjo8y-CuCt-wyFc",
+		"PUBLIC_META_PIXEL_ID": ""
+	}
+}

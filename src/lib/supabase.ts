@@ -5,8 +5,8 @@ const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
 // Fallback to placeholder strings so createClient never throws at module load.
 // When env vars aren't set, all DB calls will fail quietly and pages render
-// from DEFAULT_VARIANT. Set PUBLIC_SUPABASE_URL + PUBLIC_SUPABASE_ANON_KEY
-// in Cloudflare Pages → Settings → Environment Variables to restore live data.
+// from DEFAULT_VARIANT. Runtime vars are set in wrangler.jsonc (`vars`) and
+// inlined at build via Vite — both paths are redundant, intentional belt+braces.
 export const supabase = createClient(
   supabaseUrl ?? 'https://placeholder.supabase.co',
   supabaseAnonKey ?? 'placeholder-anon-key'
