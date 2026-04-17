@@ -1,7 +1,24 @@
 ---
 // src/components/PostHog.astro
-// Deferred: loads after window load event so it never blocks FCP/LCP.
-// Events fired before load are queued by the stub and flushed once array.js lands.
+// ─────────────────────────────────────────────────────────────────────────────
+// Deferred PostHog loader. The stub installs synchronously during HTML parse
+// so any code anywhere on the page can safely call posthog.capture() / .identify()
+// before array.js lands — those calls queue up and flush on load.
+//
+// Why this file is important for Meta CAPI:
+//   PostHog's Meta Ads destination (configured in app.posthog.com →
+//   Data pipeline → Destinations) forwards server-side events to Meta for
+//   ad-click attribution. For Meta to match those events to real users,
+//   every event must carry:
+//     - fbc  (Meta click ID, derived from ?fbclid in URL on paid traffic)
+//     - fbp  (Meta browser ID, set by the Meta Pixel's _fbp cookie)
+//     - email / phone (from posthog.identify on form submit)
+//     - gclid (for Google CAPI, if we wire that destination later)
+//
+// PostHog auto-captures UTMs natively. But fbclid/gclid/fbp are NOT
+// captured by default — we register them as super-properties here so
+// every subsequent event carries them, no matter where it fires from.
+// ─────────────────────────────────────────────────────────────────────────────
 ---
 <script is:inline>
 (function(){
@@ -46,7 +63,47 @@
             api_host:'https://us.i.posthog.com',
             defaults:'2026-01-30',
             disable_session_recording:true,
-            loaded:function(ph){ph.capture('$pageview');}
+            // Persist the distinct_id in BOTH localStorage and cookie so we
+            // survive Safari's 7-day ITP cookie eviction + still get
+            // cross-subdomain identity on e2.agency.
+            persistence:'localStorage+cookie',
+            cross_subdomain_cookie:true,
+            loaded:function(ph){
+              // Harvest click IDs + Meta fbp from URL/cookies and register
+              // as super-properties. These attach to EVERY subsequent event
+              // (including the Lead event fired from FinalCTA) so the
+              // PostHog→Meta CAPI destination has full matching signal.
+              try {
+                var url = new URL(window.location.href);
+                var fbclid = url.searchParams.get('fbclid');
+                var gclid = url.searchParams.get('gclid');
+                var ttclid = url.searchParams.get('ttclid'); // TikTok
+                var liclid = url.searchParams.get('li_fat_id'); // LinkedIn
+                var msclkid = url.searchParams.get('msclkid'); // Microsoft
+                var sp = {};
+                if (fbclid) {
+                  // Meta's fbc format: fb.1.<unixMs>.<fbclid>
+                  sp.fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+                  sp.fbclid = fbclid;
+                }
+                if (gclid) sp.gclid = gclid;
+                if (ttclid) sp.ttclid = ttclid;
+                if (liclid) sp.li_fat_id = liclid;
+                if (msclkid) sp.msclkid = msclkid;
+                var fbpMatch = document.cookie.match(/(?:^|; )_fbp=([^;]+)/);
+                if (fbpMatch) sp.fbp = fbpMatch[1];
+                if (Object.keys(sp).length) {
+                  // register_once = only set if not already set (respects the
+                  // first-touch click ID, critical for attribution fidelity).
+                  ph.register_once(sp);
+                  // Also set as person properties (set_once) so they stick
+                  // to the profile even if the distinct_id rotates.
+                  ph.setPersonProperties(undefined, sp);
+                }
+              } catch (e) { /* attribution capture is best-effort */ }
+
+              ph.capture('$pageview');
+            }
           });
         }
       };

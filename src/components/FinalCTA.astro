@@ -217,15 +217,171 @@ const editProps = (field: string) =>
       loadFrame();
     }
 
-    // Handle resize messages from Formflow
-    window.addEventListener("message", function (e) {
-      if (e.origin !== "https://myformflow.io") return;
-      if (e.data && e.data.event === "resize" && e.data.height) {
-        frame.style.height = e.data.height + "px";
-      }
-    }, false);
+    // ── Formflow postMessage handler ─────────────────────────────────────────
+    // Handles both the iframe resize protocol AND form-submission detection
+    // for PostHog Lead capture (which forwards to Meta CAPI via PostHog's
+    // destinations feature).
+    //
+    // Formflow does NOT publicly document a client-side postMessage contract
+    // for submissions, so we listen defensively for a range of likely event
+    // names and inspect payload shape. Any unknown messages are logged (dev
+    // only) so we can tighten the matcher later.
+    //
+    // Dedup: we only fire Lead once per page session to avoid counting
+    // multi-step navigation events as duplicate conversions.
+    var leadFired = false;
+    var isDev =
+      location.hostname === "localhost" ||
+      location.hostname === "127.0.0.1" ||
+      location.hostname.endsWith(".workers.dev");
 
-    // Also load if user clicks #qualify anchor
+    window.addEventListener(
+      "message",
+      function (e) {
+        if (e.origin !== "https://myformflow.io") return;
+        var data = e.data || {};
+
+        // 1) Resize protocol — keep existing behaviour.
+        if (data.event === "resize" && data.height) {
+          frame.style.height = data.height + "px";
+          return;
+        }
+
+        // 2) Submission detection — catch common event-name conventions.
+        var eventName = (data.event || data.type || data.name || "")
+          .toString()
+          .toLowerCase();
+        var looksLikeSubmit =
+          /submit|complete|complet|finish|success|done|thank|conversion|lead/i.test(
+            eventName
+          );
+
+        if (looksLikeSubmit && !leadFired) {
+          leadFired = true;
+
+          // Extract any identifying fields we can find in the payload.
+          // Formflow payloads (when present) typically include `fields` or
+          // `answers` with user input. We search defensively across keys.
+          var email = findField(data, [
+            "email",
+            "email_address",
+            "e_mail",
+            "emailAddress",
+          ]);
+          var phone = findField(data, [
+            "phone",
+            "phone_number",
+            "mobile",
+            "telephone",
+            "tel",
+          ]);
+          var firstName = findField(data, [
+            "first_name",
+            "firstName",
+            "fname",
+            "given_name",
+          ]);
+          var lastName = findField(data, [
+            "last_name",
+            "lastName",
+            "lname",
+            "family_name",
+            "surname",
+          ]);
+          var company = findField(data, [
+            "company",
+            "company_name",
+            "business",
+            "brand",
+          ]);
+
+          // Identify the user in PostHog BEFORE capturing Lead so the event
+          // carries person properties (email, phone → hashed by PostHog's
+          // Meta CAPI destination for advanced matching).
+          if (window.posthog) {
+            try {
+              if (email) {
+                window.posthog.identify(email, {
+                  email: email,
+                  phone: phone || undefined,
+                  first_name: firstName || undefined,
+                  last_name: lastName || undefined,
+                  company: company || undefined,
+                });
+              }
+              window.posthog.capture("Lead", {
+                form_id: "formflow:669116a60dc0431e247ef7a5",
+                form_source: "final_cta",
+                email: email || undefined,
+                phone: phone || undefined,
+                first_name: firstName || undefined,
+                last_name: lastName || undefined,
+                company: company || undefined,
+                $set: {
+                  last_lead_submitted_at: new Date().toISOString(),
+                },
+              });
+            } catch (err) {
+              if (isDev) console.warn("PostHog Lead capture failed:", err);
+            }
+          }
+
+          // Fire browser-side Meta Pixel Lead too, for redundancy against
+          // PostHog CAPI outages. PostHog's Meta destination dedupes on
+          // event_id, but since we're not passing one, we accept a small
+          // amount of double-counting on Lead in exchange for resilience.
+          // (Lead CPA in Meta is calculated from CAPI-preferred, so browser
+          // dupes are discounted automatically.)
+          if (window.fbq) {
+            try {
+              window.fbq("track", "Lead", {
+                content_name: "Qualification Call",
+              });
+            } catch (_) {}
+          }
+        }
+
+        if (isDev && !looksLikeSubmit && data.event !== "resize") {
+          console.log("[Formflow] unknown message:", data);
+        }
+      },
+      false
+    );
+
+    // Small helper: find the first non-empty value in an object for a list
+    // of possible keys (case-insensitive, searches 1 level deep into `fields`,
+    // `answers`, `data`, `payload`).
+    function findField(obj, keys) {
+      if (!obj || typeof obj !== "object") return null;
+      var pools = [obj];
+      ["fields", "answers", "data", "payload", "form", "submission"].forEach(
+        function (k) {
+          if (obj[k] && typeof obj[k] === "object") pools.push(obj[k]);
+        }
+      );
+      for (var i = 0; i < pools.length; i++) {
+        var src = pools[i];
+        for (var j = 0; j < keys.length; j++) {
+          var k = keys[j];
+          // Direct lowercase
+          if (src[k] != null && src[k] !== "") return String(src[k]);
+          // Case-insensitive scan
+          for (var prop in src) {
+            if (
+              Object.prototype.hasOwnProperty.call(src, prop) &&
+              prop.toLowerCase() === k.toLowerCase() &&
+              src[prop] != null &&
+              src[prop] !== ""
+            ) {
+              return String(src[prop]);
+            }
+          }
+        }
+      }
+      return null;
+    }
+
+    // Also load if user clicks #qualify anchor.
     document.addEventListener("click", function (e) {
       var el = e.target && e.target.closest('a[href="#qualify"]');
       if (el) loadFrame();
