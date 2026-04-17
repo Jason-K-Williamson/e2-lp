@@ -7,7 +7,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://lp.e2.agency',
+  site: 'https://workwith.e2.agency',
   output: 'server',
   adapter: cloudflare(),
   integrations: [react()],

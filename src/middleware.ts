@@ -20,7 +20,7 @@ export const onRequest = defineMiddleware(async ({ cookies, locals, url }, next)
     //
     // NOTE: For this to actually cache at Cloudflare's edge you must add a
     // Cache Rule in the CF dashboard:
-    //   - Match: hostname = lp.e2.agency AND NOT starts_with(/api/)
+    //   - Match: hostname = workwith.e2.agency AND NOT starts_with(/api/)
     //   - Action: Eligible for cache = On, Respect origin cache control = On
     // Without that rule CF only caches static assets by default.
     if (isHtml && !isApi) {
