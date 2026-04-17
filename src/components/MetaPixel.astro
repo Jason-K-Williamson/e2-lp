@@ -1,33 +1,58 @@
 ---
 /**
- * MetaPixel.astro
- * ------------------------------------------------------------
- * Deferred Meta pixel — same loading strategy as PostHog/PixelFlow so it
- * never blocks FCP/LCP. The `fbq()` stub is installed immediately so any
- * later code (FormflowTracking) can call fbq() safely; real pixel flushes
- * the queue on load.
+ * MetaPixel.astro — deferred base pixel (browser PageView only)
+ * ────────────────────────────────────────────────────────────────────────
+ * Loads the Meta Pixel *after* window.load + requestIdleCallback so it
+ * NEVER blocks FCP/LCP (PSI had this at 0 TBT contribution in our audit).
  *
- * Fires `PageView` on init. Dedup with PostHog's PostHog→Meta-CAPI
- * destination is handled at the Lead event in FormflowTracking.astro —
- * PageView is low-stakes enough that double-counting is fine (Meta does
- * not count PageViews toward CPA).
+ * fbq() stub is installed synchronously during HTML parse so that any
+ * code firing `fbq(...)` before fbevents.js lands (e.g. future
+ * conversion pixels) gets queued safely and flushed on load.
  *
- * Set `PUBLIC_META_PIXEL_ID` in your .env. If unset, this component
- * renders nothing — useful for preview / local dev without a pixel.
- * ------------------------------------------------------------ */
+ * Events we fire from the browser:
+ *   - PageView (here, on every page)
+ *
+ * Events we do NOT fire from the browser (intentional):
+ *   - Lead / CompleteRegistration / Purchase → sent server-side by
+ *     PostHog's Meta CAPI destination (richer data, iOS-bypass, no
+ *     ad blocker losses). That path is configured in the PostHog UI
+ *     under Data Pipeline → Destinations → Meta Ads.
+ *
+ * Why this is safe (no double-counting on Meta CPA):
+ *   Meta does not count PageView toward conversion goals or CPA;
+ *   it's a qualifying signal only. So even without an eventID dedup
+ *   between browser + CAPI, there's no budget risk.
+ *
+ * Config:
+ *   Set PUBLIC_META_PIXEL_ID (15-16 digit numeric) in .env AND in
+ *   wrangler.jsonc vars. If unset, this component renders nothing —
+ *   useful for local dev / preview URLs.
+ *
+ * To get your Pixel ID:
+ *   business.facebook.com → Events Manager → pick your pixel →
+ *   Settings tab → copy the numeric ID next to "Dataset ID".
+ */
 
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
 ---
 
 {
   pixelId && (
-    <script is:inline define:vars={{ pixelId }}>
-      {`
+    <>
+      {/*
+        Script below is the canonical Meta Pixel stub (same shape as the
+        one in Events Manager), wrapped in load/idle-defer so it never
+        steals main-thread time from LCP. Do not minify — readability
+        matters more than 80 bytes on one tag.
+      */}
+      <script is:inline define:vars={{ pixelId }}>
         (function () {
           if (window.fbq) return;
-          var n = window.fbq = function () {
-            n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
-          };
+          var n = (window.fbq = function () {
+            n.callMethod
+              ? n.callMethod.apply(n, arguments)
+              : n.queue.push(arguments);
+          });
           if (!window._fbq) window._fbq = n;
           n.push = n;
           n.loaded = true;
@@ -35,37 +60,45 @@ const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
           n.queue = [];
 
           function boot() {
-            var s = document.createElement("script");
-            s.async = true;
-            s.src = "https://connect.facebook.net/en_US/fbevents.js";
-            document.head.appendChild(s);
+            var t = document.createElement("script");
+            t.async = true;
+            t.src = "https://connect.facebook.net/en_US/fbevents.js";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(t, s);
 
-            fbq("init", ${JSON.stringify(pixelId)});
+            fbq("init", pixelId);
             fbq("track", "PageView");
           }
 
-          window.addEventListener(
-            "load",
-            function () {
-              if ("requestIdleCallback" in window) {
-                requestIdleCallback(boot, { timeout: 4000 });
-              } else {
-                setTimeout(boot, 2000);
-              }
-            },
-            { once: true }
-          );
+          function schedule() {
+            if ("requestIdleCallback" in window) {
+              requestIdleCallback(boot, { timeout: 4000 });
+            } else {
+              setTimeout(boot, 2000);
+            }
+          }
+
+          if (document.readyState === "complete") {
+            schedule();
+          } else {
+            window.addEventListener("load", schedule, { once: true });
+          }
         })();
-      `}
-    </script>
-    <noscript>
-      <img
-        height="1"
-        width="1"
-        style="display:none"
-        alt=""
-        src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
-      />
-    </noscript>
+      </script>
+      {/*
+        <noscript> fallback: a 1x1 tracking pixel that fires a PageView
+        via pure HTML for users with JS disabled (rare, but Meta counts
+        them in baseline volume). Only runs when JS is off.
+      */}
+      <noscript>
+        <img
+          height="1"
+          width="1"
+          style="display:none"
+          alt=""
+          src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+        />
+      </noscript>
+    </>
   )
 }
