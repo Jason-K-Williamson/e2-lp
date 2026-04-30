@@ -34,6 +34,7 @@
  */
 
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
+const testEventCode = import.meta.env.PUBLIC_META_TEST_EVENT_CODE || "";
 ---
 
 {
@@ -45,7 +46,7 @@ const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
         steals main-thread time from LCP. Do not minify — readability
         matters more than 80 bytes on one tag.
       */}
-      <script is:inline define:vars={{ pixelId }}>
+      <script is:inline define:vars={{ pixelId, testEventCode }}>
         (function () {
           if (window.fbq) return;
           var n = (window.fbq = function () {
@@ -67,7 +68,12 @@ const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
             s.parentNode.insertBefore(t, s);
 
             fbq("init", pixelId);
-            fbq("track", "PageView");
+            // Pass test_event_code when set so this PageView appears in
+            // Events Manager → Test Events. The env var is cleared in prod.
+            var pageViewOptions = testEventCode
+              ? [{}, { test_event_code: testEventCode }]
+              : [{}];
+            fbq.apply(null, ["track", "PageView"].concat(pageViewOptions));
           }
 
           function schedule() {

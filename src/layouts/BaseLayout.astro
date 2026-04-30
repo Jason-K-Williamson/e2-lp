@@ -91,11 +91,6 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
     <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
-    <!-- Tracking: PostHog (source of truth) → Meta CAPI via destinations.
-         Meta pixel handles browser-side PageView only. -->
-    <PostHog />
-    <MetaPixel />
-
     <!-- Formflow widget.js is injected from FormflowModal.astro on first open only -->
 
     <!--
@@ -129,6 +124,15 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
         <VisualEditor variantId={variantId ?? ""} />
       )
     }
+
+    <!--
+      Tracking: PostHog (source of truth) → Meta CAPI via destinations.
+      Meta pixel handles browser-side PageView only.
+      Placed at end of <body> so stub setup never blocks <head> HTML parsing.
+      All actual events fire after load + 3 s floor — no data lost.
+    -->
+    <PostHog />
+    <MetaPixel />
 
     <!--
       Conversion warm-up: prefetch the Formflow widget during browser idle time

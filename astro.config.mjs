@@ -19,7 +19,11 @@ export default defineConfig({
       options: {
         weights: [400, 500, 700],
         subsets: ['latin'],
-        display: 'swap',
+        // 'optional': browser uses the web font only if it's already cached or
+        // loads in <100ms. First-time (cold FB ad) visitors get the system font
+        // immediately — no LCP stall waiting for DM Sans to download.
+        // Subsequent visits get DM Sans from cache. No layout shift, no swap flash.
+        display: 'optional',
       },
     },
   ],
