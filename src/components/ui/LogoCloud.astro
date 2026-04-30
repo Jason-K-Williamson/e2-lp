@@ -1,72 +1,111 @@
 ---
 /**
- * Static Astro LogoCloud — replaces the React client:load version.
- * No JS hydration, no React runtime, images rendered at build time.
+ * LogoCloud — Astro 6 optimised.
+ *
+ * Raster logos are imported from src/assets/ so Astro's built-in Sharp
+ * pipeline processes them at build time:
+ *   - Resizes to 2× the max CSS display size (retina-ready)
+ *   - Re-compresses with Sharp (better quality-to-bytes than the originals)
+ *   - Emits a content-hashed file to _astro/ (1-year immutable cache)
+ *   - Adds width/height to prevent CLS
+ *
+ * SVGs stay as plain <img src="…"> — they are already vector and Sharp
+ * cannot meaningfully optimise them.
+ *
+ * Display rule: h-16 (64 px) × w-auto, max-w-[140px], object-contain
+ * ↳ landscape logos fill 140 × ~52 px CSS → output at 2× = 280 wide
+ * ↳ OTAA is portrait 140×235 → at h-16 renders ~38×64 → 2× = 76×128
  */
-type Logo = {
-  src?: string;
+import { Image } from "astro:assets";
+
+import imgOodie       from "../../assets/brand-logos/the-oodie.webp";
+import imgTwosvge     from "../../assets/brand-logos/twosvge.webp";
+import imgOtaa        from "../../assets/brand-logos/otaa.webp";
+import imgBogeyBros   from "../../assets/brand-logos/bogey-bros.webp";
+import imgDailyMentor from "../../assets/brand-logos/daily-mentor.avif";
+import imgVoid        from "../../assets/brand-logos/void.webp";
+
+type RasterLogo = {
+  image: ImageMetadata;
+  alt: string;
+  /** Output width fed to Astro <Image> (Sharp resize target). */
+  w: number;
+  /** Output height fed to Astro <Image>. */
+  h: number;
+  invert?: boolean;
+};
+type SvgLogo = {
+  svgSrc: string;
   alt: string;
   invert?: boolean;
-  width?: number;
-  height?: number;
 };
+type Logo = RasterLogo | SvgLogo;
 
+// width/height = 2× the max CSS rendered pixels → crisp on retina.
 const logos: Logo[] = [
-  { src: "/brand-logos/the-oodie.webp",        alt: "The Oodie",      width: 140, height: 53  },
-  { src: "/brand-logos/twosvge.webp",           alt: "Twosge",         width: 140, height: 28,  invert: true },
-  { src: "/brand-logos/otaa.webp",              alt: "OTAA",           width: 56,  height: 94  },
-  { src: "/brand-logos/bogey-bros.webp",        alt: "Bogey Bros",     width: 140, height: 53  },
-  { src: "/brand-logos/daily-mentor.avif",      alt: "Daily Mentor",   width: 140, height: 53  },
-  { src: "/brand-logos/candyclaws.svg",          alt: "Candy Claws",    width: 140, height: 53,  invert: true },
-  { src: "/brand-logos/Atoms_Logo_White 1.svg",  alt: "ATOMS",          width: 140, height: 53,  invert: true },
-  { src: "/brand-logos/void.webp",              alt: "VOID",           width: 140, height: 53,  invert: true },
+  { image: imgOodie,       alt: "The Oodie",    w: 280, h: 103 },
+  { image: imgTwosvge,     alt: "Twosge",       w: 280, h:  55, invert: true },
+  { image: imgOtaa,        alt: "OTAA",         w:  76, h: 128 },
+  { image: imgBogeyBros,   alt: "Bogey Bros",   w: 280, h: 106 },
+  { image: imgDailyMentor, alt: "Daily Mentor", w: 280, h: 116 },
+  { svgSrc: "/brand-logos/candyclaws.svg",              alt: "Candy Claws", invert: true },
+  { svgSrc: "/brand-logos/Atoms_Logo_White 1.svg",      alt: "ATOMS",       invert: true },
+  { image: imgVoid,        alt: "VOID",         w: 280, h:  65, invert: true },
 ];
 ---
 
 <div class="relative grid grid-cols-2 md:grid-cols-4">
   {logos.map((logo, i) => {
-    const isRightBorderMobile = i % 2 === 0;         // left column in 2-col mobile grid
-    const isBottomBorderMobile = i < logos.length - 2; // all but last mobile row
-    const isRightBorderDesktop = i % 4 !== 3;        // cols 1-3 in 4-col desktop grid
-    const isBottomBorderDesktop = i < 4;             // only top desktop row
+    const isRightBorderMobile  = i % 2 === 0;
+    const isBottomBorderMobile = i < logos.length - 2;
+    const isRightBorderDesktop = i % 4 !== 3;
+    const isBottomBorderDesktop = i < 4;
     const needsPlusTopRight    = i === 0;
     const needsPlusBottomRight = i === 2;
     const needsPlusBottomLeft  = i === 2;
 
     const borderClasses = [
-      isRightBorderMobile ? "border-r border-black/10" : "",
+      isRightBorderMobile  ? "border-r border-black/10" : "",
       isBottomBorderMobile ? "border-b border-black/10" : "",
-      isRightBorderDesktop ? "md:border-r md:border-black/10" : "md:border-r-0",
+      isRightBorderDesktop  ? "md:border-r md:border-black/10" : "md:border-r-0",
       isBottomBorderDesktop ? "md:border-b md:border-black/10" : "md:border-b-0",
     ].filter(Boolean).join(" ");
 
+    const imgClass = `pointer-events-none h-16 w-auto max-w-[140px] select-none object-contain${"invert" in logo && logo.invert ? " invert" : ""}`;
+
     return (
       <div class={`relative flex items-center justify-center bg-white px-6 py-10 md:px-8 md:py-10 ${borderClasses}`}>
-        {logo.src ? (
-          <img
+        {"image" in logo ? (
+          <Image
+            src={logo.image}
             alt={logo.alt}
-            src={logo.src}
-            width={logo.width || 140}
-            height={logo.height || 53}
+            width={logo.w}
+            height={logo.h}
             loading={i < 4 ? "eager" : "lazy"}
             decoding={i < 2 ? "sync" : "async"}
-            fetchpriority={i === 0 ? "high" : undefined}
-            class={`pointer-events-none h-16 w-auto max-w-[140px] select-none object-contain${logo.invert ? " invert" : ""}`}
+            fetchpriority={i === 0 ? "high" : "auto"}
+            class={imgClass}
           />
         ) : (
-          <span class="font-black text-gray-700 text-lg sm:text-xl tracking-tight text-center uppercase">
-            {logo.alt}
-          </span>
+          <img
+            src={logo.svgSrc}
+            alt={logo.alt}
+            width={140}
+            height={53}
+            loading="lazy"
+            decoding="async"
+            class={imgClass}
+          />
         )}
-        {/* Plus icons at grid intersections */}
+
         {needsPlusTopRight && (
-          <svg class="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+          <svg class="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         )}
         {needsPlusBottomRight && (
-          <svg class="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+          <svg class="-right-[12.5px] -bottom-[12.5px] absolute z-10 size-6 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         )}
         {needsPlusBottomLeft && (
-          <svg class="-bottom-[12.5px] -left-[12.5px] absolute z-10 hidden size-6 md:block text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 5v14M5 12h14"/></svg>
+          <svg class="-bottom-[12.5px] -left-[12.5px] absolute z-10 hidden size-6 md:block text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
         )}
       </div>
     );

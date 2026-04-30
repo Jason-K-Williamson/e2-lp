@@ -23,6 +23,13 @@ const { data: siteMetric } = await supabase
      .eq("key", "global")
      .maybeSingle();
 const featuredRevenue = Number(siteMetric?.live_revenue_total ?? 225669414);
+const compactRevenueForHeadline = new Intl.NumberFormat("en-AU", {
+     style: "currency",
+     currency: "AUD",
+     notation: "compact",
+     compactDisplay: "short",
+     maximumFractionDigits: 1,
+}).format(featuredRevenue);
 
 // ── Resolve variant row: always read from DB when possible ───────────────────
 // This is what powers the visual editor round-trip: we save via PUT /api/variants/:id
@@ -60,6 +67,11 @@ if (existing) {
      }
 }
 
+const liveHeadline = (variant.hero_headline ?? DEFAULT_VARIANT.hero_headline).replace(
+     /\$[\d,.]+(?:\s*)?(?:[KMBT])?\+?/i,
+     `${compactRevenueForHeadline}+`,
+);
+
 const title = "Real Results. Real Brands. Real Revenue. | e2 Agency";
 const description =
      "$225M+ generated. 2,000+ brands. See the case studies, designs, and client results that prove it.";
@@ -76,7 +88,7 @@ const description =
      <!-- 1. HERO — VSL + logo bar -->
      <Hero
           badge={strategyIntake.primaryLine}
-          headline={variant.hero_headline}
+          headline={liveHeadline}
           subheadline={variant.hero_subheadline}
           ctaPrimary={variant.hero_cta_primary}
           ctaSecondary={variant.hero_cta_secondary}

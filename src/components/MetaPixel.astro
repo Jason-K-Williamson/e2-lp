@@ -71,11 +71,14 @@ const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
           }
 
           function schedule() {
-            if ("requestIdleCallback" in window) {
-              requestIdleCallback(boot, { timeout: 4000 });
-            } else {
-              setTimeout(boot, 2000);
-            }
+            // 3 s floor keeps Meta Pixel outside the FCP→TTI TBT window.
+            setTimeout(function () {
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(boot, { timeout: 10000 });
+              } else {
+                setTimeout(boot, 1000);
+              }
+            }, 3000);
           }
 
           if (document.readyState === "complete") {

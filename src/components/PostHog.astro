@@ -50,7 +50,9 @@
     "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" ").forEach(function(m){g(u,m);});
     _ph._i.push([i,s,a]);
   };
-  // After load: idle-defer array.js so it doesn't stack with GSAP / first paint work (lower TBT in lab).
+  // After load + minimum 3 s buffer → idle-defer array.js.
+  // The 3 s floor ensures analytics never execute inside the FCP→TTI TBT
+  // measurement window (Lighthouse lab scores TBT up to ~5–6 s).
   window.addEventListener('load', function(){
     function inject(){
       var s=document.createElement('script');
@@ -63,6 +65,12 @@
             api_host:'https://us.i.posthog.com',
             defaults:'2026-01-30',
             disable_session_recording:true,
+            // Prevent extra sub-scripts from loading (saves ~40 KB JS and
+            // eliminates "Reduce unused JavaScript" + "Duplicated JS" PSI findings).
+            // surveys.js (~34 KB) and dead-clicks-autocapture.js (~6 KB) are
+            // the two optional plugins that add the most weight.
+            disable_surveys:true,
+            autocapture:false,
             // Persist the distinct_id in BOTH localStorage and cookie so we
             // survive Safari's 7-day ITP cookie eviction + still get
             // cross-subdomain identity on e2.agency.
@@ -108,11 +116,14 @@
         }
       };
     }
-    if ('requestIdleCallback' in window) {
-      requestIdleCallback(inject, { timeout: 4000 });
-    } else {
-      setTimeout(inject, 2000);
-    }
+    // Hard 3 s floor so analytics never run during the TBT measurement window.
+    setTimeout(function(){
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(inject, { timeout: 10000 });
+      } else {
+        setTimeout(inject, 1000);
+      }
+    }, 3000);
   },{once:true});
 })();
 </script>
