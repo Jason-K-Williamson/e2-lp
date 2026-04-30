@@ -1,0 +1,277 @@
+---
+/**
+ * Draggable before/after comparison slider.
+ *
+ * Before image: object-cover object-top — fills the container edge-to-edge,
+ *   no letterbox margins, clip-path works perfectly across the full width.
+ * After image: object-contain object-top — renders at its natural aspect ratio
+ *   (full width, natural height), white container background fills the gap below.
+ *   This means the After dashboard is never cropped or zoomed.
+ * Labels fade as the slider covers them. Intro wiggle respects prefers-reduced-motion.
+ */
+interface Props {
+    beforeSrc: string;
+    afterSrc: string;
+    beforeWidth: number;
+    beforeHeight: number;
+    afterWidth: number;
+    afterHeight: number;
+    beforeAlt: string;
+    afterAlt: string;
+}
+
+const {
+    beforeSrc,
+    afterSrc,
+    beforeWidth,
+    beforeHeight,
+    afterWidth,
+    afterHeight,
+    beforeAlt,
+    afterAlt,
+} = Astro.props;
+---
+
+<div
+    class="deliverability-ba w-full min-w-0 max-w-5xl mx-auto mb-12 md:mb-14 px-0 sm:px-2"
+    data-deliverability-ba
+    style="--ba: 50%;"
+>
+    <p
+        class="text-center text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3"
+    >
+        Drag to compare · Klaviyo (Saint Candles)
+    </p>
+
+    <!-- aspect-[1024/808] matches the Before image exactly so object-cover fills
+         it without any horizontal margins — zero bleed-through from the After layer.
+         max-h caps the height on large screens so it doesn't dominate the page. -->
+    <figure
+        class="relative w-full aspect-[1024/808] max-h-[520px] rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-xl shadow-gray-200/60 select-none isolate"
+        aria-label="Before and after Klaviyo comparison slider"
+    >
+        <!-- After (underlay) — object-contain preserves full dashboard width,
+             white bg fills any gap below the shorter image -->
+        <img
+            src={afterSrc}
+            alt={afterAlt}
+            class="absolute inset-0 z-0 h-full w-full object-contain object-top"
+            width={afterWidth}
+            height={afterHeight}
+            loading="eager"
+            decoding="async"
+        />
+
+        <!-- Before (overlay) — clipped from the right to reveal After as slider moves left -->
+        <img
+            src={beforeSrc}
+            alt={beforeAlt}
+            class="ba-before absolute inset-0 z-[1] h-full w-full object-cover object-top"
+            width={beforeWidth}
+            height={beforeHeight}
+            loading="eager"
+            decoding="async"
+            data-ba-before
+        />
+
+        <!-- Before label — fades when slider moves past it -->
+        <div
+            class="pointer-events-none absolute left-3 top-3 z-[4] rounded-md border border-white/60 bg-black/55 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-md backdrop-blur-[2px] transition-opacity duration-150"
+            aria-hidden="true"
+            data-ba-label="before"
+        >
+            Before
+        </div>
+
+        <!-- After label — fades when slider moves past it -->
+        <div
+            class="pointer-events-none absolute right-3 top-3 z-[4] rounded-md border border-white/60 bg-emerald-800/85 px-3 py-1.5 text-[11px] font-bold uppercase tracking-widest text-white shadow-md backdrop-blur-[2px] transition-opacity duration-150"
+            aria-hidden="true"
+            data-ba-label="after"
+        >
+            After
+        </div>
+
+        <!-- Divider line -->
+        <div
+            class="pointer-events-none absolute inset-y-0 z-[2] w-[2px] bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.08),0_0_12px_rgba(0,0,0,0.22)]"
+            style="left: var(--ba); transform: translateX(-50%);"
+            aria-hidden="true"
+        ></div>
+
+        <!-- Handle -->
+        <div
+            class="pointer-events-none absolute top-1/2 z-[3] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white text-emerald-700 shadow-[0_2px_12px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.06)]"
+            style="left: var(--ba); transform: translate(-50%, -50%);"
+            aria-hidden="true"
+        >
+            <!-- Chevron left/right icon -->
+            <svg
+                viewBox="0 0 20 20"
+                fill="none"
+                class="w-5 h-5"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M7 5L3 10L7 15M13 5L17 10L13 15" />
+            </svg>
+        </div>
+
+        <label class="sr-only" for="deliverability-ba-range">
+            Compare before and after Klaviyo screenshots
+        </label>
+        <input
+            id="deliverability-ba-range"
+            type="range"
+            min="0"
+            max="100"
+            value="50"
+            class="absolute inset-0 z-[5] h-full w-full cursor-ew-resize opacity-0"
+            data-ba-range
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+            aria-label="Drag to compare before and after deliverability proof"
+        />
+        <figcaption class="sr-only">
+            Before: Klaviyo attributed revenue near 4% of total revenue (flows
+            only). After: ~30% of revenue attributed to Klaviyo with campaigns
+            and flows both live.
+        </figcaption>
+    </figure>
+
+    <div
+        class="mt-4 flex flex-col gap-2 sm:flex-row sm:justify-between sm:gap-6 text-center sm:text-left"
+    >
+        <p class="text-sm text-gray-600 leading-snug">
+            <span class="font-bold uppercase tracking-wide text-gray-900"
+                >Before</span
+            >
+            · ~4% attributed revenue · campaigns not contributing · flows only
+        </p>
+        <p class="text-sm text-gray-600 leading-snug sm:text-right">
+            <span class="font-bold uppercase tracking-wide text-emerald-900"
+                >After</span
+            >
+            · ~30% attributed · campaigns + flows live · same Klaviyo account
+        </p>
+    </div>
+</div>
+
+<script is:inline>
+    (function () {
+        document
+            .querySelectorAll("[data-deliverability-ba]")
+            .forEach(function (root) {
+                var range = root.querySelector("[data-ba-range]");
+                var beforeImg = root.querySelector("[data-ba-before]");
+                var labelBefore = root.querySelector('[data-ba-label="before"]');
+                var labelAfter = root.querySelector('[data-ba-label="after"]');
+
+                if (!range || !beforeImg) return;
+
+                // Thresholds (% of slider) at which labels fade fully out
+                var BEFORE_FADE_EDGE = 14; // Before label gone below this
+                var AFTER_FADE_EDGE = 86;  // After label gone above this
+                var FADE_BAND = 8;          // fade over this many percent
+
+                function clamp(v, lo, hi) {
+                    return Math.min(hi, Math.max(lo, v));
+                }
+
+                function update() {
+                    var v = Number(range.value);
+
+                    // Move divider + handle
+                    root.style.setProperty("--ba", v + "%");
+                    range.setAttribute("aria-valuenow", v);
+
+                    // Clip Before image: reveal from left
+                    beforeImg.style.clipPath =
+                        "inset(0 " + (100 - v) + "% 0 0)";
+
+                    // Fade labels when slider covers their corner
+                    if (labelBefore) {
+                        var beforeOpacity = clamp(
+                            (v - (BEFORE_FADE_EDGE - FADE_BAND)) / FADE_BAND,
+                            0,
+                            1
+                        );
+                        labelBefore.style.opacity = beforeOpacity;
+                    }
+                    if (labelAfter) {
+                        var afterOpacity = clamp(
+                            (AFTER_FADE_EDGE + FADE_BAND - v) / FADE_BAND,
+                            0,
+                            1
+                        );
+                        labelAfter.style.opacity = afterOpacity;
+                    }
+                }
+
+                range.addEventListener("input", update);
+                range.addEventListener("change", update);
+
+                // Set initial state without animation
+                update();
+
+                // Intro wiggle — hints the slider is interactive
+                // Skipped if user prefers reduced motion
+                var prefersReduced =
+                    window.matchMedia &&
+                    window.matchMedia("(prefers-reduced-motion: reduce)")
+                        .matches;
+
+                if (!prefersReduced) {
+                    var startTime = null;
+                    var DURATION = 700; // ms
+
+                    function easeInOut(t) {
+                        return t < 0.5
+                            ? 2 * t * t
+                            : -1 + (4 - 2 * t) * t;
+                    }
+
+                    // Animate: 50 → 35 → 50
+                    function wiggle(ts) {
+                        if (!startTime) startTime = ts;
+                        var elapsed = ts - startTime;
+                        var progress = Math.min(elapsed / DURATION, 1);
+                        var easedProgress = easeInOut(progress);
+
+                        // Triangle wave: 0→1→0
+                        var wave =
+                            progress < 0.5
+                                ? easedProgress * 2
+                                : 2 - easedProgress * 2;
+
+                        var value = 50 - wave * 15; // 50 → 35 → 50
+                        range.value = value;
+                        update();
+
+                        if (progress < 1) {
+                            requestAnimationFrame(wiggle);
+                        } else {
+                            range.value = 50;
+                            update();
+                        }
+                    }
+
+                    // Delay wiggle so page has settled
+                    setTimeout(function () {
+                        requestAnimationFrame(wiggle);
+                    }, 900);
+                }
+            });
+    })();
+</script>
+
+<style>
+    /* Initial clip — JS overrides on interaction */
+    .ba-before {
+        clip-path: inset(0 50% 0 0);
+        will-change: clip-path;
+    }
+</style>

@@ -1,0 +1,39 @@
+---
+description: Use gstack as the default agent orchestration layer. Prefer gstack skills over ad-hoc tool use for any non-trivial task.
+alwaysApply: true
+---
+
+# gstack is the default workflow
+
+I'm a marketer, not a developer. gstack is my agent orchestration layer — a set of skills that act like a team of specialists (CEO, eng manager, designer, QA lead, security officer, release engineer). Every skill is prefixed with `gstack-` so there's no ambiguity with built-in commands.
+
+## Reach for gstack first
+
+Match the user's intent to the right gstack skill. Proactively suggest it when the situation fits, unless told to stop suggesting.
+
+| User intent | gstack skill |
+|---|---|
+| New feature or product idea | `/gstack-office-hours` (reframe it), then `/gstack-autoplan` |
+| Before writing any non-trivial code | `/gstack-autoplan` (runs CEO → design → eng review) |
+| After writing code, before shipping | `/gstack-review` (auto-fixes issues) |
+| QA test a URL | `/gstack-qa <url>` (real browser, finds + fixes bugs) |
+| Shipping | `/gstack-ship` (tests + PR) then `/gstack-land-and-deploy` |
+| Can't figure out a bug | `/gstack-investigate` (root-cause methodology) |
+| Security audit before launch | `/gstack-cso` (OWASP + STRIDE) |
+| Design work | `/gstack-design-consultation`, `/gstack-design-shotgun`, `/gstack-design-html` |
+| Performance baseline | `/gstack-benchmark` |
+| Monitor after deploy | `/gstack-canary` |
+
+## Browser work
+
+For any web browsing, QA, screenshots, or scraping, use `/gstack-browse` (not `mcp__claude-in-chrome__*` tools — those are slower and not what I use).
+
+## Safety
+
+- Before destructive commands (rm -rf, force-push, DROP TABLE, git reset --hard), warn me and suggest `/gstack-guard`.
+- Never skip git hooks (`--no-verify`) without asking.
+- Confirm before pushing, merging, or anything that affects shared state.
+
+## When I'm stuck
+
+I don't code. If you hit a decision that needs judgment I can't make (architecture, naming, tradeoffs), ask me in plain language what outcome I want — not which implementation to pick. Then make the call yourself.

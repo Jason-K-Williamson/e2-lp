@@ -78,6 +78,65 @@ export interface PageVariant {
   updated_at: string;
 }
 
+// ── Case Studies ─────────────────────────────────────────────────────────────
+
+export type CaseStudyType = 'major' | 'micro' | 'deliverability' | 'bfcm' | 'content';
+
+export interface CaseStudy {
+  id: string;
+  slug: string;
+  type: CaseStudyType;
+  client_name: string | null;
+  client_title: string | null;
+  client_company: string | null;
+  is_anonymous: boolean;
+  industry: string | null;
+  country: string | null;
+  timeframe_days: number | null;
+  headline: string;
+  description: string | null;
+  quote: string | null;
+  video_url: string | null;
+  image_before: string | null;
+  image_after: string | null;
+  badge_label: string | null;
+  is_featured: boolean;
+  sort_order: number;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+  stats?: CaseStudyStat[];
+  reviews?: Review[];
+}
+
+export interface CaseStudyStat {
+  id: string;
+  case_study_id: string;
+  metric_label: string;
+  before_value: string | null;
+  after_value: string | null;
+  change_label: string | null;
+  context: string | null;
+  sort_order: number;
+  created_at: string;
+}
+
+// ── Reviews ───────────────────────────────────────────────────────────────────
+
+export interface Review {
+  id: string;
+  type: string;
+  customer_name: string | null;
+  customer_company: string | null;
+  customer_tagline: string | null;
+  tag: string | null;
+  rating: number | null;
+  body: string | null;
+  review_date: string | null;
+  case_study_id: string | null;
+  created_at: string | null;
+}
+
 // ── Leads CRM ────────────────────────────────────────────────────────────────
 
 export interface Lead {
