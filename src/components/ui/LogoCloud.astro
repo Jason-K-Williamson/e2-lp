@@ -2,19 +2,16 @@
 /**
  * LogoCloud — Astro 6 optimised.
  *
- * Raster logos are imported from src/assets/ so Astro's built-in Sharp
- * pipeline processes them at build time:
- *   - Resizes to 2× the max CSS display size (retina-ready)
- *   - Re-compresses with Sharp (better quality-to-bytes than the originals)
- *   - Emits a content-hashed file to _astro/ (1-year immutable cache)
- *   - Adds width/height to prevent CLS
- *
- * SVGs stay as plain <img src="…"> — they are already vector and Sharp
- * cannot meaningfully optimise them.
+ * Raster logos are imported from src/assets/ so Cloudflare Images serves
+ * correctly-sized variants at the CDN edge.
  *
  * Display rule: h-16 (64 px) × w-auto, max-w-[140px], object-contain
- * ↳ landscape logos fill 140 × ~52 px CSS → output at 2× = 280 wide
- * ↳ OTAA is portrait 140×235 → at h-16 renders ~38×64 → 2× = 76×128
+ * ↳ landscape logos max 140 CSS px wide → srcset 140/210/280 px
+ * ↳ OTAA portrait → max 38 CSS px wide → srcset 38/57/76 px
+ *
+ * `widths` + `sizes="140px"` generates a srcset so each device DPR
+ * picks the right variant instead of always downloading the 2× version.
+ * quality=65 is ample for small decorative logos (saves ~30% vs default 80).
  */
 import { Image } from "astro:assets";
 
@@ -28,10 +25,10 @@ import imgVoid        from "../../assets/brand-logos/void.webp";
 type RasterLogo = {
   image: ImageMetadata;
   alt: string;
-  /** Output width fed to Astro <Image> (Sharp resize target). */
   w: number;
-  /** Output height fed to Astro <Image>. */
   h: number;
+  widths: number[];
+  sizes: string;
   invert?: boolean;
 };
 type SvgLogo = {
@@ -41,16 +38,16 @@ type SvgLogo = {
 };
 type Logo = RasterLogo | SvgLogo;
 
-// width/height = 2× the max CSS rendered pixels → crisp on retina.
+// w/h = 2× max CSS pixels (retina baseline). widths generates srcset entries.
 const logos: Logo[] = [
-  { image: imgOodie,       alt: "The Oodie",    w: 280, h: 103 },
-  { image: imgTwosvge,     alt: "Twosge",       w: 280, h:  55, invert: true },
-  { image: imgOtaa,        alt: "OTAA",         w:  76, h: 128 },
-  { image: imgBogeyBros,   alt: "Bogey Bros",   w: 280, h: 106 },
-  { image: imgDailyMentor, alt: "Daily Mentor", w: 280, h: 116 },
+  { image: imgOodie,       alt: "The Oodie",    w: 280, h: 103, widths: [140, 210, 280], sizes: "140px" },
+  { image: imgTwosvge,     alt: "Twosge",       w: 280, h:  55, widths: [140, 210, 280], sizes: "140px", invert: true },
+  { image: imgOtaa,        alt: "OTAA",         w:  76, h: 128, widths: [ 38,  57,  76], sizes: "38px"  },
+  { image: imgBogeyBros,   alt: "Bogey Bros",   w: 280, h: 106, widths: [140, 210, 280], sizes: "140px" },
+  { image: imgDailyMentor, alt: "Daily Mentor", w: 280, h: 116, widths: [140, 210, 280], sizes: "140px" },
   { svgSrc: "/brand-logos/candyclaws.svg",              alt: "Candy Claws", invert: true },
   { svgSrc: "/brand-logos/Atoms_Logo_White 1.svg",      alt: "ATOMS",       invert: true },
-  { image: imgVoid,        alt: "VOID",         w: 280, h:  65, invert: true },
+  { image: imgVoid,        alt: "VOID",         w: 280, h:  65, widths: [140, 210, 280], sizes: "140px", invert: true },
 ];
 ---
 
@@ -81,6 +78,9 @@ const logos: Logo[] = [
             alt={logo.alt}
             width={logo.w}
             height={logo.h}
+            widths={logo.widths}
+            sizes={logo.sizes}
+            quality={65}
             loading={i < 4 ? "eager" : "lazy"}
             decoding={i < 2 ? "sync" : "async"}
             fetchpriority={i === 0 ? "high" : "auto"}
