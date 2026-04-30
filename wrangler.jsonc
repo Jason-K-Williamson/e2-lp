@@ -56,6 +56,13 @@
 		"enabled": true,
 		"head_sampling_rate": 1
 	},
+	// Worker is the origin for production hostname.
+	"routes": [
+		{
+			"pattern": "workwith.e2.agency",
+			"custom_domain": true
+		}
+	],
 	// Public vars — also inlined at build by Vite. Safe to leave here.
 	"vars": {
 		"PUBLIC_SUPABASE_URL": "https://gvttvfheznfllrsgqsfk.supabase.co",

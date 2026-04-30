@@ -17,6 +17,12 @@ import KlaviyoProof from "../components/KlaviyoProof.astro";
 
 const isAdmin = !!(Astro.locals as any).isAdmin;
 const strategyIntake = getStrategyIntakeCopy();
+const { data: siteMetric } = await supabase
+     .from("site_metrics")
+     .select("live_revenue_total")
+     .eq("key", "global")
+     .maybeSingle();
+const featuredRevenue = Number(siteMetric?.live_revenue_total ?? 225669414);
 
 // ── Resolve variant row: always read from DB when possible ───────────────────
 // This is what powers the visual editor round-trip: we save via PUT /api/variants/:id
@@ -77,7 +83,7 @@ const description =
      />
 
      <!-- 2. PROOF BAR — $225M + 4 supporting stats -->
-     <SocialProof />
+     <SocialProof featuredRevenue={featuredRevenue} />
 
      <!-- 3. HERO TESTIMONIAL — Davie Fogarty / The Oodie -->
      <HeroTestimonial />

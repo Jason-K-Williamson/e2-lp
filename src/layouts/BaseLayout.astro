@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import PostHog from "../components/PostHog.astro";
 import MetaPixel from "../components/MetaPixel.astro";
 import VisualEditor from "../components/VisualEditor.astro";
@@ -49,31 +50,12 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <meta name="twitter:image" content={ogImage} />
 
     <!--
-      PERFORMANCE: Self-hosted fonts, preload LCP-critical weights only.
-      ────────────────────────────────────────────────────────────────────
-      The hero H1 is `font-bold` (700) so that weight MUST be preloaded —
-      otherwise the browser fetches 400 first, then 700 on H1 paint,
-      adding 500–700ms to LCP render-delay (measured: 2,480ms → ~800ms).
-      Subheadline + body use 400; preloading both keeps FCP clean.
-      `fetchpriority="high"` makes 700 outrun the 400 fetch on single-
-      connection HTTP/2 multiplexing.
-      500 is used in badges / small UI only — loads via font-display:swap.
+      Astro 6 Fonts API:
+      - self-hosted + optimized by Astro provider pipeline
+      - one unified source of truth (astro.config.mjs)
+      - preload enabled for the family used by above-the-fold hero copy
     -->
-    <link
-      rel="preload"
-      href="/fonts/DMSans-700.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-      fetchpriority="high"
-    />
-    <link
-      rel="preload"
-      href="/fonts/DMSans-400.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
+    <Font cssVariable="--font-dm-sans" preload />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

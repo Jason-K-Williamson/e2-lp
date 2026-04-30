@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
@@ -11,6 +11,18 @@ export default defineConfig({
   output: 'server',
   adapter: cloudflare(),
   integrations: [react()],
+  fonts: [
+    {
+      provider: fontProviders.google(),
+      name: 'DM Sans',
+      cssVariable: '--font-dm-sans',
+      options: {
+        weights: [400, 500, 700],
+        subsets: ['latin'],
+        display: 'swap',
+      },
+    },
+  ],
 
   build: {
     // Inline every CSS chunk directly into the HTML <head>.

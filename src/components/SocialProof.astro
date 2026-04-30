@@ -10,6 +10,12 @@ const supporting = [
   { value: "21 Days", label: "Avg. Flows Live" },
   { value: "31%+", label: "Avg. Klaviyo Revenue" },
 ];
+const { featuredRevenue = 225669414 } = Astro.props;
+const formattedRevenue = new Intl.NumberFormat("en-AU", {
+  style: "currency",
+  currency: "AUD",
+  maximumFractionDigits: 0,
+}).format(featuredRevenue);
 ---
 
 <section class="pt-0 pb-12 sm:pb-14 relative z-10 border-b border-gray-100/80">
@@ -19,7 +25,7 @@ const supporting = [
       <div
         class="font-black text-4xl sm:text-5xl md:text-6xl text-e2-black tracking-tight tabular-nums mb-2"
       >
-        $225,669,414
+        {formattedRevenue}
       </div>
       <div
         class="text-xs text-gray-600 font-semibold uppercase tracking-widest"
