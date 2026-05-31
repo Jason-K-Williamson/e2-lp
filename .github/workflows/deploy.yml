@@ -1,0 +1,46 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_ACCOUNT_ID: c1d72867c2217c519e52d4d575609eb0
+      PUBLIC_SUPABASE_URL: https://gvttvfheznfllrsgqsfk.supabase.co
+      PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2dHR2Zmhlem5mbGxyc2dxc2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNTU3OTcsImV4cCI6MjA4NzkzMTc5N30.HlzxYtjbwkOyuZVrlGxCAuwlxPbspjo8y-CuCt-wyFc
+      PUBLIC_META_PIXEL_ID: "2345764252241076"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+        env:
+          ADMIN_PASS: ${{ secrets.ADMIN_PASS }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          PUBLIC_META_TEST_EVENT_CODE: ${{ secrets.PUBLIC_META_TEST_EVENT_CODE }}
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: c1d72867c2217c519e52d4d575609eb0
+          command: deploy

@@ -22,3 +22,13 @@ Using gstack skills: After install, skills like /gstack-qa, /gstack-ship,
 /gstack-review, /gstack-investigate, and /gstack-browse are available.
 Use /gstack-browse for all web browsing.
 Use ~/.claude/skills/gstack/... for gstack file paths (the global path).
+
+## Deploy (Cloudflare Workers)
+
+Production: https://workwith.e2.agency
+
+- **Local / Cursor:** `npm run deploy` (requires `CLOUDFLARE_API_TOKEN` in `.env`)
+- **Auto on push:** GitHub Actions `.github/workflows/deploy.yml` (requires `CLOUDFLARE_API_TOKEN` repo secret)
+- **Full setup:** `docs/DEPLOY.md`
+
+Push to `main` alone does **not** deploy until the GitHub secret exists. Worker secrets (`ADMIN_PASS`, etc.) stay on Cloudflare via `wrangler secret put` — not in git.
