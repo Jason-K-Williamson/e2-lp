@@ -19,6 +19,8 @@ const {
   ctaSecondary = DEFAULT_VARIANT.hero_cta_secondary,
 } = Astro.props;
 
+const secondaryCta = ctaSecondary?.trim() ?? "";
+
 const isAdmin = !!(Astro.locals as any).isAdmin;
 
 const editProps = (field: string) =>
@@ -104,8 +106,7 @@ const editProps = (field: string) =>
       <a
         href="#qualify"
         id="hero-cta-primary"
-        class="group w-full sm:w-auto px-9 bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
-        style="min-height: 52px;"
+        class="group w-full sm:w-auto px-6 sm:px-9 py-3.5 sm:py-3 min-h-[52px] h-auto bg-e2-black text-white rounded-full font-bold text-base sm:text-lg leading-snug text-center hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
         {...editProps("hero_cta_primary")}
       >
         <span class="relative z-10">{ctaPrimary}</span>
@@ -114,14 +115,13 @@ const editProps = (field: string) =>
         ></span>
       </a>
       {
-        ctaSecondary && (
+        secondaryCta && (
           <a
             href="#how-it-works"
-            class="w-full sm:w-auto px-7 bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
-            style="min-height: 52px;"
+            class="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-3 min-h-[52px] h-auto bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-base sm:text-lg leading-snug text-center hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
             {...editProps("hero_cta_secondary")}
           >
-            {ctaSecondary}
+            {secondaryCta}
           </a>
         )
       }
