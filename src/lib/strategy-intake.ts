@@ -19,10 +19,10 @@ export function ordinalDay(day: number): string {
   return `${day}${ORDINAL_SUFFIX(day)}`;
 }
 
-/** e.g. "4th April" in Sydney on the given instant */
+/** e.g. "4th April" in US Eastern (Miami) on the given instant */
 export function formatIntakeCalendarDate(now: Date = new Date()): string {
   const fmt = new Intl.DateTimeFormat("en-AU", {
-    timeZone: "Australia/Sydney",
+    timeZone: "America/New_York",
     day: "numeric",
     month: "long",
   });

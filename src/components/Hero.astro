@@ -83,7 +83,7 @@ const editProps = (field: string) =>
     <!-- Headline: clamp starts 1.75rem on phones — full text reads without cutting -->
     <h1
       id="hero-headline"
-      class="max-w-3xl font-bold text-[clamp(1.65rem,4.2vw,3.25rem)] leading-[1.08] tracking-tight text-e2-black mb-3 sm:mb-3.5 text-balance"
+      class="max-w-3xl font-bold text-[clamp(1.65rem,4.2vw,3.25rem)] leading-[1.08] tracking-tight text-e2-black mb-4 sm:mb-5 text-balance"
       {...editProps("hero_headline")}
     >
       {headline}
@@ -91,7 +91,7 @@ const editProps = (field: string) =>
 
     <!-- Subheadline -->
     <p
-      class="text-sm sm:text-base md:text-lg text-gray-600 max-w-xl mx-auto mb-4 sm:mb-5 leading-snug sm:leading-relaxed font-normal text-balance"
+      class="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8 leading-snug sm:leading-relaxed font-normal text-balance"
       {...editProps("hero_subheadline")}
     >
       {subheadline}
@@ -113,32 +113,57 @@ const editProps = (field: string) =>
           class="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
         ></span>
       </a>
-      <a
-        href="#how-it-works"
-        class="w-full sm:w-auto px-7 bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
-        style="min-height: 52px;"
-        {...editProps("hero_cta_secondary")}
-      >
-        {ctaSecondary}
-      </a>
+      {
+        ctaSecondary && (
+          <a
+            href="#how-it-works"
+            class="w-full sm:w-auto px-7 bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-lg hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
+            style="min-height: 52px;"
+            {...editProps("hero_cta_secondary")}
+          >
+            {ctaSecondary}
+          </a>
+        )
+      }
     </div>
 
-    <!-- Partner / platform proof (compact, inline label — trust near CTA per CRO) -->
+    <!-- Spacer before VSL (client logo strip removed — full LogoCloud below
+         already carries the same client brands; avoids a duplicate logo bar). -->
+    <div class="mt-2 sm:mt-4"></div>
+
+    <!-- VSL video — Bunny.net, lazy-loaded + muted autoplay on scroll -->
+    <VslVideo />
+
+    <!-- Below VSL social proof row -->
+    <div class="mt-7 sm:mt-8 w-full max-w-3xl">
+      <p
+        class="text-base uppercase tracking-widest text-gray-600 font-semibold mb-2 text-center"
+      >
+        Trusted By USA & Australia's Leading D2C Brands
+      </p>
+      <p class="text-base text-gray-600 font-medium text-center mb-6">
+        Join 750+ brands who've scaled their email & SMS with e2
+      </p>
+      <LogoCloud />
+    </div>
+
+    <!-- Platform partners — demoted below the proof (platforms support trust,
+         they don't sell; client names above the fold do the selling). -->
     <div
-      class="w-full max-w-3xl mx-auto mt-4 sm:mt-5 mb-5 sm:mb-7 px-1 flex flex-wrap items-center justify-center gap-x-2.5 sm:gap-x-3 gap-y-2"
-      aria-label="Partner platforms"
+      class="w-full max-w-3xl mx-auto mt-10 sm:mt-12 pt-7 sm:pt-8 border-t border-gray-100 px-1 flex flex-wrap items-center justify-center gap-x-3 gap-y-2"
+      aria-label="Official platform partners"
     >
       <span
-        class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] text-gray-600 shrink-0"
+        class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] text-gray-500 shrink-0"
       >
-        Partners with:
+        Official partners:
       </span>
       <ul
-        class="flex flex-wrap items-center justify-center gap-x-3 sm:gap-x-4 gap-y-1.5 list-none p-0 m-0"
+        class="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-1.5 list-none p-0 m-0"
         role="list"
       >
         <li
-          class="flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity"
+          class="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity"
         >
           <img
             src="/partners/shopify.svg"
@@ -151,12 +176,12 @@ const editProps = (field: string) =>
             aria-hidden="true"
           />
           <span
-            class="text-xs sm:text-sm font-semibold text-gray-800 tracking-tight"
+            class="text-xs sm:text-sm font-semibold text-gray-700 tracking-tight"
             >Shopify</span
           >
         </li>
         <li
-          class="opacity-90 hover:opacity-100 transition-opacity max-w-[min(100%,180px)] sm:max-w-[200px]"
+          class="opacity-80 hover:opacity-100 transition-opacity max-w-[min(100%,180px)] sm:max-w-[200px]"
         >
           <img
             src="/partners/klaviyo-master-platinum.webp"
@@ -169,7 +194,7 @@ const editProps = (field: string) =>
           />
         </li>
         <li
-          class="flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity"
+          class="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity"
         >
           <div
             class="w-6 h-6 rounded-lg bg-gradient-to-br from-[#ff5a1f] to-[#e84600] flex items-center justify-center shadow-sm shrink-0"
@@ -187,11 +212,11 @@ const editProps = (field: string) =>
             </svg>
           </div>
           <span
-            class="text-xs sm:text-sm font-semibold text-gray-800 tracking-tight"
+            class="text-xs sm:text-sm font-semibold text-gray-700 tracking-tight"
             >OptiMonk</span
           >
         </li>
-        <li class="opacity-90 hover:opacity-100 transition-opacity">
+        <li class="opacity-80 hover:opacity-100 transition-opacity">
           <img
             src="/partners/postscript.webp"
             alt="Postscript SMS partner"
@@ -203,22 +228,6 @@ const editProps = (field: string) =>
           />
         </li>
       </ul>
-    </div>
-
-    <!-- VSL video — Bunny.net, lazy-loaded + muted autoplay on scroll -->
-    <VslVideo />
-
-    <!-- Below VSL social proof row -->
-    <div class="mt-7 sm:mt-8 w-full max-w-3xl">
-      <p
-        class="text-base uppercase tracking-widest text-gray-600 font-semibold mb-2 text-center"
-      >
-        Trusted By USA & Australia's Leading D2C Brands
-      </p>
-      <p class="text-base text-gray-600 font-medium text-center mb-6">
-        Join 750+ brands who've scaled their email & SMS with e2
-      </p>
-      <LogoCloud />
     </div>
   </div>
 </section>

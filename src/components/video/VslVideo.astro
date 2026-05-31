@@ -188,6 +188,10 @@ const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min
 
     let observer: IntersectionObserver | undefined;
     let playerJsPromise: Promise<PlayerJsConstructor | null> | undefined;
+    // Player bound to the muted-autoplay iframe. Reused on unmute so we can
+    // unmute + restart in place (within the tap gesture) instead of swapping
+    // in a fresh autoplay-with-sound iframe, which mobile blocks → double-tap.
+    let mutedPlayer: PlayerJsInstance | null = null;
 
     const connection = (navigator as any).connection;
     const slowConnection =
@@ -281,23 +285,36 @@ const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min
       mount.replaceChildren(iframe);
     };
 
-    const restartWithSound = async () => {
+    const applySound = (player: PlayerJsInstance) => {
+      if (player.supports("method", "setCurrentTime")) player.setCurrentTime(0);
+      if (player.supports("method", "setVolume")) player.setVolume(100);
+      if (player.supports("method", "unmute")) player.unmute();
+      if (player.supports("method", "play")) player.play();
+    };
+
+    // Must stay synchronous: mobile only honours unmute/play if it runs inside
+    // the tap gesture. Reuse the live muted player when we have it.
+    const restartWithSound = () => {
       hideUnmute();
       setPhase("playing-sound");
       observer?.disconnect();
 
+      if (mutedPlayer) {
+        try {
+          applySound(mutedPlayer);
+        } catch (_) {
+          /* fall through to reload below */
+        }
+        return;
+      }
+
+      // Fallback (player not ready yet): swap in an unmuted iframe.
       const iframe = createIframe(embedUnmuted);
       mountIframe(iframe);
-
-      const Player = await loadPlayerJs();
-      if (!Player) return;
-
-      const player = new Player(iframe);
-      player.on("ready", () => {
-        if (player.supports("method", "setCurrentTime")) player.setCurrentTime(0);
-        if (player.supports("method", "setVolume")) player.setVolume(100);
-        if (player.supports("method", "unmute")) player.unmute();
-        if (player.supports("method", "play")) player.play();
+      loadPlayerJs().then((Player) => {
+        if (!Player) return;
+        const player = new Player(iframe);
+        player.on("ready", () => applySound(player));
       });
     };
 
@@ -315,6 +332,16 @@ const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min
       setPhase("playing-muted");
       const iframe = createIframe(embedMuted);
       mountIframe(iframe, showUnmute);
+
+      // Pre-bind a player to the muted iframe so an unmute tap can restart it
+      // in place (synchronously), keeping the user gesture intact on mobile.
+      loadPlayerJs().then((Player) => {
+        if (!Player) return;
+        const player = new Player(iframe);
+        player.on("ready", () => {
+          mutedPlayer = player;
+        });
+      });
     };
 
     vsl.addEventListener("click", () => {

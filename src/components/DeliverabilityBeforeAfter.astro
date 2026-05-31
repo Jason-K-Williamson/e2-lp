@@ -137,7 +137,7 @@ const {
         />
         <figcaption class="sr-only">
             Before: Klaviyo attributed revenue near 4% of total revenue (flows
-            only). After: ~30% of revenue attributed to Klaviyo with campaigns
+            only). After: ~46% of revenue attributed to Klaviyo with campaigns
             and flows both live.
         </figcaption>
     </figure>
@@ -155,7 +155,7 @@ const {
             <span class="font-bold uppercase tracking-wide text-emerald-900"
                 >After</span
             >
-            · ~30% attributed · campaigns + flows live · same Klaviyo account
+            · ~46% attributed · campaigns + flows live · same Klaviyo account
         </p>
     </div>
 </div>
@@ -213,6 +213,44 @@ const {
 
                 range.addEventListener("input", update);
                 range.addEventListener("change", update);
+
+                // Pointer-drag (mobile + desktop): native range-thumb dragging
+                // is unreliable on touch (especially with an opacity-0 thumb),
+                // so we drive the value directly from the pointer's X position
+                // over the figure. touch-action:none (CSS) lets us own the gesture.
+                var figure = root.querySelector("figure");
+                var dragging = false;
+
+                function setFromClientX(clientX) {
+                    if (!figure) return;
+                    var rect = figure.getBoundingClientRect();
+                    if (!rect.width) return;
+                    range.value = clamp(
+                        ((clientX - rect.left) / rect.width) * 100,
+                        0,
+                        100
+                    );
+                    update();
+                }
+
+                range.addEventListener("pointerdown", function (e) {
+                    dragging = true;
+                    try {
+                        range.setPointerCapture(e.pointerId);
+                    } catch (_) {}
+                    setFromClientX(e.clientX);
+                });
+                range.addEventListener("pointermove", function (e) {
+                    if (dragging) setFromClientX(e.clientX);
+                });
+                function endDrag(e) {
+                    dragging = false;
+                    try {
+                        range.releasePointerCapture(e.pointerId);
+                    } catch (_) {}
+                }
+                range.addEventListener("pointerup", endDrag);
+                range.addEventListener("pointercancel", endDrag);
 
                 // Set initial state without animation
                 update();
@@ -273,5 +311,11 @@ const {
     .ba-before {
         clip-path: inset(0 50% 0 0);
         will-change: clip-path;
+    }
+
+    /* Own the horizontal drag gesture on touch so the slider tracks the finger
+       instead of the browser treating it as a scroll. */
+    [data-ba-range] {
+        touch-action: none;
     }
 </style>
