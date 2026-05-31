@@ -1,6 +1,7 @@
 ---
 import { DEFAULT_VARIANT } from "../lib/supabase";
 import LogoCloud from "./ui/LogoCloud.astro";
+import VslVideo from "./video/VslVideo.astro";
 
 interface Props {
   badge?: string;
@@ -204,107 +205,8 @@ const editProps = (field: string) =>
       </ul>
     </div>
 
-    <!-- VSL — 16:9 on mobile (shorter, CTA in view faster), 4:3 on md+ -->
-    <div
-      class="w-full max-w-4xl mx-auto shrink-0 relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer aspect-video md:aspect-[4/3]"
-      id="vsl-player"
-      role="button"
-      aria-label="Watch our case study video"
-    >
-      <!-- Dark cinematic background -->
-      <div
-        class="w-full h-full bg-gradient-to-br from-gray-950 via-gray-900 to-black flex flex-col items-center justify-center relative"
-      >
-        <!-- Subtle texture overlay -->
-        <div
-          class="absolute inset-0 opacity-30"
-          style="background-image: radial-gradient(circle at 25% 25%, rgba(99,102,241,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139,92,246,0.15) 0%, transparent 50%);"
-        >
-        </div>
-
-        <!-- Floating stat chips -->
-        <div
-          class="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-white/90 text-xs font-bold tracking-wide"
-        >
-          The E2 Mafia Offer
-        </div>
-        <div
-          class="absolute top-4 right-4 sm:top-6 sm:right-6 px-3 py-1.5 rounded-full bg-indigo-500/20 backdrop-blur border border-indigo-500/30 text-indigo-300 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider"
-        >
-          <span class="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
-            <span
-              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"
-            ></span>
-            <span
-              class="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-indigo-500"
-            ></span>
-          </span>
-          Play Video
-        </div>
-
-        <!-- Center VSL Content -->
-        <div
-          class="relative z-10 flex flex-col items-center gap-3 sm:gap-5 px-4 mt-2 sm:mt-6"
-        >
-          <div
-            class="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-2xl"
-          >
-            <svg
-              class="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M8 5v14l11-7z"></path>
-            </svg>
-          </div>
-          <div class="text-center max-w-xl mx-auto">
-            <p
-              class="text-white font-black text-lg sm:text-2xl md:text-3xl mb-1 sm:mb-2 leading-tight tracking-tight text-balance"
-            >
-              We build your complete email system & <span
-                class="text-indigo-400">guarantee a 3X ROI</span
-              > in 90 days.
-            </p>
-            <p
-              class="text-slate-300 text-[11px] sm:text-sm font-medium tracking-wide"
-            >
-              Click to watch exactly how we do it step-by-step
-            </p>
-          </div>
-        </div>
-
-        <!-- Bottom bar -->
-        <div
-          class="absolute bottom-0 left-0 right-0 px-3 sm:px-6 py-2.5 sm:py-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex items-center justify-between gap-2"
-        >
-          <div class="flex items-center gap-2 sm:gap-3 min-w-0">
-            <div
-              class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-900 border border-white/20 flex items-center justify-center text-white text-[10px] sm:text-xs font-black flex-shrink-0 shadow-inner"
-            >
-              JW
-            </div>
-            <div class="text-left min-w-0">
-              <p
-                class="text-white text-[10px] sm:text-xs font-bold tracking-wide"
-              >
-                Jason Williamson
-              </p>
-              <p
-                class="text-slate-400 text-[8px] sm:text-[10px] uppercase font-bold tracking-[0.2em] mt-0.5"
-              >
-                Founder, e2 Agency
-              </p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 flex-shrink-0">
-            <span
-              class="text-indigo-400 text-[8px] sm:text-[10px] font-bold px-2 py-1 bg-indigo-900/30 rounded border border-indigo-500/20 uppercase tracking-[0.1em] sm:tracking-[0.15em] backdrop-blur-sm whitespace-nowrap"
-              >Highly Valuable</span
-            >
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- VSL video — Bunny.net, lazy-loaded + muted autoplay on scroll -->
+    <VslVideo />
 
     <!-- Below VSL social proof row -->
     <div class="mt-7 sm:mt-8 w-full max-w-3xl">

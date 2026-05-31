@@ -1,0 +1,355 @@
+---
+/**
+ * VslVideo — Hero VSL (Bunny.net)
+ *
+ * Facade: cinematic overlay until the iframe is needed.
+ * Scroll into view → muted autoplay + "Click to unmute" CTA.
+ * Unmute click → restart from 0 with sound at 100%.
+ */
+
+const LIBRARY_ID = "673570";
+const VIDEO_ID = "5c41ca29-75dd-49d7-a9df-5d7c804308e1";
+
+const embedBase = `https://iframe.mediadelivery.net/embed/${LIBRARY_ID}/${VIDEO_ID}`;
+const embedMuted = `${embedBase}?autoplay=true&loop=false&muted=true&preload=true&responsive=true`;
+const embedUnmuted = `${embedBase}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min.js";
+---
+
+<div
+  id="vsl-player"
+  class="vsl-video w-full max-w-4xl mx-auto shrink-0 relative rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 group cursor-pointer aspect-video"
+  data-embed-muted={embedMuted}
+  data-embed-unmuted={embedUnmuted}
+  data-playerjs-src={PLAYERJS_SRC}
+  data-phase="poster"
+  role="button"
+  tabindex="0"
+  aria-label="VSL video"
+>
+  <!-- Overlay / poster — fades once the player is ready -->
+  <div
+    class="vsl-overlay absolute inset-0 z-[2] transition-opacity duration-500 bg-gradient-to-br from-gray-950 via-gray-900 to-black flex flex-col items-center justify-center"
+  >
+    <div
+      class="absolute inset-0 opacity-30 pointer-events-none"
+      style="background-image: radial-gradient(circle at 25% 25%, rgba(99,102,241,0.2) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(139,92,246,0.15) 0%, transparent 50%);"
+    >
+    </div>
+
+    <div
+      class="absolute top-4 left-4 sm:top-6 sm:left-6 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-white/90 text-xs font-bold tracking-wide pointer-events-none"
+    >
+      The E2 Mafia Offer
+    </div>
+    <div
+      class="absolute top-4 right-4 sm:top-6 sm:right-6 px-3 py-1.5 rounded-full bg-indigo-500/20 backdrop-blur border border-indigo-500/30 text-indigo-300 text-[10px] sm:text-xs font-bold flex items-center gap-1.5 uppercase tracking-wider pointer-events-none"
+    >
+      <span class="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
+        <span
+          class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"
+        ></span>
+        <span
+          class="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-indigo-500"
+        ></span>
+      </span>
+      Play Video
+    </div>
+
+    <div
+      class="relative z-10 flex flex-col items-center gap-3 sm:gap-5 px-4 mt-2 sm:mt-6 pointer-events-none"
+    >
+      <div
+        class="w-14 h-14 sm:w-20 sm:h-20 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-white/25 transition-all duration-500 shadow-2xl"
+      >
+        <svg
+          class="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path d="M8 5v14l11-7z"></path>
+        </svg>
+      </div>
+      <div class="text-center max-w-xl mx-auto">
+        <p
+          class="text-white font-black text-lg sm:text-2xl md:text-3xl mb-1 sm:mb-2 leading-tight tracking-tight text-balance"
+        >
+          We build your complete email system &amp; <span class="text-indigo-400"
+            >guarantee a 3X ROI</span
+          > in 90 days.
+        </p>
+        <p
+          class="text-slate-300 text-[11px] sm:text-sm font-medium tracking-wide"
+        >
+          Click to watch exactly how we do it step-by-step
+        </p>
+      </div>
+    </div>
+
+    <div
+      class="absolute bottom-0 left-0 right-0 px-3 sm:px-6 py-2.5 sm:py-4 bg-gradient-to-t from-black/95 via-black/60 to-transparent flex items-center justify-between gap-2 pointer-events-none"
+    >
+      <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+        <div
+          class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-indigo-600 to-indigo-900 border border-white/20 flex items-center justify-center text-white text-[10px] sm:text-xs font-black flex-shrink-0 shadow-inner"
+        >
+          JW
+        </div>
+        <div class="text-left min-w-0">
+          <p class="text-white text-[10px] sm:text-xs font-bold tracking-wide">
+            Jason Williamson
+          </p>
+          <p
+            class="text-slate-400 text-[8px] sm:text-[10px] uppercase font-bold tracking-[0.2em] mt-0.5"
+          >
+            Founder, e2 Agency
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-1.5 flex-shrink-0">
+        <span
+          class="text-indigo-400 text-[8px] sm:text-[10px] font-bold px-2 py-1 bg-indigo-900/30 rounded border border-indigo-500/20 uppercase tracking-[0.1em] sm:tracking-[0.15em] backdrop-blur-sm whitespace-nowrap"
+          >Highly Valuable</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Bunny iframe mount -->
+  <div
+    class="vsl-player absolute inset-0 z-[1] bg-black opacity-0 pointer-events-none transition-opacity duration-500"
+  >
+  </div>
+
+  <!-- Shown after muted autoplay — click restarts with sound -->
+  <div
+    class="vsl-unmute absolute inset-0 z-[3] hidden items-center justify-center bg-black/45 backdrop-blur-[2px] transition-opacity duration-300"
+    aria-hidden="true"
+  >
+    <button
+      type="button"
+      class="vsl-unmute-btn flex flex-col items-center gap-3 sm:gap-4 px-8 sm:px-12 py-6 sm:py-8 rounded-2xl sm:rounded-3xl bg-white text-gray-900 shadow-[0_24px_80px_rgba(0,0,0,0.55)] border-2 border-white/90 hover:scale-[1.03] active:scale-[0.98] transition-transform duration-200 cursor-pointer max-w-[min(92%,22rem)] animate-pulse hover:animate-none"
+      aria-label="Click to unmute and restart the VSL video"
+    >
+      <span
+        class="flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-600/40"
+      >
+        <svg
+          class="h-7 w-7 sm:h-8 sm:w-8"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+      </span>
+      <span class="text-xl sm:text-2xl font-black tracking-tight text-center leading-tight">
+        Click to unmute
+      </span>
+      <span class="text-xs sm:text-sm font-semibold text-gray-500 text-center">
+        Restarts from the beginning with sound
+      </span>
+    </button>
+  </div>
+</div>
+
+<script>
+  type PlayerJsInstance = {
+    on: (event: string, cb: () => void) => void;
+    setCurrentTime: (time: number) => void;
+    setVolume: (volume: number) => void;
+    unmute: () => void;
+    play: () => void;
+    supports: (type: string, method: string) => boolean;
+  };
+
+  type PlayerJsConstructor = new (iframe: HTMLIFrameElement) => PlayerJsInstance;
+
+  const vsl = document.getElementById("vsl-player");
+  if (!vsl || vsl.dataset.vslInit === "1") {
+    /* already wired */
+  } else {
+    vsl.dataset.vslInit = "1";
+
+    const embedMuted = vsl.dataset.embedMuted!;
+    const embedUnmuted = vsl.dataset.embedUnmuted!;
+    const playerJsSrc = vsl.dataset.playerjsSrc!;
+    const overlay = vsl.querySelector<HTMLElement>(".vsl-overlay")!;
+    const mount = vsl.querySelector<HTMLElement>(".vsl-player")!;
+    const unmuteLayer = vsl.querySelector<HTMLElement>(".vsl-unmute")!;
+    const unmuteBtn = vsl.querySelector<HTMLButtonElement>(".vsl-unmute-btn")!;
+
+    let observer: IntersectionObserver | undefined;
+    let playerJsPromise: Promise<PlayerJsConstructor | null> | undefined;
+
+    const connection = (navigator as any).connection;
+    const slowConnection =
+      Boolean(connection?.saveData) ||
+      /(^|-)2g$/.test(connection?.effectiveType ?? "");
+
+    const setPhase = (phase: "poster" | "playing-muted" | "playing-sound") => {
+      vsl.dataset.phase = phase;
+      if (phase === "poster") {
+        vsl.setAttribute("role", "button");
+        vsl.setAttribute("tabindex", "0");
+        vsl.classList.add("cursor-pointer");
+      } else {
+        vsl.removeAttribute("role");
+        vsl.removeAttribute("tabindex");
+        vsl.classList.remove("cursor-pointer");
+      }
+    };
+
+    const revealPlayer = () => {
+      mount.style.opacity = "1";
+      mount.style.pointerEvents = "auto";
+      overlay.style.opacity = "0";
+      overlay.style.pointerEvents = "none";
+    };
+
+    const showUnmute = () => {
+      unmuteLayer.classList.remove("hidden");
+      unmuteLayer.classList.add("flex");
+      unmuteLayer.setAttribute("aria-hidden", "false");
+    };
+
+    const hideUnmute = () => {
+      unmuteLayer.classList.add("hidden");
+      unmuteLayer.classList.remove("flex");
+      unmuteLayer.setAttribute("aria-hidden", "true");
+    };
+
+    const loadPlayerJs = (): Promise<PlayerJsConstructor | null> => {
+      if (playerJsPromise) return playerJsPromise;
+
+      playerJsPromise = new Promise((resolve) => {
+        const existing = (window as any).playerjs?.Player as
+          | PlayerJsConstructor
+          | undefined;
+        if (existing) {
+          resolve(existing);
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = playerJsSrc;
+        script.async = true;
+        script.onload = () => {
+          resolve(
+            ((window as any).playerjs?.Player as PlayerJsConstructor | undefined) ??
+              null,
+          );
+        };
+        script.onerror = () => resolve(null);
+        document.head.appendChild(script);
+      });
+
+      return playerJsPromise;
+    };
+
+    const createIframe = (src: string) => {
+      const iframe = document.createElement("iframe");
+      iframe.src = src;
+      iframe.title = "VSL video";
+      iframe.allow =
+        "accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;";
+      iframe.allowFullscreen = true;
+      iframe.loading = "lazy";
+      iframe.style.cssText =
+        "border:0;position:absolute;top:0;left:0;width:100%;height:100%;";
+      return iframe;
+    };
+
+    const mountIframe = (iframe: HTMLIFrameElement, onReady?: () => void) => {
+      const fallback = window.setTimeout(onReady ?? (() => undefined), 8000);
+      iframe.addEventListener(
+        "load",
+        () => {
+          window.clearTimeout(fallback);
+          revealPlayer();
+          onReady?.();
+        },
+        { once: true },
+      );
+      mount.replaceChildren(iframe);
+    };
+
+    const restartWithSound = async () => {
+      hideUnmute();
+      setPhase("playing-sound");
+      observer?.disconnect();
+
+      const iframe = createIframe(embedUnmuted);
+      mountIframe(iframe);
+
+      const Player = await loadPlayerJs();
+      if (!Player) return;
+
+      const player = new Player(iframe);
+      player.on("ready", () => {
+        if (player.supports("method", "setCurrentTime")) player.setCurrentTime(0);
+        if (player.supports("method", "setVolume")) player.setVolume(100);
+        if (player.supports("method", "unmute")) player.unmute();
+        if (player.supports("method", "play")) player.play();
+      });
+    };
+
+    const load = (withSound: boolean) => {
+      observer?.disconnect();
+
+      if (withSound) {
+        hideUnmute();
+        setPhase("playing-sound");
+        const iframe = createIframe(embedUnmuted);
+        mountIframe(iframe);
+        return;
+      }
+
+      setPhase("playing-muted");
+      const iframe = createIframe(embedMuted);
+      mountIframe(iframe, showUnmute);
+    };
+
+    vsl.addEventListener("click", () => {
+      if (vsl.dataset.phase !== "poster") return;
+      load(true);
+    });
+
+    vsl.addEventListener("keydown", (event) => {
+      if (vsl.dataset.phase !== "poster") return;
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        load(true);
+      }
+    });
+
+    unmuteBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      restartWithSound();
+    });
+
+    if ("IntersectionObserver" in window && !slowConnection) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            if (vsl.dataset.phase !== "poster") return;
+            load(false);
+          });
+        },
+        { threshold: 0.45, rootMargin: "80px 0px" },
+      );
+      observer.observe(vsl);
+    } else if (!slowConnection) {
+      load(false);
+    }
+  }
+</script>
