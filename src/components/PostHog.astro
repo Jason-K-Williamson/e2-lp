@@ -67,10 +67,9 @@
             disable_session_recording:true,
             // Prevent extra sub-scripts from loading (saves ~40 KB JS and
             // eliminates "Reduce unused JavaScript" + "Duplicated JS" PSI findings).
-            // surveys.js (~34 KB) and dead-clicks-autocapture.js (~6 KB) are
-            // the two optional plugins that add the most weight.
+            // surveys.js (~34 KB) is optional; dead-clicks loads with autocapture.
             disable_surveys:true,
-            autocapture:false,
+            autocapture:true,
             // Persist the distinct_id in BOTH localStorage and cookie so we
             // survive Safari's 7-day ITP cookie eviction + still get
             // cross-subdomain identity on e2.agency.

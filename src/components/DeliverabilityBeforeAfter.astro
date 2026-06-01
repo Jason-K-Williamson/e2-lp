@@ -18,6 +18,11 @@ interface Props {
     afterHeight: number;
     beforeAlt: string;
     afterAlt: string;
+    compareLabel?: string;
+    beforeCaption?: string;
+    afterCaption?: string;
+    aspectWidth?: number;
+    aspectHeight?: number;
 }
 
 const {
@@ -29,6 +34,11 @@ const {
     afterHeight,
     beforeAlt,
     afterAlt,
+    compareLabel = "Klaviyo",
+    beforeCaption = "~4% attributed revenue · campaigns not contributing · flows only",
+    afterCaption = "~46% attributed · campaigns + flows live · same Klaviyo account",
+    aspectWidth = 1024,
+    aspectHeight = 808,
 } = Astro.props;
 ---
 
@@ -40,14 +50,15 @@ const {
     <p
         class="text-center text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3"
     >
-        Drag to compare · Klaviyo (Saint Candles)
+        Drag to compare · {compareLabel}
     </p>
 
     <!-- aspect-[1024/808] matches the Before image exactly so object-cover fills
          it without any horizontal margins — zero bleed-through from the After layer.
          max-h caps the height on large screens so it doesn't dominate the page. -->
     <figure
-        class="relative w-full aspect-[1024/808] max-h-[520px] rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-xl shadow-gray-200/60 select-none isolate"
+        class="relative w-full max-h-[520px] rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-xl shadow-gray-200/60 select-none isolate"
+        style={`aspect-ratio: ${aspectWidth} / ${aspectHeight};`}
         aria-label="Before and after Klaviyo comparison slider"
     >
         <!-- After (underlay) — object-contain preserves full dashboard width,
@@ -101,7 +112,7 @@ const {
 
         <!-- Handle -->
         <div
-            class="pointer-events-none absolute top-1/2 z-[3] flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white text-emerald-700 shadow-[0_2px_12px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.06)]"
+            class="pointer-events-none absolute top-1/2 z-[3] flex h-11 w-11 min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded-full border border-white/80 bg-white text-emerald-700 shadow-[0_2px_12px_rgba(0,0,0,0.18),0_0_0_1px_rgba(0,0,0,0.06)]"
             style="left: var(--ba); transform: translate(-50%, -50%);"
             aria-hidden="true"
         >
@@ -149,13 +160,13 @@ const {
             <span class="font-bold uppercase tracking-wide text-gray-900"
                 >Before</span
             >
-            · ~4% attributed revenue · campaigns not contributing · flows only
+            · {beforeCaption}
         </p>
         <p class="text-sm text-gray-600 leading-snug sm:text-right">
             <span class="font-bold uppercase tracking-wide text-emerald-900"
                 >After</span
             >
-            · ~46% attributed · campaigns + flows live · same Klaviyo account
+            · {afterCaption}
         </p>
     </div>
 </div>

@@ -3,7 +3,7 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
 
 /**
  * Deliverability proof section — brands hit inbox/spam problems; we document fixes.
- * Saint Candles: case study #1 — deliverability rebuilt in under 60 days, outcomes follow.
+ * Case studies: Saint Candles · Men's jewelry brand (anonymized).
  */
 ---
 
@@ -35,11 +35,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                     >don&apos;t know how to fix deliverability</strong
                 >. That&apos;s the job. This section is{' '}
                 <strong class="text-gray-900 font-semibold">proof</strong> we do:
-                DNS, reputation, warming, sends that scale. First case: Saint
-                Candles:{' '}
+                DNS, reputation, warming, sends that scale. Two recent wins: Saint
+                Candles{' '}
                 <strong class="text-gray-900 font-semibold"
                     >deliverability turned around in under 60 days</strong
-                >, then revenue followed.
+                >, and a high-ticket men&apos;s jewelry brand we took from{' '}
+                <strong class="text-gray-900 font-semibold"
+                    >LOW domain reputation to HIGH</strong
+                >, then 3× attributed revenue.
             </p>
         </div>
 
@@ -52,6 +55,7 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
             afterHeight={447}
             beforeAlt="Before: Klaviyo business performance summary for Saint Candles. Attributed revenue only about 4% of total, campaigns at zero, flows-only revenue."
             afterAlt="After: Klaviyo business performance summary for Saint Candles. $36,142.67 attributed revenue (45.86% of total), campaigns and flows both live, up 72% versus the previous period."
+            compareLabel="Klaviyo (Saint Candles)"
         />
 
         <div class="max-w-4xl mx-auto mb-6 text-center">
@@ -263,8 +267,295 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
             </div>
         </div>
 
+        <!-- Case study 2 — Men's jewelry brand (anonymized) -->
+        <div class="max-w-3xl mx-auto text-center mb-14 mt-20 md:mt-24 pt-4 border-t border-gray-200/80">
+            <p class="text-lg text-gray-600 leading-relaxed text-balance">
+                High-ticket custom jewelry: when domain reputation is stuck at{' '}
+                <strong class="text-gray-900 font-semibold">LOW</strong>, opens
+                sit near single digits and email barely registers on the P&amp;L.
+                Fix placement first, then scale sends.
+            </p>
+        </div>
+
+        <DeliverabilityBeforeAfter
+            beforeSrc="/deliverability-proof/jewelry-brand/before-klaviyo-summary.png"
+            afterSrc="/deliverability-proof/jewelry-brand/after-klaviyo-summary.png"
+            beforeWidth={1812}
+            beforeHeight={760}
+            afterWidth={2388}
+            afterHeight={1060}
+            aspectWidth={1812}
+            aspectHeight={760}
+            beforeAlt="Before: Klaviyo conversion summary for a men's jewelry brand. About $8,500 attributed in 30 days, flows only, zero campaign revenue."
+            afterAlt="After: Klaviyo business performance for a men's jewelry brand. $33,473 attributed (34.36% of total revenue), campaigns and flows both contributing, email and SMS live."
+            compareLabel="Klaviyo (Men's jewelry brand)"
+            beforeCaption="~$8.5k attributed · 30 days · flows only · ~7% of total revenue"
+            afterCaption="~$33k attributed · 34% of total · campaigns + flows · email & SMS"
+        />
+
+        <div class="max-w-4xl mx-auto mb-6 text-center">
+            <span
+                class="inline-flex items-center gap-2 rounded-full border border-emerald-200/80 bg-emerald-50/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-900/90"
+            >
+                Case study · Men&apos;s jewelry brand
+            </span>
+        </div>
+
+        <div
+            class="rounded-[2rem] border border-gray-200/80 bg-white shadow-xl shadow-gray-200/50 overflow-hidden"
+        >
+            <!-- 1. The problem -->
+            <div class="p-6 sm:p-8 md:p-12 lg:p-14 border-b border-gray-100 bg-gray-50/50">
+                <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2"
+                >
+                    The problem
+                </p>
+                <p class="text-sm text-gray-600 leading-relaxed mb-8 max-w-2xl">
+                    High-ticket custom jewelry — grillz, cubans, chains. The list
+                    existed, but{' '}
+                    <strong class="text-gray-900 font-semibold"
+                        >domain reputation was LOW</strong
+                    >, Gmail opens sat under 10%, and Klaviyo was only{' '}
+                    <strong class="text-gray-900 font-semibold"
+                        >~7% of total revenue</strong
+                    >. Campaigns could not scale until placement was fixed.
+                </p>
+
+                <figure
+                    class="rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm max-w-3xl mx-auto"
+                >
+                    <img
+                        src="/deliverability-proof/jewelry-brand/before-open-rate.png"
+                        alt="Klaviyo reports showing 9.34% open rate and $617 revenue over 30 days before deliverability repair for a men's jewelry brand."
+                        class="w-full h-auto object-contain object-top bg-gray-50"
+                        loading="lazy"
+                        width={1355}
+                        height={1099}
+                        decoding="async"
+                    />
+                    <figcaption
+                        class="px-4 py-3 text-[11px] leading-snug text-gray-600 text-center border-t border-gray-100 bg-white"
+                    >
+                        <strong class="text-gray-900">Before repair</strong>
+                        · 9.34% open · $617 in 30 days · placement blocking scale
+                    </figcaption>
+                </figure>
+
+                <div class="flex items-end justify-center gap-4 md:gap-8 mt-10 max-w-md mx-auto">
+                    <div class="text-center">
+                        <div
+                            class="text-3xl md:text-4xl font-black text-gray-400 tabular-nums tracking-tight"
+                        >
+                            7%
+                        </div>
+                        <div
+                            class="text-xs text-gray-500 font-semibold uppercase tracking-wide mt-2"
+                        >
+                            Of total revenue
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1 tabular-nums">
+                            ~$8k / 30d attributed
+                        </div>
+                    </div>
+                    <div
+                        class="pb-5 text-gray-300 text-xl font-black"
+                        aria-hidden="true"
+                    >
+                        ·
+                    </div>
+                    <div class="text-center">
+                        <div
+                            class="text-3xl md:text-4xl font-black text-gray-400 tabular-nums tracking-tight"
+                        >
+                            9%
+                        </div>
+                        <div
+                            class="text-xs text-gray-500 font-semibold uppercase tracking-wide mt-2"
+                        >
+                            Open rate
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1">
+                            Gmail under 10%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. The fix -->
+            <div class="p-6 sm:p-8 md:p-12 lg:p-14 border-b border-gray-100">
+                <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2"
+                >
+                    The fix
+                </p>
+                <p class="text-sm text-gray-600 leading-relaxed mb-8 max-w-2xl">
+                    Our deliverability lead ran Gmail repair, inbox warmup, and
+                    DMARC hardening. Sends stayed conservative until Google
+                    Postmaster showed trust coming back — then we expanded
+                    segments and turned on product-specific flows.
+                </p>
+
+                <figure
+                    class="rounded-2xl border border-emerald-100/80 bg-white shadow-sm overflow-x-auto overscroll-x-contain"
+                >
+                    <img
+                        src="/deliverability-proof/jewelry-brand/domain-reputation.png"
+                        alt="Google Postmaster Tools domain reputation chart showing progression from Low to Medium to High over two months for a men's jewelry brand."
+                        class="w-full min-w-[280px] h-auto max-w-none sm:max-w-full object-contain object-top bg-gray-50"
+                        loading="lazy"
+                        width={4560}
+                        height={1952}
+                        decoding="async"
+                    />
+                    <figcaption
+                        class="px-4 py-3 text-[11px] leading-snug text-gray-600 text-center border-t border-gray-100 bg-white"
+                    >
+                        <strong class="text-gray-900">Domain reputation</strong>
+                        · LOW → MEDIUM → HIGH · Google Postmaster · ~8 weeks
+                    </figcaption>
+                </figure>
+            </div>
+
+            <!-- 3. The outcome -->
+            <div
+                class="p-6 sm:p-8 md:p-12 lg:p-14 bg-gradient-to-br from-gray-50 to-emerald-50/25"
+            >
+                <p
+                    class="text-[10px] font-bold uppercase tracking-widest text-emerald-800/90 mb-2"
+                >
+                    The outcome
+                </p>
+                <p class="text-xs text-emerald-800/90 font-semibold mb-8">
+                    Reputation HIGH · opens recovered · attributed revenue tripled
+                </p>
+
+                <figure
+                    class="mb-10 rounded-2xl overflow-hidden border border-emerald-100/80 bg-white shadow-sm"
+                >
+                    <img
+                        src="/deliverability-proof/jewelry-brand/after-open-rate-flows.png"
+                        alt="Klaviyo flow reports for a men's jewelry brand showing 38.8% open rate, 2.65% click rate, and 0.33% bounce rate over the last 7 days."
+                        class="w-full h-auto object-contain object-top bg-gray-100"
+                        loading="lazy"
+                        width={2484}
+                        height={1056}
+                        decoding="async"
+                    />
+                    <figcaption
+                        class="px-4 py-3 text-[11px] leading-snug text-gray-600 text-center border-t border-gray-100 bg-white"
+                    >
+                        Live Klaviyo report ·{' '}
+                        <strong class="text-gray-900">38.8% open</strong> on flows
+                        · Gmail at 35.5% · bounce 0.33% · last 7 days
+                    </figcaption>
+                </figure>
+
+                <div class="flex items-end justify-center gap-4 md:gap-8 mb-10">
+                    <div class="text-center">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-gray-400 tabular-nums tracking-tight"
+                        >
+                            7%
+                        </div>
+                        <div
+                            class="text-xs text-gray-500 font-semibold uppercase tracking-wide mt-2"
+                        >
+                            Before
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1 tabular-nums">
+                            ~$8k / 30d
+                        </div>
+                    </div>
+                    <div
+                        class="pb-6 text-emerald-600/80 text-2xl font-black"
+                        aria-hidden="true"
+                    >
+                        →
+                    </div>
+                    <div class="text-center">
+                        <div
+                            class="text-4xl md:text-5xl font-black text-emerald-800 tabular-nums tracking-tight"
+                        >
+                            34%
+                        </div>
+                        <div
+                            class="text-xs text-gray-600 font-semibold uppercase tracking-wide mt-2"
+                        >
+                            After
+                        </div>
+                        <div class="text-sm text-gray-700 font-semibold mt-1 tabular-nums">
+                            $33,473
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-10 max-w-2xl mx-auto">
+                    <div
+                        class="rounded-xl bg-emerald-50 border border-emerald-100/80 p-4 text-center"
+                    >
+                        <div
+                            class="text-xl md:text-2xl font-black text-emerald-900 tabular-nums"
+                        >
+                            3×
+                        </div>
+                        <div
+                            class="text-[10px] text-emerald-900/70 uppercase font-bold tracking-wide mt-1"
+                        >
+                            attributed revenue
+                        </div>
+                    </div>
+                    <div
+                        class="rounded-xl bg-white border border-emerald-100/80 p-4 text-center"
+                    >
+                        <div
+                            class="text-xl md:text-2xl font-black text-e2-black tabular-nums"
+                        >
+                            9% → 39%
+                        </div>
+                        <div
+                            class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1"
+                        >
+                            Open rate · flows
+                        </div>
+                    </div>
+                    <div
+                        class="rounded-xl bg-white border border-emerald-100/80 p-4 text-center col-span-2 sm:col-span-1"
+                    >
+                        <div
+                            class="text-xl md:text-2xl font-black text-e2-black tabular-nums"
+                        >
+                            LOW → HIGH
+                        </div>
+                        <div
+                            class="text-[10px] text-gray-500 uppercase font-bold tracking-wide mt-1"
+                        >
+                            Domain reputation
+                        </div>
+                    </div>
+                </div>
+
+                <blockquote
+                    class="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed border-l-4 border-emerald-600 pl-4 sm:pl-6 max-w-3xl mx-auto"
+                >
+                    &ldquo;Reputation hit{' '}
+                    <strong class="text-gray-900">HIGH</strong>, flows cleared{' '}
+                    <strong class="text-gray-900">38%+ opens</strong>, and
+                    attributed revenue{' '}
+                    <strong class="text-gray-900">tripled to ~$33k</strong> in 30
+                    days. Campaigns went from zero to{' '}
+                    <strong class="text-gray-900">34% of attributed revenue</strong
+                    > once Gmail trusted the domain again.&rdquo;
+                </blockquote>
+                <p class="text-sm text-gray-600 mt-4 text-center">
+                    <span class="font-bold text-gray-900">Account update</span>
+                    · Men&apos;s jewelry brand · deliverability, flows &amp; campaigns
+                </p>
+            </div>
+        </div>
+
         <p class="text-center text-xs text-gray-500 mt-8">
-            Figures from brand Klaviyo reporting · campaign stats from a live send · more deliverability case studies coming
+            Figures from brand Klaviyo reporting · domain charts from Google Postmaster · verified client outcomes
         </p>
     </div>
 </section>
