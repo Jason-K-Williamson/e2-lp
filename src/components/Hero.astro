@@ -1,5 +1,6 @@
 ---
 import { DEFAULT_VARIANT } from "../lib/supabase";
+import { APPLY_URL } from "../lib/apply-url";
 import LogoCloud from "./ui/LogoCloud.astro";
 import VslVideo from "./video/VslVideo.astro";
 
@@ -104,8 +105,9 @@ const editProps = (field: string) =>
       class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mb-2 sm:mb-2.5"
     >
       <a
-        href="#qualify"
+        href={APPLY_URL}
         id="hero-cta-primary"
+        data-apply-cta="hero"
         class="group w-full sm:w-auto px-6 sm:px-9 py-3.5 sm:py-3 min-h-[52px] h-auto bg-e2-black text-white rounded-full font-bold text-base sm:text-lg leading-snug text-center hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
         {...editProps("hero_cta_primary")}
       >

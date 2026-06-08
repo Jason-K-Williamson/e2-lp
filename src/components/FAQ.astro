@@ -4,6 +4,8 @@
  * Accepts per-variant FAQ from the AI generator.
  * Falls back to the default 8 questions if none provided.
  */
+import { APPLY_URL } from "../lib/apply-url";
+
 interface FaqItem {
   q: string;
   a: string;
@@ -109,7 +111,8 @@ const faqs: FaqItem[] =
         Still have a specific question?
       </p>
       <a
-        href="#qualify"
+        href={APPLY_URL}
+        data-apply-cta="faq"
         class="inline-flex items-center justify-center gap-2 min-h-11 px-7 py-3.5 bg-e2-black text-white rounded-full font-bold text-base hover:scale-[1.02] transition-transform duration-300"
       >
         Ask us on your strategy call →

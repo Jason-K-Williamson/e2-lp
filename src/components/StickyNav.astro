@@ -2,8 +2,9 @@
 /**
  * Sticky Nav , "Glass Pill"
  * Per 2026 playbook: sticky CTA bar following scroll, cold-traffic temperature copy
- * CTA links to #qualify (GetFormFlow form anchor)
+ * CTA links to dedicated Formflow application page.
  */
+import { APPLY_URL } from "../lib/apply-url";
 import StrategyCallStatus from "./StrategyCallStatus.astro";
 ---
 
@@ -46,7 +47,8 @@ import StrategyCallStatus from "./StrategyCallStatus.astro";
 
     <!-- CTA — always full, 44px tap target -->
     <a
-      href="#qualify"
+      href={APPLY_URL}
+      data-apply-cta="sticky-nav"
       class="flex-shrink-0 px-5 sm:px-6 py-2.5 bg-e2-black text-white text-sm font-bold rounded-full hover:bg-gray-900 transition-colors duration-200 whitespace-nowrap cursor-pointer"
       style="min-height: 44px; display: flex; align-items: center;"
     >

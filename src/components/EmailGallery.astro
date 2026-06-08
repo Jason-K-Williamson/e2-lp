@@ -3,6 +3,8 @@
  * EmailGallery , Horizontal scroll showcase of real EDM designs.
  * "Show don't tell" proof of design quality.
  */
+import { APPLY_URL } from "../lib/apply-url";
+
 const emails = [
     {
         src: "/edm-designs/bruce-bolt.webp",
@@ -113,7 +115,8 @@ const emails = [
                     Every email built from scratch. No templates.
                 </p>
                 <a
-                    href="#offer"
+                    href={APPLY_URL}
+                    data-apply-cta="email-gallery"
                     class="min-h-11 px-6 py-3 rounded-xl bg-white text-e2-black font-bold text-sm hover:scale-[1.02] transition-transform inline-flex items-center justify-center"
                 >
                     See If You Qualify →

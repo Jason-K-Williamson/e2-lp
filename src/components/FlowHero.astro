@@ -3,6 +3,7 @@
  * FlowHero — Hero section for Flow Build-Outs educational page
  * Scroll-triggered storytelling pattern with strong CRO hooks
  */
+import { APPLY_URL } from "../lib/apply-url";
 ---
 
 <section class="relative min-h-screen flex flex-col justify-center pt-16 pb-24 overflow-hidden bg-e2-black">
@@ -58,8 +59,9 @@
       class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-5"
     >
       <a
-        href="#qualify"
+        href={APPLY_URL}
         id="flow-hero-cta"
+        data-apply-cta="flow-hero"
         class="group w-full sm:w-auto px-10 py-4 rounded-full font-bold text-lg text-e2-black transition-all duration-300 shadow-2xl flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
         style="background: linear-gradient(135deg, #818cf8, #a78bfa, #60a5fa);"
       >

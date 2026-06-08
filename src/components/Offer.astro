@@ -8,6 +8,7 @@
  * reconstruct the JSONB on save.
  */
 import { DEFAULT_VARIANT, type OfferCard } from "../lib/supabase";
+import { APPLY_URL } from "../lib/apply-url";
 
 interface Props {
   heading?: string;
@@ -205,7 +206,8 @@ const colourMap: Record<string, { bg: string; text: string; dot: string }> = {
 
         <div class="flex flex-col sm:flex-row gap-4">
           <a
-            href="#qualify"
+            href={APPLY_URL}
+            data-apply-cta="offer"
             class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-e2-black rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-xl shadow-black/30"
           >
             See If You Qualify →

@@ -6,6 +6,7 @@
  * All section copy is dynamic from the variant for narrative congruency
  */
 import { DEFAULT_VARIANT } from "../lib/supabase";
+import { APPLY_URL } from "../lib/apply-url";
 
 interface Props {
   heading?: string;
@@ -230,7 +231,8 @@ const editProps = (field: string) =>
     <!-- CTA -->
     <div class="text-center">
       <a
-        href="#qualify"
+        href={APPLY_URL}
+        data-apply-cta="mechanism"
         class="inline-flex items-center gap-2 px-8 py-4 bg-e2-black text-white rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-xl shadow-black/10"
       >
         Book Your Free Audit Call →

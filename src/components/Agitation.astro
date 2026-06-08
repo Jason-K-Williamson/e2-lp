@@ -1,5 +1,6 @@
 ---
 import { DEFAULT_VARIANT } from "../lib/supabase";
+import { APPLY_URL } from "../lib/apply-url";
 
 interface Props {
   heading?: string;
@@ -146,7 +147,8 @@ const editProps = (field: string) =>
     <!-- CTA -->
     <div class="text-center">
       <a
-        href="#qualify"
+        href={APPLY_URL}
+        data-apply-cta="agitation"
         class="inline-flex items-center gap-2 px-8 py-4 bg-white text-e2-black rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-xl shadow-black/30"
       >
         See If You Qualify →

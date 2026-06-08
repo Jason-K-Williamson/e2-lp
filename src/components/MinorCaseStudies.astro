@@ -3,6 +3,7 @@
  * MinorCaseStudies — BFCM hero cards + supporting case study grid + CTA
  * Extracted from CaseStudies.astro so /2 can use them independently.
  */
+import { APPLY_URL } from "../lib/apply-url";
 
 const cases = [
   {
@@ -601,7 +602,8 @@ const cases = [
 
   <div class="text-center pb-16">
     <a
-      href="#qualify"
+      href={APPLY_URL}
+      data-apply-cta="case-studies"
       class="inline-flex items-center gap-2 px-9 py-4 bg-white text-gray-950 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-2xl"
     >
       Get Your Free Revenue Audit →

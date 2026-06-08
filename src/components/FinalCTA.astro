@@ -1,13 +1,9 @@
 ---
 /**
- * Final CTA + GetFormFlow Embed
- * Per 2026 playbook:
- * - Punchy testimonial quote addressing #1 objection
- * - Urgency (spots / intake)
- * - Multi-step form embed (GetFormFlow). NOT a redirect to a standalone URL.
- * - Micro-copy: no contracts, results guaranteed
+ * Final CTA — conversion section with link to dedicated application page.
  */
 import { DEFAULT_VARIANT } from "../lib/supabase";
+import { APPLY_URL } from "../lib/apply-url";
 import StrategyCallStatus from "./StrategyCallStatus.astro";
 
 interface Props {
@@ -31,7 +27,7 @@ const editProps = (field: string) =>
         : {};
 ---
 
-<section class="py-16 sm:py-32 relative overflow-hidden bg-white">
+<section id="qualify" class="py-16 sm:py-32 relative overflow-hidden bg-white scroll-mt-28">
     <!-- Subtle ambient glow -->
     <div
         class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-100/40 rounded-full blur-[120px] pointer-events-none"
@@ -102,25 +98,34 @@ const editProps = (field: string) =>
                 </p>
             </div>
 
-            <!-- GetFormFlow Embed: loaded lazily via IntersectionObserver.
-                 data-src is swapped to src when the section enters the viewport
-                 (or immediately if the user navigates via #qualify anchor). -->
-            <div
-                id="qualify"
-                class="w-full max-w-2xl mx-auto scroll-mt-28 overflow-hidden"
-            >
-                <iframe
-                    id="qualify-frame"
-                    data-src="https://myformflow.io/_embed/669116a60dc0431e247ef7a5?form-only"
-                    class="block min-h-[580px] w-full border-0 bg-white"
-                    title="See if you qualify"
-                    allow="clipboard-write"
-                ></iframe>
+            <div class="text-center">
+                <a
+                    href={APPLY_URL}
+                    data-apply-cta="final-cta"
+                    class="group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 min-h-[56px] bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20"
+                >
+                    See If You Qualify →
+                    <svg
+                        class="w-5 h-5 transition-transform group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                    </svg>
+                </a>
+                <p class="text-xs text-gray-600 mt-4">
+                    Takes 2 minutes. No contracts. Results guaranteed.
+                </p>
             </div>
 
             <!-- Micro-copy guarantee strip -->
             <div
-                class="mt-6 sm:mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-gray-600"
+                class="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-gray-600"
             >
                 <div class="flex items-center gap-1.5">
                     <svg
@@ -189,202 +194,3 @@ const editProps = (field: string) =>
         </div>
     </div>
 </section>
-
-<script is:inline>
-  (function () {
-    var frame = document.getElementById("qualify-frame");
-    if (!frame) return;
-
-    function loadFrame() {
-      if (frame.src) return; // already loaded
-      var src = frame.getAttribute("data-src");
-      if (src) frame.src = src;
-    }
-
-    // Load immediately if #qualify is in the URL (hash navigation)
-    if (window.location.hash === "#qualify") {
-      loadFrame();
-    } else if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (entries) {
-        if (entries[0].isIntersecting) {
-          loadFrame();
-          io.disconnect();
-        }
-      }, { rootMargin: "200px" });
-      io.observe(frame);
-    } else {
-      // Fallback for old browsers
-      loadFrame();
-    }
-
-    // ── Formflow postMessage handler ─────────────────────────────────────────
-    // Handles both the iframe resize protocol AND form-submission detection
-    // for PostHog Lead capture (which forwards to Meta CAPI via PostHog's
-    // destinations feature).
-    //
-    // Formflow does NOT publicly document a client-side postMessage contract
-    // for submissions, so we listen defensively for a range of likely event
-    // names and inspect payload shape. Any unknown messages are logged (dev
-    // only) so we can tighten the matcher later.
-    //
-    // Dedup: we only fire Lead once per page session to avoid counting
-    // multi-step navigation events as duplicate conversions.
-    var leadFired = false;
-    var isDev =
-      location.hostname === "localhost" ||
-      location.hostname === "127.0.0.1" ||
-      location.hostname.endsWith(".workers.dev");
-
-    window.addEventListener(
-      "message",
-      function (e) {
-        if (e.origin !== "https://myformflow.io") return;
-        var data = e.data || {};
-
-        // 1) Resize protocol — keep existing behaviour.
-        if (data.event === "resize" && data.height) {
-          frame.style.height = data.height + "px";
-          return;
-        }
-
-        // 2) Submission detection — catch common event-name conventions.
-        var eventName = (data.event || data.type || data.name || "")
-          .toString()
-          .toLowerCase();
-        var looksLikeSubmit =
-          /submit|complete|complet|finish|success|done|thank|conversion|lead/i.test(
-            eventName
-          );
-
-        if (looksLikeSubmit && !leadFired) {
-          leadFired = true;
-
-          // Extract any identifying fields we can find in the payload.
-          // Formflow payloads (when present) typically include `fields` or
-          // `answers` with user input. We search defensively across keys.
-          var email = findField(data, [
-            "email",
-            "email_address",
-            "e_mail",
-            "emailAddress",
-          ]);
-          var phone = findField(data, [
-            "phone",
-            "phone_number",
-            "mobile",
-            "telephone",
-            "tel",
-          ]);
-          var firstName = findField(data, [
-            "first_name",
-            "firstName",
-            "fname",
-            "given_name",
-          ]);
-          var lastName = findField(data, [
-            "last_name",
-            "lastName",
-            "lname",
-            "family_name",
-            "surname",
-          ]);
-          var company = findField(data, [
-            "company",
-            "company_name",
-            "business",
-            "brand",
-          ]);
-
-          // Identify the user in PostHog BEFORE capturing Lead so the event
-          // carries person properties (email, phone → hashed by PostHog's
-          // Meta CAPI destination for advanced matching).
-          if (window.posthog) {
-            try {
-              if (email) {
-                window.posthog.identify(email, {
-                  email: email,
-                  phone: phone || undefined,
-                  first_name: firstName || undefined,
-                  last_name: lastName || undefined,
-                  company: company || undefined,
-                });
-              }
-              window.posthog.capture("Lead", {
-                form_id: "formflow:669116a60dc0431e247ef7a5",
-                form_source: "final_cta",
-                email: email || undefined,
-                phone: phone || undefined,
-                first_name: firstName || undefined,
-                last_name: lastName || undefined,
-                company: company || undefined,
-                $set: {
-                  last_lead_submitted_at: new Date().toISOString(),
-                },
-              });
-            } catch (err) {
-              if (isDev) console.warn("PostHog Lead capture failed:", err);
-            }
-          }
-
-          // Fire browser-side Meta Pixel Lead too, for redundancy against
-          // PostHog CAPI outages. PostHog's Meta destination dedupes on
-          // event_id, but since we're not passing one, we accept a small
-          // amount of double-counting on Lead in exchange for resilience.
-          // (Lead CPA in Meta is calculated from CAPI-preferred, so browser
-          // dupes are discounted automatically.)
-          if (window.fbq) {
-            try {
-              window.fbq("track", "Lead", {
-                content_name: "Qualification Call",
-              });
-            } catch (_) {}
-          }
-        }
-
-        if (isDev && !looksLikeSubmit && data.event !== "resize") {
-          console.log("[Formflow] unknown message:", data);
-        }
-      },
-      false
-    );
-
-    // Small helper: find the first non-empty value in an object for a list
-    // of possible keys (case-insensitive, searches 1 level deep into `fields`,
-    // `answers`, `data`, `payload`).
-    function findField(obj, keys) {
-      if (!obj || typeof obj !== "object") return null;
-      var pools = [obj];
-      ["fields", "answers", "data", "payload", "form", "submission"].forEach(
-        function (k) {
-          if (obj[k] && typeof obj[k] === "object") pools.push(obj[k]);
-        }
-      );
-      for (var i = 0; i < pools.length; i++) {
-        var src = pools[i];
-        for (var j = 0; j < keys.length; j++) {
-          var k = keys[j];
-          // Direct lowercase
-          if (src[k] != null && src[k] !== "") return String(src[k]);
-          // Case-insensitive scan
-          for (var prop in src) {
-            if (
-              Object.prototype.hasOwnProperty.call(src, prop) &&
-              prop.toLowerCase() === k.toLowerCase() &&
-              src[prop] != null &&
-              src[prop] !== ""
-            ) {
-              return String(src[prop]);
-            }
-          }
-        }
-      }
-      return null;
-    }
-
-    // Also load if user clicks #qualify anchor.
-    document.addEventListener("click", function (e) {
-      var el = e.target && e.target.closest('a[href="#qualify"]');
-      if (el) loadFrame();
-    });
-  })();
-</script>

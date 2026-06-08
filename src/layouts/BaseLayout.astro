@@ -3,7 +3,7 @@ import { Font } from "astro:assets";
 import PostHog from "../components/PostHog.astro";
 import MetaPixel from "../components/MetaPixel.astro";
 import VisualEditor from "../components/VisualEditor.astro";
-import FormflowModal from "../components/FormflowModal.astro";
+import ApplyClickTracking from "../components/ApplyClickTracking.astro";
 
 interface Props {
   title: string;
@@ -74,14 +74,8 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <link rel="dns-prefetch" href="https://vz-e4e7db1f-2fb.b-cdn.net" />
     <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
-    <!--
-      Formflow = conversion-critical. Upgrade to full preconnect (TCP+TLS warmed)
-      so the modal feels instant when users click the CTA. Widget itself is
-      prefetched on idle (see end of <body>) so it's in the HTTP cache by the
-      time the click happens — modal open becomes an effectively-zero-latency
-      event even though the script is 1.4 MB.
-    -->
-    <link rel="preconnect" href="https://myformflow.io" crossorigin />
+    <!-- Application form lives on myformflow.io (external CTA, not embedded). -->
+    <link rel="dns-prefetch" href="https://myformflow.io" />
     <!--
       Analytics origins — deferred scripts, dns-prefetch is enough.
       PostHog is the source of truth for events; Meta pixel just fires PageView
@@ -90,8 +84,6 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     -->
     <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
     <link rel="dns-prefetch" href="https://connect.facebook.net" />
-
-    <!-- Formflow widget.js is injected from FormflowModal.astro on first open only -->
 
     <!--
       All CSS (global.css + Tailwind) is inlined into this <head> at build time
@@ -116,9 +108,6 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
       <slot />
     </main>
 
-    <!-- One global modal: Formflow widget requires #formflow-embed in the document -->
-    <FormflowModal />
-
     {
       isAdmin && (
         <VisualEditor variantId={variantId ?? ""} />
@@ -133,43 +122,7 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     -->
     <PostHog />
     <MetaPixel />
-
-    <!--
-      Conversion warm-up: prefetch the Formflow widget during browser idle time
-      so the first CTA click opens the modal instantly. Widget is ~1.4 MB so we
-      gate the prefetch on:
-        - no Save-Data header
-        - effective connection type better than 'slow-2g' / '2g'
-        - after window.load + requestIdleCallback (never competes with LCP)
-      On metered / low-end connections we skip the prefetch entirely — the modal
-      still works, it just has to download widget.js on first click.
-    -->
-    <script is:inline>
-      (function () {
-        var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-        if (conn) {
-          if (conn.saveData) return;
-          if (conn.effectiveType === "slow-2g" || conn.effectiveType === "2g") return;
-        }
-        var warm = function () {
-          var l = document.createElement("link");
-          l.rel = "prefetch";
-          l.href = "https://myformflow.io/embed/widget.js";
-          l.as = "script";
-          l.crossOrigin = "anonymous";
-          document.head.appendChild(l);
-        };
-        var schedule = function () {
-          if ("requestIdleCallback" in window) {
-            requestIdleCallback(warm, { timeout: 4000 });
-          } else {
-            setTimeout(warm, 2500);
-          }
-        };
-        if (document.readyState === "complete") schedule();
-        else window.addEventListener("load", schedule, { once: true });
-      })();
-    </script>
+    <ApplyClickTracking />
 
     <!--
       Scroll-triggered reveal + counters.
