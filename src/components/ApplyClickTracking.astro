@@ -1,19 +1,82 @@
 ---
-/** Delegated click tracking for all apply CTAs (data-apply-cta). */
+/** Apply CTA clicks — sendBeacon so events survive immediate off-site navigation. */
+import {
+  POSTHOG_ENABLED,
+  POSTHOG_HOST,
+  POSTHOG_KEY,
+  POSTHOG_TRACKING_HOST,
+} from "../lib/posthog-config";
 ---
+{
+  POSTHOG_ENABLED && (
+    <script
+      is:inline
+      define:vars={{
+        posthogKey: POSTHOG_KEY,
+        posthogHost: POSTHOG_HOST,
+        trackingHost: POSTHOG_TRACKING_HOST,
+      }}
+    >
+      (function () {
+        if (location.hostname !== trackingHost) return;
 
-<script is:inline>
-  document.addEventListener(
-    "click",
-    function (e) {
-      var el = e.target && e.target.closest("[data-apply-cta]");
-      if (!el) return;
-      if (window.posthog && window.posthog.capture) {
-        window.posthog.capture("Clicked Apply", {
-          cta_location: el.getAttribute("data-apply-cta") || "unknown",
-        });
-      }
-    },
-    true
-  );
-</script>
+        function distinctId() {
+          try {
+            var key = "ph_" + posthogKey.replace(/^phc_/, "") + "_posthog";
+            var raw = localStorage.getItem(key);
+            if (raw) {
+              var parsed = JSON.parse(raw);
+              if (parsed && parsed.distinct_id) return parsed.distinct_id;
+            }
+          } catch (e) {}
+          return "anonymous-" + Date.now();
+        }
+
+        function beaconApply(ctaLocation) {
+          var host = posthogHost.replace(/\/$/, "");
+          var url = host + "/e/?ip=0&_=" + Date.now();
+          var body = JSON.stringify({
+            api_key: posthogKey,
+            event: "Clicked Apply",
+            properties: {
+              cta_location: ctaLocation,
+              $current_url: window.location.href,
+              $host: window.location.hostname,
+              $pathname: window.location.pathname,
+              $lib: "web",
+              distinct_id: distinctId(),
+            },
+            timestamp: new Date().toISOString(),
+          });
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon(url, body);
+          } else {
+            fetch(url, {
+              method: "POST",
+              body: body,
+              keepalive: true,
+              headers: { "Content-Type": "application/json" },
+            });
+          }
+        }
+
+        document.addEventListener(
+          "click",
+          function (e) {
+            var el = e.target && e.target.closest("[data-apply-cta]");
+            if (!el) return;
+            var loc = el.getAttribute("data-apply-cta") || "unknown";
+            var opts = { send_instantly: true, transport: "sendBeacon" };
+
+            if (window.posthog && window.posthog.__loaded) {
+              window.posthog.capture("Clicked Apply", { cta_location: loc }, opts);
+            } else {
+              beaconApply(loc);
+            }
+          },
+          true
+        );
+      })();
+    </script>
+  )
+}

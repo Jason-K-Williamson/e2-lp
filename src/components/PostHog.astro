@@ -1,128 +1,130 @@
 ---
-// src/components/PostHog.astro
-// ─────────────────────────────────────────────────────────────────────────────
-// Deferred PostHog loader. The stub installs synchronously during HTML parse
-// so any code anywhere on the page can safely call posthog.capture() / .identify()
-// before array.js lands — those calls queue up and flush on load.
-//
-// Why this file is important for Meta CAPI:
-//   PostHog's Meta Ads destination (configured in app.posthog.com →
-//   Data pipeline → Destinations) forwards server-side events to Meta for
-//   ad-click attribution. For Meta to match those events to real users,
-//   every event must carry:
-//     - fbc  (Meta click ID, derived from ?fbclid in URL on paid traffic)
-//     - fbp  (Meta browser ID, set by the Meta Pixel's _fbp cookie)
-//     - email / phone (from posthog.identify on form submit)
-//     - gclid (for Google CAPI, if we wire that destination later)
-//
-// PostHog auto-captures UTMs natively. But fbclid/gclid/fbp are NOT
-// captured by default — we register them as super-properties here so
-// every subsequent event carries them, no matter where it fires from.
-// ─────────────────────────────────────────────────────────────────────────────
+// Deferred PostHog loader — production + workwith.e2.agency only.
+import {
+  POSTHOG_ENABLED,
+  POSTHOG_HOST,
+  POSTHOG_KEY,
+  POSTHOG_TRACKING_HOST,
+} from "../lib/posthog-config";
 ---
-<script is:inline>
-(function(){
-  // Install stub immediately so downstream code can call posthog.capture() safely
-  // without blocking the parser.
-  window.posthog=window.posthog||[];
-  var _ph=window.posthog;
-  if(_ph.__SV)return;
-  _ph._i=[];
-  _ph.__SV=1;
-  _ph.init=function(i,s,a){
-    function g(t,e){
-      var o=e.split(".");
-      if(o.length===2){t=t[o[0]];e=o[1];}
-      t[e]=function(){
-        t.push([e].concat(Array.prototype.slice.call(arguments,0)));
-      };
-    }
-    var u=_ph;
-    if(void 0!==a){u=_ph[a]=[];}else{a="posthog";}
-    u.people=u.people||[];
-    u.toString=function(t){
-      var e="posthog";
-      if(a!=="posthog"){e+="."+a;}
-      if(!t){e+=" (stub)";}
-      return e;
-    };
-    u.people.toString=function(){return u.toString(1)+".people (stub)";};
-    "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep".split(" ").forEach(function(m){g(u,m);});
-    _ph._i.push([i,s,a]);
-  };
-  // After load + minimum 3 s buffer → idle-defer array.js.
-  // The 3 s floor ensures analytics never execute inside the FCP→TTI TBT
-  // measurement window (Lighthouse lab scores TBT up to ~5–6 s).
-  window.addEventListener('load', function(){
-    function inject(){
-      var s=document.createElement('script');
-      s.async=true;
-      s.src='https://us-assets.i.posthog.com/static/array.js';
-      document.head.appendChild(s);
-      s.onload=function(){
-        if(window.posthog&&window.posthog.init){
-          window.posthog.init('phc_xRW8fkiKkedq3MaeVDBn2wRPQtUmcyvRvSGgSVWkqqv2',{
-            api_host:'https://us.i.posthog.com',
-            defaults:'2026-01-30',
-            disable_session_recording:true,
-            // Prevent extra sub-scripts from loading (saves ~40 KB JS and
-            // eliminates "Reduce unused JavaScript" + "Duplicated JS" PSI findings).
-            // surveys.js (~34 KB) is optional; dead-clicks loads with autocapture.
-            disable_surveys:true,
-            autocapture:true,
-            // Persist the distinct_id in BOTH localStorage and cookie so we
-            // survive Safari's 7-day ITP cookie eviction + still get
-            // cross-subdomain identity on e2.agency.
-            persistence:'localStorage+cookie',
-            cross_subdomain_cookie:true,
-            loaded:function(ph){
-              // Harvest click IDs + Meta fbp from URL/cookies and register
-              // as super-properties. These attach to EVERY subsequent event
-              // (including the Lead event fired from FinalCTA) so the
-              // PostHog→Meta CAPI destination has full matching signal.
-              try {
-                var url = new URL(window.location.href);
-                var fbclid = url.searchParams.get('fbclid');
-                var gclid = url.searchParams.get('gclid');
-                var ttclid = url.searchParams.get('ttclid'); // TikTok
-                var liclid = url.searchParams.get('li_fat_id'); // LinkedIn
-                var msclkid = url.searchParams.get('msclkid'); // Microsoft
-                var sp = {};
-                if (fbclid) {
-                  // Meta's fbc format: fb.1.<unixMs>.<fbclid>
-                  sp.fbc = 'fb.1.' + Date.now() + '.' + fbclid;
-                  sp.fbclid = fbclid;
-                }
-                if (gclid) sp.gclid = gclid;
-                if (ttclid) sp.ttclid = ttclid;
-                if (liclid) sp.li_fat_id = liclid;
-                if (msclkid) sp.msclkid = msclkid;
-                var fbpMatch = document.cookie.match(/(?:^|; )_fbp=([^;]+)/);
-                if (fbpMatch) sp.fbp = fbpMatch[1];
-                if (Object.keys(sp).length) {
-                  // register_once = only set if not already set (respects the
-                  // first-touch click ID, critical for attribution fidelity).
-                  ph.register_once(sp);
-                  // Also set as person properties (set_once) so they stick
-                  // to the profile even if the distinct_id rotates.
-                  ph.setPersonProperties(undefined, sp);
-                }
-              } catch (e) { /* attribution capture is best-effort */ }
+{
+  POSTHOG_ENABLED && (
+    <script
+      is:inline
+      define:vars={{
+        posthogKey: POSTHOG_KEY,
+        posthogHost: POSTHOG_HOST,
+        trackingHost: POSTHOG_TRACKING_HOST,
+      }}
+    >
+      (function () {
+        if (location.hostname !== trackingHost) return;
 
-              ph.capture('$pageview');
+        window.posthog = window.posthog || [];
+        var _ph = window.posthog;
+        if (_ph.__SV) return;
+        _ph._i = [];
+        _ph.__SV = 1;
+        _ph.init = function (i, s, a) {
+          function g(t, e) {
+            var o = e.split(".");
+            if (o.length === 2) {
+              t = t[o[0]];
+              e = o[1];
             }
-          });
-        }
-      };
-    }
-    // Hard 3 s floor so analytics never run during the TBT measurement window.
-    setTimeout(function(){
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(inject, { timeout: 10000 });
-      } else {
-        setTimeout(inject, 1000);
-      }
-    }, 3000);
-  },{once:true});
-})();
-</script>
+            t[e] = function () {
+              t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+            };
+          }
+          var u = _ph;
+          if (void 0 !== a) {
+            u = _ph[a] = [];
+          } else {
+            a = "posthog";
+          }
+          u.people = u.people || [];
+          u.toString = function (t) {
+            var e = "posthog";
+            if (a !== "posthog") e += "." + a;
+            if (!t) e += " (stub)";
+            return e;
+          };
+          u.people.toString = function () {
+            return u.toString(1) + ".people (stub)";
+          };
+          "init capture register register_once register_for_session unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group identify setPersonProperties setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags resetGroups onFeatureFlags addFeatureFlagsHandler onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep"
+            .split(" ")
+            .forEach(function (m) {
+              g(u, m);
+            });
+          _ph._i.push([i, s, a]);
+        };
+
+        window.addEventListener(
+          "load",
+          function () {
+            function inject() {
+              var s = document.createElement("script");
+              s.async = true;
+              s.src = "https://us-assets.i.posthog.com/static/array.js";
+              document.head.appendChild(s);
+              s.onload = function () {
+                if (window.posthog && window.posthog.init) {
+                  window.posthog.init(posthogKey, {
+                    api_host: posthogHost,
+                    ui_host: "https://us.posthog.com",
+                    defaults: "2026-01-30",
+                    // Manual $pageview in loaded() — SDK defaults also capture pageviews.
+                    capture_pageview: false,
+                    disable_session_recording: true,
+                    disable_surveys: true,
+                    autocapture: true,
+                    persistence: "localStorage+cookie",
+                    cross_subdomain_cookie: true,
+                    loaded: function (ph) {
+                      try {
+                        var url = new URL(window.location.href);
+                        var fbclid = url.searchParams.get("fbclid");
+                        var gclid = url.searchParams.get("gclid");
+                        var ttclid = url.searchParams.get("ttclid");
+                        var liclid = url.searchParams.get("li_fat_id");
+                        var msclkid = url.searchParams.get("msclkid");
+                        var sp = {};
+                        if (fbclid) {
+                          sp.fbc = "fb.1." + Date.now() + "." + fbclid;
+                          sp.fbclid = fbclid;
+                        }
+                        if (gclid) sp.gclid = gclid;
+                        if (ttclid) sp.ttclid = ttclid;
+                        if (liclid) sp.li_fat_id = liclid;
+                        if (msclkid) sp.msclkid = msclkid;
+                        var fbpMatch = document.cookie.match(
+                          /(?:^|; )_fbp=([^;]+)/
+                        );
+                        if (fbpMatch) sp.fbp = fbpMatch[1];
+                        if (Object.keys(sp).length) {
+                          ph.register_once(sp);
+                          ph.setPersonProperties(undefined, sp);
+                        }
+                      } catch (e) {}
+
+                      ph.capture("$pageview");
+                    },
+                  });
+                }
+              };
+            }
+            setTimeout(function () {
+              if ("requestIdleCallback" in window) {
+                requestIdleCallback(inject, { timeout: 10000 });
+              } else {
+                setTimeout(inject, 1000);
+              }
+            }, 3000);
+          },
+          { once: true }
+        );
+      })();
+    </script>
+  )
+}

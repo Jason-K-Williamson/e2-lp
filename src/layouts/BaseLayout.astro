@@ -76,12 +76,8 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />
     <!-- Application form lives on myformflow.io (external CTA, not embedded). -->
     <link rel="dns-prefetch" href="https://myformflow.io" />
-    <!--
-      Analytics origins — deferred scripts, dns-prefetch is enough.
-      PostHog is the source of truth for events; Meta pixel just fires PageView
-      browser-side. Server-side Lead → Meta CAPI is handled by PostHog's
-      Meta Ads destination (Data pipeline → Destinations in PostHog UI).
-    -->
+    <!-- Analytics — first-party PostHog proxy + deferred Meta pixel -->
+    <link rel="dns-prefetch" href="https://z.e2.agency" />
     <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
     <link rel="dns-prefetch" href="https://connect.facebook.net" />
 
@@ -115,10 +111,9 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
     }
 
     <!--
-      Tracking: PostHog (source of truth) → Meta CAPI via destinations.
-      Meta pixel handles browser-side PageView only.
+      Tracking: PostHog (source of truth) + Meta pixel PageView.
       Placed at end of <body> so stub setup never blocks <head> HTML parsing.
-      All actual events fire after load + 3 s floor — no data lost.
+      PostHog only loads on workwith.e2.agency in production builds.
     -->
     <PostHog />
     <MetaPixel />
