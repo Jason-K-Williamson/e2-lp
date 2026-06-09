@@ -76,6 +76,7 @@ import {
                     defaults: "2026-01-30",
                     // Manual $pageview in loaded() — SDK defaults also capture pageviews.
                     capture_pageview: false,
+                    // Lazy session replay — started via startSessionRecording() in loaded().
                     disable_session_recording: true,
                     disable_surveys: true,
                     autocapture: true,
@@ -109,6 +110,18 @@ import {
                       } catch (e) {}
 
                       ph.capture("$pageview");
+
+                      // Session replay: init with disable_session_recording so
+                      // rrweb bundle stays off the critical path. Start lazily
+                      // after idle once pageview + attribution are captured.
+                      function startRecording() {
+                        if (ph.startSessionRecording) ph.startSessionRecording();
+                      }
+                      if ("requestIdleCallback" in window) {
+                        requestIdleCallback(startRecording, { timeout: 15000 });
+                      } else {
+                        setTimeout(startRecording, 5000);
+                      }
                     },
                   });
                 }
