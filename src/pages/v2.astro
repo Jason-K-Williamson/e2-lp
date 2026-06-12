@@ -1,0 +1,98 @@
+---
+/**
+ * Homepage v2 — CRO test variant (/v2).
+ * Control lives at / (src/lib/home-copy.ts).
+ */
+import BaseLayout from "../layouts/BaseLayout.astro";
+import StickyNav from "../components/StickyNav.astro";
+import Hero from "../components/Hero.astro";
+import SocialProof from "../components/SocialProof.astro";
+import Mechanism from "../components/Mechanism.astro";
+import Agitation from "../components/Agitation.astro";
+import MajorCaseStudies from "../components/MajorCaseStudies.astro";
+import DeliverabilityProof from "../components/DeliverabilityProof.astro";
+import EmailGallery from "../components/EmailGallery.astro";
+import MinorCaseStudies from "../components/MinorCaseStudies.astro";
+import Testimonials from "../components/Testimonials.astro";
+import HeroTestimonial from "../components/HeroTestimonial.astro";
+import FinalCTA from "../components/FinalCTA.astro";
+import Footer from "../components/Footer.astro";
+import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+import { HOME_V2_COPY } from "../lib/home-v2-copy";
+import { getStrategyIntakeCopy } from "../lib/strategy-intake";
+import KlaviyoProof from "../components/KlaviyoProof.astro";
+
+const strategyIntake = getStrategyIntakeCopy();
+
+const { data: siteMetric } = await supabase
+  .from("site_metrics")
+  .select("live_revenue_total")
+  .eq("key", "global")
+  .maybeSingle();
+const featuredRevenue = Number(siteMetric?.live_revenue_total ?? 225669414);
+---
+
+<BaseLayout
+  title={HOME_V2_COPY.title}
+  description={HOME_V2_COPY.description}
+  pageVariant="v2"
+>
+  <StickyNav ctaLabel={HOME_V2_COPY.sticky_cta} />
+
+  <Hero
+    badge={strategyIntake.primaryLine}
+    headline={HOME_V2_COPY.hero_headline}
+    mechanismKicker={HOME_V2_COPY.hero_mechanism_kicker}
+    subheadline={HOME_V2_COPY.hero_subheadline}
+    ctaPrimary={HOME_V2_COPY.hero_cta_primary}
+    ctaSecondary={HOME_V2_COPY.hero_cta_secondary}
+    ctaHelper={HOME_V2_COPY.hero_cta_helper}
+    trustTitle={HOME_V2_COPY.trust_title}
+    trustSubtitle={HOME_V2_COPY.trust_subtitle}
+  />
+
+  <SocialProof featuredRevenue={featuredRevenue} />
+
+  <!-- Differentiation + plan before the proof avalanche (group feedback) -->
+  <Mechanism
+    heading={DEFAULT_VARIANT.mech_heading}
+    subheading={DEFAULT_VARIANT.mech_subheading}
+    step1Label={DEFAULT_VARIANT.mech_step1_label}
+    step1Desc={DEFAULT_VARIANT.mech_step1_desc}
+    step1Bullets={DEFAULT_VARIANT.mech_step1_bullets}
+    step2Label={DEFAULT_VARIANT.mech_step2_label}
+    step2Desc={DEFAULT_VARIANT.mech_step2_desc}
+    step2Bullets={DEFAULT_VARIANT.mech_step2_bullets}
+    step3Label={DEFAULT_VARIANT.mech_step3_label}
+    step3Desc={DEFAULT_VARIANT.mech_step3_desc}
+    step3Bullets={DEFAULT_VARIANT.mech_step3_bullets}
+  />
+
+  <Agitation
+    agitationBody={DEFAULT_VARIANT.prob_agitation_body}
+    stakesBody={DEFAULT_VARIANT.prob_stakes_body}
+  />
+
+  <HeroTestimonial />
+
+  <MajorCaseStudies />
+
+  <DeliverabilityProof />
+
+  <EmailGallery />
+
+  <KlaviyoProof />
+
+  <MinorCaseStudies />
+
+  <Testimonials />
+
+  <FinalCTA
+    heading={HOME_V2_COPY.finalcta_heading}
+    subheading={HOME_V2_COPY.finalcta_subheading}
+    ctaLabel={HOME_V2_COPY.finalcta_button}
+    ctaHelper={HOME_V2_COPY.finalcta_helper}
+  />
+
+  <Footer />
+</BaseLayout>

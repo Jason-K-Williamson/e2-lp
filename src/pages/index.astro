@@ -11,119 +11,53 @@ import Testimonials from "../components/Testimonials.astro";
 import HeroTestimonial from "../components/HeroTestimonial.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import Footer from "../components/Footer.astro";
-import { supabase, DEFAULT_VARIANT } from "../lib/supabase";
+import { supabase } from "../lib/supabase";
+import { HOME_COPY } from "../lib/home-copy";
 import { getStrategyIntakeCopy } from "../lib/strategy-intake";
 import KlaviyoProof from "../components/KlaviyoProof.astro";
 
-const isAdmin = !!(Astro.locals as any).isAdmin;
 const strategyIntake = getStrategyIntakeCopy();
+
+// Live revenue total only — copy lives in src/lib/home-copy.ts
 const { data: siteMetric } = await supabase
-     .from("site_metrics")
-     .select("live_revenue_total")
-     .eq("key", "global")
-     .maybeSingle();
+  .from("site_metrics")
+  .select("live_revenue_total")
+  .eq("key", "global")
+  .maybeSingle();
 const featuredRevenue = Number(siteMetric?.live_revenue_total ?? 225669414);
-const compactRevenueForHeadline = new Intl.NumberFormat("en-AU", {
-     style: "currency",
-     currency: "AUD",
-     notation: "compact",
-     compactDisplay: "short",
-     maximumFractionDigits: 1,
-}).format(featuredRevenue);
-
-// ── Resolve variant row: always read from DB when possible ───────────────────
-// This is what powers the visual editor round-trip: we save via PUT /api/variants/:id
-// and read back here on every page render so edits persist after refresh.
-let defaultVariantId: string | undefined;
-let variant = DEFAULT_VARIANT;
-
-// Look for the canonical default row (works for both admin and regular visitors)
-const { data: existing } = await supabase
-     .from("page_variants")
-     .select("*")
-     .eq("concept", "default")
-     .eq("tam", "homepage")
-     .maybeSingle();
-
-if (existing) {
-     defaultVariantId = existing.id;
-     // Merge saved fields over defaults so any undefined/missing keys still have a value
-     variant = { ...DEFAULT_VARIANT, ...existing };
-} else if (isAdmin) {
-     // First admin visit — seed the row from DEFAULT_VARIANT so saves work later
-     const { data: seeded } = await supabase
-          .from("page_variants")
-          .insert({
-               concept: "default",
-               tam: "homepage",
-               active: true,
-               ...DEFAULT_VARIANT,
-          })
-          .select("*")
-          .single();
-     if (seeded) {
-          defaultVariantId = seeded.id;
-          variant = { ...DEFAULT_VARIANT, ...seeded };
-     }
-}
-
-const liveHeadline = (variant.hero_headline ?? DEFAULT_VARIANT.hero_headline).replace(
-     /\$[\d,.]+(?:\s*)?(?:[KMBT])?\+?/i,
-     `${compactRevenueForHeadline}+`,
-);
-
-const title = "Real Results. Real Brands. Real Revenue. | e2 Agency";
-const description =
-     "$225M+ generated. 2,000+ brands. See the case studies, designs, and client results that prove it.";
 ---
 
-<BaseLayout
-     title={title}
-     description={description}
-     variantId={defaultVariantId}
->
-     <!-- Sticky pill nav -->
-     <StickyNav />
+<BaseLayout title={HOME_COPY.title} description={HOME_COPY.description} pageVariant="control">
+  <StickyNav />
 
-     <!-- 1. HERO — VSL + logo bar -->
-     <Hero
-          badge={strategyIntake.primaryLine}
-          headline={liveHeadline}
-          subheadline={variant.hero_subheadline}
-          ctaPrimary={variant.hero_cta_primary}
-          ctaSecondary={variant.hero_cta_secondary}
-     />
+  <Hero
+    badge={strategyIntake.primaryLine}
+    headline={HOME_COPY.hero_headline}
+    subheadline={HOME_COPY.hero_subheadline}
+    ctaPrimary={HOME_COPY.hero_cta_primary}
+    ctaSecondary={HOME_COPY.hero_cta_secondary}
+  />
 
-     <!-- 2. PROOF BAR — $225M + 4 supporting stats -->
-     <SocialProof featuredRevenue={featuredRevenue} />
+  <SocialProof featuredRevenue={featuredRevenue} />
 
-     <!-- 3. HERO TESTIMONIAL — Davie Fogarty / The Oodie -->
-     <HeroTestimonial />
+  <HeroTestimonial />
 
-     <!-- 4. MAJOR CASE STUDIES — 5 full-width hero studies with video testimonials -->
-     <MajorCaseStudies />
+  <MajorCaseStudies />
 
-     <!-- 4b. DELIVERABILITY PROOF — Saint Candles + men's jewelry brand -->
-     <DeliverabilityProof />
+  <DeliverabilityProof />
 
-     <!-- 5. DESIGNS — Email scroll gallery + Figma showcase -->
-     <EmailGallery />
+  <EmailGallery />
 
-     <!-- 6. KLAVIYO PROOF — tabbed screenshot gallery -->
-     <KlaviyoProof />
+  <KlaviyoProof />
 
-     <!-- 6. MINOR CASE STUDIES — BFCM + supporting grid -->
-     <MinorCaseStudies />
+  <MinorCaseStudies />
 
-     <!-- 7. TESTIMONIALS — Wall of Love -->
-     <Testimonials />
+  <Testimonials />
 
-     <!-- 8. FINAL CTA — Form embed section -->
-     <FinalCTA
-          heading={variant.finalcta_heading}
-          subheading={variant.finalcta_subheading}
-     />
+  <FinalCTA
+    heading={HOME_COPY.finalcta_heading}
+    subheading={HOME_COPY.finalcta_subheading}
+  />
 
-     <!-- 9. FOOTER -->
-     <Footer />
+  <Footer />
 </BaseLayout>

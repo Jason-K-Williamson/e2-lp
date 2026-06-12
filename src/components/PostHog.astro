@@ -109,6 +109,13 @@ import {
                         }
                       } catch (e) {}
 
+                      var pageVariant =
+                        document.body &&
+                        document.body.getAttribute("data-page-variant");
+                      if (pageVariant) {
+                        ph.register({ page_variant: pageVariant });
+                      }
+
                       ph.capture("$pageview");
 
                       // Session replay: init with disable_session_recording so

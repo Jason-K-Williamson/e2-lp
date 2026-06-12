@@ -4,9 +4,8 @@ const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
 
 // Fallback to placeholder strings so createClient never throws at module load.
-// When env vars aren't set, all DB calls will fail quietly and pages render
-// from DEFAULT_VARIANT. Runtime vars are set in wrangler.jsonc (`vars`) and
-// inlined at build via Vite — both paths are redundant, intentional belt+braces.
+// Homepage copy is in src/lib/home-copy.ts (not Supabase).
+// DEFAULT_VARIANT below is for AI-generated variant pages (/admin, dynamic routes).
 export const supabase = createClient(
   supabaseUrl ?? 'https://placeholder.supabase.co',
   supabaseAnonKey ?? 'placeholder-anon-key'
@@ -206,10 +205,11 @@ export const DEFAULT_VARIANT = {
   // ── Hero ─────────────────────────────────────────────────────────────────
   hero_badge: "Free Strategy Call · (live date) Intake · 2 spots left",
   hero_headline:
-    "Ethically Steal Our $200M Email Playbook. Free on a strategy call.",
-  hero_subheadline: "Without wasting more money on the Andromeda Roller Coaster. Get the exact 6-flow system that generated $225,669,414 for eCom brands and see if we can build it for yours. No pitch. 60 minutes. 100% free.",
-  hero_cta_primary: "Steal the Playbook →",
-  hero_cta_secondary: "See the Results First",
+    "Turn email into 30-40% of revenue in LESS than 90 days.",
+  hero_subheadline:
+    "We have generated $225M+ for 2,000+ DTC brands. Book a free 30-minute strategy call and we will map the exact playbook to your store. No pitch. No obligation.",
+  hero_cta_primary: "Book Your 30-Minute Strategy Call",
+  hero_cta_secondary: "",
 
   // ── Problem / Agitation ──────────────────────────────────────────────────
   prob_heading: "The Real Cost Is Your Time and Your Revenue.",

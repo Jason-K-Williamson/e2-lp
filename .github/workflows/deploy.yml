@@ -18,6 +18,8 @@ jobs:
       PUBLIC_SUPABASE_URL: https://gvttvfheznfllrsgqsfk.supabase.co
       PUBLIC_SUPABASE_ANON_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd2dHR2Zmhlem5mbGxyc2dxc2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNTU3OTcsImV4cCI6MjA4NzkzMTc5N30.HlzxYtjbwkOyuZVrlGxCAuwlxPbspjo8y-CuCt-wyFc
       PUBLIC_META_PIXEL_ID: "2345764252241076"
+      PUBLIC_POSTHOG_KEY: "phc_xRW8fkiKkedq3MaeVDBn2wRPQtUmcyvRvSGgSVWkqqv2"
+      PUBLIC_POSTHOG_HOST: "https://z.e2.agency"
     steps:
       - uses: actions/checkout@v4
 

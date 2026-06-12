@@ -6,6 +6,12 @@
  */
 import { APPLY_URL } from "../lib/apply-url";
 import StrategyCallStatus from "./StrategyCallStatus.astro";
+
+interface Props {
+  ctaLabel?: string;
+}
+
+const { ctaLabel = "See If You Qualify →" } = Astro.props;
 ---
 
 <div
@@ -52,7 +58,7 @@ import StrategyCallStatus from "./StrategyCallStatus.astro";
       class="flex-shrink-0 px-5 sm:px-6 py-2.5 bg-e2-black text-white text-sm font-bold rounded-full hover:bg-gray-900 transition-colors duration-200 whitespace-nowrap cursor-pointer"
       style="min-height: 44px; display: flex; align-items: center;"
     >
-      See If You Qualify →
+      {ctaLabel}
     </a>
   </div>
 </div>

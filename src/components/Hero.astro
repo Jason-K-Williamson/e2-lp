@@ -10,6 +10,12 @@ interface Props {
   subheadline?: string;
   ctaPrimary?: string;
   ctaSecondary?: string;
+  /** Optional line between headline and subhead (e.g. mechanism name). */
+  mechanismKicker?: string;
+  /** Micro-copy under the CTA row (friction reducer / scarcity). */
+  ctaHelper?: string;
+  trustTitle?: string;
+  trustSubtitle?: string;
 }
 
 const {
@@ -18,6 +24,10 @@ const {
   subheadline = DEFAULT_VARIANT.hero_subheadline,
   ctaPrimary = DEFAULT_VARIANT.hero_cta_primary,
   ctaSecondary = DEFAULT_VARIANT.hero_cta_secondary,
+  mechanismKicker = "",
+  ctaHelper = "",
+  trustTitle = "Trusted By USA & Australia's Leading D2C Brands",
+  trustSubtitle = "Join 750+ brands who've scaled their email & SMS with e2",
 } = Astro.props;
 
 const secondaryCta = ctaSecondary?.trim() ?? "";
@@ -92,6 +102,14 @@ const editProps = (field: string) =>
       {headline}
     </h1>
 
+    {
+      mechanismKicker && (
+        <p class="text-sm sm:text-base font-semibold text-blue-700 max-w-2xl mx-auto mb-3 sm:mb-4 leading-snug text-balance">
+          {mechanismKicker}
+        </p>
+      )
+    }
+
     <!-- Subheadline -->
     <p
       class="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-8 leading-snug sm:leading-relaxed font-normal text-balance"
@@ -129,6 +147,14 @@ const editProps = (field: string) =>
       }
     </div>
 
+    {
+      ctaHelper && (
+        <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-4 sm:mb-5 leading-relaxed">
+          {ctaHelper}
+        </p>
+      )
+    }
+
     <!-- Spacer before VSL (client logo strip removed — full LogoCloud below
          already carries the same client brands; avoids a duplicate logo bar). -->
     <div class="mt-2 sm:mt-4"></div>
@@ -141,10 +167,10 @@ const editProps = (field: string) =>
       <p
         class="text-base uppercase tracking-widest text-gray-600 font-semibold mb-2 text-center"
       >
-        Trusted By USA & Australia's Leading D2C Brands
+        {trustTitle}
       </p>
       <p class="text-base text-gray-600 font-medium text-center mb-6">
-        Join 750+ brands who've scaled their email & SMS with e2
+        {trustSubtitle}
       </p>
       <LogoCloud />
     </div>
