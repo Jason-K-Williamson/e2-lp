@@ -4,6 +4,9 @@
  * Per 2026 playbook: before→after metric format, photos, specific metrics
  * Davie Fogarty now lives in CaseStudies , this is the supporting wall
  */
+import { Image } from "astro:assets";
+import imgHorseEducationProof from "../assets/case-studies/horse-education-slack-proof.png";
+
 const testimonials = [
   // Most recognizable brands first
   {
@@ -204,10 +207,11 @@ const testimonials = [
         <figure
           class="rounded-2xl overflow-hidden border border-gray-200/80 bg-gray-50 mb-6 w-full min-w-0"
         >
-          <img
-            src="/case-studies/horse-education-slack-proof.png"
-            width="1024"
-            height="240"
+          <Image
+            src={imgHorseEducationProof}
+            widths={[400, 800, 1024]}
+            sizes="(max-width: 640px) 100vw, 400px"
+            quality={70}
             alt="Original message from Sara at Horse Education."
             class="w-full h-auto block"
             loading="lazy"

@@ -73,7 +73,9 @@ const adminPass = isAdmin ? import.meta.env.ADMIN_PASS : "";
       the font. Explicit preload hurt more than it helped.
     -->
 
-    <!-- Bunny Stream: dns-prefetch only — avoids PSI “unused preconnect” (posters load lazy / below fold) -->
+    <!-- Bunny Stream: dns-prefetch only — avoids PSI “unused preconnect”.
+         Posters are now self-hosted (src/assets/video-posters/); this domain
+         is only hit for HLS segments once a video actually plays. -->
     <link rel="dns-prefetch" href="https://vz-e4e7db1f-2fb.b-cdn.net" />
     <link rel="dns-prefetch" href="https://iframe.mediadelivery.net" />
     <link rel="dns-prefetch" href="https://assets.mediadelivery.net" />

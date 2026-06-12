@@ -8,10 +8,16 @@
  *   (full width, natural height), white container background fills the gap below.
  *   This means the After dashboard is never cropped or zoomed.
  * Labels fade as the slider covers them. Intro wiggle respects prefers-reduced-motion.
+ *
+ * Images are ImageMetadata imports served via astro:assets (resized webp).
+ * They load lazily: this slider sits below the fold, and the raw PNGs
+ * (90–230 KB each) used to download eagerly during initial page load.
  */
+import { Image } from "astro:assets";
+
 interface Props {
-    beforeSrc: string;
-    afterSrc: string;
+    beforeImage: ImageMetadata;
+    afterImage: ImageMetadata;
     beforeWidth: number;
     beforeHeight: number;
     afterWidth: number;
@@ -26,8 +32,8 @@ interface Props {
 }
 
 const {
-    beforeSrc,
-    afterSrc,
+    beforeImage,
+    afterImage,
     beforeWidth,
     beforeHeight,
     afterWidth,
@@ -63,24 +69,30 @@ const {
     >
         <!-- After (underlay) — object-contain preserves full dashboard width,
              white bg fills any gap below the shorter image -->
-        <img
-            src={afterSrc}
+        <Image
+            src={afterImage}
             alt={afterAlt}
+            widths={[640, 1024, 1600]}
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            quality={70}
             class="absolute inset-0 z-0 h-full w-full object-contain object-top"
             width={afterWidth}
             height={afterHeight}
-            loading="eager"
+            loading="lazy"
             decoding="async"
         />
 
         <!-- Before (overlay) — clipped from the right to reveal After as slider moves left -->
-        <img
-            src={beforeSrc}
+        <Image
+            src={beforeImage}
             alt={beforeAlt}
+            widths={[640, 1024, 1600]}
+            sizes="(max-width: 1024px) 100vw, 1024px"
+            quality={70}
             class="ba-before absolute inset-0 z-[1] h-full w-full object-cover object-top"
             width={beforeWidth}
             height={beforeHeight}
-            loading="eager"
+            loading="lazy"
             decoding="async"
             data-ba-before
         />

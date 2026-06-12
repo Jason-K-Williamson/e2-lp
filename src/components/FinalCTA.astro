@@ -2,9 +2,11 @@
 /**
  * Final CTA — conversion section with link to dedicated application page.
  */
+import { Image } from "astro:assets";
 import { DEFAULT_VARIANT } from "../lib/supabase";
 import { APPLY_URL } from "../lib/apply-url";
 import StrategyCallStatus from "./StrategyCallStatus.astro";
+import imgPeteJames from "../assets/images/testimonials/pete-james.png";
 
 interface Props {
     heading?: string;
@@ -49,11 +51,12 @@ const editProps = (field: string) =>
                 a lot of money, and work with good people."
             </blockquote>
             <div class="flex items-center justify-center gap-3">
-                <img
-                    src="/images/testimonials/pete-james.png"
+                <Image
+                    src={imgPeteJames}
                     alt="Pete James"
-                    width="40"
-                    height="40"
+                    widths={[40, 80, 120]}
+                    sizes="40px"
+                    quality={70}
                     class="w-10 h-10 rounded-full object-cover ring-2 ring-gray-100 shadow-sm flex-shrink-0"
                     loading="lazy"
                     decoding="async"

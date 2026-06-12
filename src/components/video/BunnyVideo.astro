@@ -2,32 +2,31 @@
 /**
  * BunnyVideo — Facade pattern for Bunny.net embeds
  *
- * Loads a lightweight JPEG poster from Bunny CDN (same asset the player uses).
- * Injects the iframe on hover / tap only; poster stays visible until iframe `load`
- * so users never see an empty black embed while it boots.
+ * Posters are self-hosted from src/assets/video-posters/ and served resized
+ * + recompressed (webp) through the image pipeline. Bunny's CDN poster URLs
+ * are referer-gated, uncacheable (cache-control: no-store), and ship the
+ * full-size JPEG — a single PostHog replay showed one taking 6s on mobile.
+ * Injects the iframe on hover / tap only; poster stays visible until iframe
+ * `load` so users never see an empty black embed while it boots.
  *
  * Props:
  *   libraryId  — Bunny stream library ID (e.g. "609841")
  *   videoId    — Bunny video GUID
- *   posterUrl  — Full poster image URL (optional; some videos use thumbnail_HASH.jpg)
- *   thumbBase  — Bunny CDN base URL for `${videoId}/thumbnail.jpg` fallback
+ *   posterImage — Imported ImageMetadata (preferred; optimized pipeline)
+ *   posterUrl  — Raw poster URL fallback (avoid for Bunny CDN URLs)
  *   title      — Shown on overlay + img alt
  *   subtitle   — Optional subtitle line
  *   author     — Bottom bar (optional)
  *   authorRole — Bottom bar role (optional)
  *   fetchPriority — "high" | "low" | "auto" for LCP / below-fold tuning
  */
-
-const DEFAULT_LIBRARY_THUMB_BASE: Record<string, string> = {
-  // Current Bunny Stream library in this project.
-  "609841": "https://vz-e4e7db1f-2fb.b-cdn.net",
-};
+import { Image } from "astro:assets";
 
 interface Props {
   libraryId: string;
   videoId: string;
+  posterImage?: ImageMetadata;
   posterUrl?: string;
-  thumbBase?: string;
   title?: string;
   subtitle?: string;
   author?: string;
@@ -39,8 +38,8 @@ interface Props {
 const {
   libraryId,
   videoId,
+  posterImage,
   posterUrl,
-  thumbBase,
   title = "Watch the video",
   subtitle,
   author,
@@ -48,9 +47,6 @@ const {
   class: className = "",
   fetchPriority = "low",
 } = Astro.props;
-
-const resolvedThumbBase = thumbBase ?? DEFAULT_LIBRARY_THUMB_BASE[libraryId];
-const poster = posterUrl ?? (resolvedThumbBase ? `${resolvedThumbBase}/${videoId}/thumbnail.jpg` : "");
 
 const uid = `bunny-${videoId.slice(0, 8)}`;
 const embedSrc = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?autoplay=1&loop=false&muted=false&preload=false&responsive=true`;
@@ -71,9 +67,21 @@ const imgAlt = title ? `${title} — video thumbnail` : "Video thumbnail";
     class="bunny-thumb absolute inset-0 transition-opacity duration-300 z-[2]"
   >
     {
-      poster ? (
+      posterImage ? (
+        <Image
+          src={posterImage}
+          alt={imgAlt}
+          widths={[320, 480, 640]}
+          sizes="(max-width: 768px) 100vw, 640px"
+          quality={70}
+          class="absolute inset-0 h-full w-full object-cover"
+          loading="lazy"
+          decoding="async"
+          fetchpriority={fetchPriority}
+        />
+      ) : posterUrl ? (
         <img
-          src={poster}
+          src={posterUrl}
           alt={imgAlt}
           width="640"
           height="480"
@@ -162,10 +170,16 @@ const imgAlt = title ? `${title} — video thumbnail` : "Video thumbnail";
     slowConnection: boolean;
   };
 
+  // Treat anything that isn't confirmed 4g as slow. The old check only
+  // caught 2g/save-data, which let struggling 3g/"4g-lite" connections
+  // prewarm video embeds while page assets were still downloading.
+  // Browsers without the Network Information API (Safari/Firefox) report
+  // no effectiveType — they keep the prewarm (can't know, don't punish).
   const connection = (navigator as any).connection;
+  const effectiveType: string = connection?.effectiveType ?? "";
   const slowConnection =
     Boolean(connection?.saveData) ||
-    /(^|-)2g$/.test(connection?.effectiveType ?? "");
+    (effectiveType !== "" && effectiveType !== "4g");
 
   const w = window as any;
   const state: BunnyPrewarmState =

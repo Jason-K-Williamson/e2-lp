@@ -1,9 +1,21 @@
 ---
+import { Image } from "astro:assets";
 import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
+import imgSaintBefore from "../assets/deliverability-proof/hero-before-klaviyo-summary.png";
+import imgSaintAfter from "../assets/deliverability-proof/saint-after-business-summary-2026.png";
+import imgSaintDashboard from "../assets/deliverability-proof/saint-candles-campaign-dashboard.png";
+import imgSaintScore from "../assets/deliverability-proof/hero-after-deliverability-score.png";
+import imgJewelryBefore from "../assets/deliverability-proof/jewelry-brand/before-klaviyo-summary.png";
+import imgJewelryAfter from "../assets/deliverability-proof/jewelry-brand/after-klaviyo-summary.png";
+import imgJewelryBeforeOpens from "../assets/deliverability-proof/jewelry-brand/before-open-rate.png";
+import imgJewelryDomainRep from "../assets/deliverability-proof/jewelry-brand/domain-reputation.png";
+import imgJewelryAfterFlows from "../assets/deliverability-proof/jewelry-brand/after-open-rate-flows.png";
 
 /**
  * Deliverability proof section — brands hit inbox/spam problems; we document fixes.
  * Case studies: Saint Candles · Men's jewelry brand (anonymized).
+ * All screenshots route through astro:assets so they ship as resized webp,
+ * not raw PNGs (the originals were 90–360 KB each).
  */
 ---
 
@@ -47,8 +59,8 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
         </div>
 
         <DeliverabilityBeforeAfter
-            beforeSrc="/deliverability-proof/hero-before-klaviyo-summary.png"
-            afterSrc="/deliverability-proof/saint-after-business-summary-2026.png"
+            beforeImage={imgSaintBefore}
+            afterImage={imgSaintAfter}
             beforeWidth={1024}
             beforeHeight={808}
             afterWidth={1024}
@@ -84,13 +96,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                     <figure
                         class="mb-10 rounded-2xl overflow-hidden border border-gray-200 bg-gray-50 shadow-sm"
                     >
-                        <img
-                            src="/deliverability-proof/saint-candles-campaign-dashboard.png"
+                        <Image
+                            src={imgSaintDashboard}
                             alt="Klaviyo campaign overview for Saint Candles showing 51.38% open rate from 9,510 recipients, click rate, revenue, and engagement over time."
+                            widths={[480, 768, 1024]}
+                            sizes="(max-width: 1024px) 100vw, 600px"
+                            quality={70}
                             class="w-full h-auto object-contain object-top bg-gray-100"
                             loading="lazy"
-                            width={1024}
-                            height={695}
                             decoding="async"
                         />
                         <figcaption
@@ -220,13 +233,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                     <figure
                         class="mb-8 rounded-2xl overflow-hidden border border-emerald-100/80 bg-white shadow-sm"
                     >
-                        <img
-                            src="/deliverability-proof/hero-after-deliverability-score.png"
+                        <Image
+                            src={imgSaintScore}
                             alt="Klaviyo deliverability score 80 labeled Good, up 12 points over the previous 30 days, with open rate, click rate, bounce, and spam metrics versus benchmarks."
+                            widths={[480, 768, 1024]}
+                            sizes="(max-width: 1024px) 100vw, 600px"
+                            quality={70}
                             class="w-full h-auto max-w-full object-contain object-top bg-gray-50"
                             loading="lazy"
-                            width={1024}
-                            height={485}
                             decoding="async"
                         />
                         <figcaption
@@ -278,8 +292,8 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
         </div>
 
         <DeliverabilityBeforeAfter
-            beforeSrc="/deliverability-proof/jewelry-brand/before-klaviyo-summary.png"
-            afterSrc="/deliverability-proof/jewelry-brand/after-klaviyo-summary.png"
+            beforeImage={imgJewelryBefore}
+            afterImage={imgJewelryAfter}
             beforeWidth={1812}
             beforeHeight={760}
             afterWidth={2388}
@@ -325,13 +339,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                 <figure
                     class="rounded-2xl overflow-hidden border border-gray-200 bg-white shadow-sm max-w-3xl mx-auto"
                 >
-                    <img
-                        src="/deliverability-proof/jewelry-brand/before-open-rate.png"
+                    <Image
+                        src={imgJewelryBeforeOpens}
                         alt="Klaviyo reports showing 9.34% open rate and $617 revenue over 30 days before deliverability repair for a men's jewelry brand."
+                        widths={[480, 768, 1355]}
+                        sizes="(max-width: 768px) 100vw, 768px"
+                        quality={70}
                         class="w-full h-auto object-contain object-top bg-gray-50"
                         loading="lazy"
-                        width={1355}
-                        height={1099}
                         decoding="async"
                     />
                     <figcaption
@@ -399,13 +414,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                 <figure
                     class="rounded-2xl border border-emerald-100/80 bg-white shadow-sm overflow-x-auto overscroll-x-contain"
                 >
-                    <img
-                        src="/deliverability-proof/jewelry-brand/domain-reputation.png"
+                    <Image
+                        src={imgJewelryDomainRep}
                         alt="Google Postmaster Tools domain reputation chart showing progression from Low to Medium to High over two months for a men's jewelry brand."
+                        widths={[640, 1024, 1600, 2048]}
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        quality={70}
                         class="w-full min-w-[280px] h-auto max-w-none sm:max-w-full object-contain object-top bg-gray-50"
                         loading="lazy"
-                        width={4560}
-                        height={1952}
                         decoding="async"
                     />
                     <figcaption
@@ -433,13 +449,14 @@ import DeliverabilityBeforeAfter from "./DeliverabilityBeforeAfter.astro";
                 <figure
                     class="mb-10 rounded-2xl overflow-hidden border border-emerald-100/80 bg-white shadow-sm"
                 >
-                    <img
-                        src="/deliverability-proof/jewelry-brand/after-open-rate-flows.png"
+                    <Image
+                        src={imgJewelryAfterFlows}
                         alt="Klaviyo flow reports for a men's jewelry brand showing 38.8% open rate, 2.65% click rate, and 0.33% bounce rate over the last 7 days."
+                        widths={[640, 1024, 1600]}
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        quality={70}
                         class="w-full h-auto object-contain object-top bg-gray-100"
                         loading="lazy"
-                        width={2484}
-                        height={1056}
                         decoding="async"
                     />
                     <figcaption

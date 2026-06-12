@@ -9,6 +9,7 @@ import EmailGallery from "../components/EmailGallery.astro";
 import MinorCaseStudies from "../components/MinorCaseStudies.astro";
 import Testimonials from "../components/Testimonials.astro";
 import HeroTestimonial from "../components/HeroTestimonial.astro";
+import FounderNote from "../components/FounderNote.astro";
 import FinalCTA from "../components/FinalCTA.astro";
 import Footer from "../components/Footer.astro";
 import { supabase } from "../lib/supabase";
@@ -41,6 +42,8 @@ const featuredRevenue = Number(siteMetric?.live_revenue_total ?? 225669414);
   <SocialProof featuredRevenue={featuredRevenue} />
 
   <HeroTestimonial />
+
+  <FounderNote />
 
   <MajorCaseStudies />
 

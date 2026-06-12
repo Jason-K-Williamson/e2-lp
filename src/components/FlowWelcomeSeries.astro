@@ -9,7 +9,20 @@
  *   4. position:fixed full-viewport overlay  ← escapes ALL parent constraints
  *      Driven by JS progress 0→1 across the trigger div
  *   5. Details + email/SMS breakdown (contained, after trigger)
+ *
+ * popup-example was a 547 KB raw PNG served three ways (hero, breakdown,
+ * blurred backdrop). It now routes through astro:assets; the backdrop sits
+ * behind a 40px blur so it gets a tiny low-quality variant via getImage().
  */
+import { Image, getImage } from "astro:assets";
+import imgPopupExample from "../assets/images/popup-example.png";
+
+const popupBg = await getImage({
+  src: imgPopupExample,
+  width: 480,
+  quality: 40,
+  format: "webp",
+});
 ---
 
 <!-- ══════════════════════════════════════════════════════════════════════
@@ -39,14 +52,14 @@
   <!-- Blurred store "environment" hint -->
   <div
     id="pu-env"
-    style="
+    style={`
       position: absolute;
       inset: 0;
-      background: url('/images/popup-example.png') center / cover no-repeat;
+      background: url('${popupBg.src}') center / cover no-repeat;
       filter: blur(40px) saturate(0.4);
       transform: scale(1.15);
       opacity: 0;
-    "
+    `}
   ></div>
 
   <!-- The popup card -->
@@ -72,14 +85,18 @@
     </div>
     <!-- Screenshot -->
     <div style="border-radius: 0 0 14px 14px; overflow:hidden; box-shadow: 0 40px 120px rgba(0,0,0,0.8);">
-      <img
-        src="/images/popup-example.png"
+      <!-- lazy + no fetchpriority: this lives in a hidden scroll-animation
+           overlay — the old eager/high config made a 547 KB PNG compete
+           with above-fold content on every page load. -->
+      <Image
+        src={imgPopupExample}
         alt="Custom dual opt-in pop-up"
-        width={1200}
-        height={602}
+        widths={[640, 960, 1200]}
+        sizes="82vw"
+        quality={70}
         style="display:block; width:100%; height:auto;"
-        loading="eager"
-        fetchpriority="high"
+        loading="lazy"
+        decoding="async"
       />
     </div>
   </div>
@@ -212,13 +229,15 @@
                 <span class="w-3 h-3 rounded-full bg-green-400"></span>
                 <div class="flex-1 ml-2 bg-white rounded-md px-3 py-1 text-[10px] text-gray-600 font-mono truncate">yourstore.com</div>
               </div>
-              <img
-                src="/images/popup-example.png"
+              <Image
+                src={imgPopupExample}
                 alt="Dual opt-in pop-up"
-                width={1200}
-                height={602}
+                widths={[384, 640, 768]}
+                sizes="(max-width: 640px) 100vw, 384px"
+                quality={70}
                 class="w-full block h-auto"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

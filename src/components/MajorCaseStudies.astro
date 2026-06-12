@@ -1,5 +1,14 @@
 ---
+import { Image } from "astro:assets";
 import BunnyVideo from "./video/BunnyVideo.astro";
+import posterInspire from "../assets/video-posters/inspire-brands-matt-orlic.jpg";
+import posterBogeyBros from "../assets/video-posters/bogeybros-ryan-rizos.jpg";
+import posterCanvas from "../assets/video-posters/canvas-cultures-joshua-tatum.jpg";
+import posterNightbuddy from "../assets/video-posters/nightbuddy-david-indlekofer.jpg";
+import posterValley from "../assets/video-posters/valley-eyewear-michael-crawley.jpg";
+import imgNuhrBefore from "../assets/klaviyo-proof/nuhr-home-before-bfcm.png";
+import imgNuhrAfter from "../assets/klaviyo-proof/nuhr-home-after-march.png";
+import imgArtBrandOverview from "../assets/klaviyo-proof/art-brand-growth-overview.png";
 /**
  * MajorCaseStudies — 5 full-width hero case study cards
  * Extracted from CaseStudies.astro so /2 can use them independently.
@@ -143,6 +152,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         <BunnyVideo
                             libraryId="609841"
                             videoId="b1589b6d-f62d-4ab2-b4db-ba2711e36f33"
+                            posterImage={posterInspire}
                             title="How Inspire Brands Grew Email Revenue Across Multiple 8-Figure Stores"
                             subtitle="Matt Orlic · Founder, Inspire Brands"
                             author="Matt Orlic"
@@ -316,6 +326,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         <BunnyVideo
                             libraryId="609841"
                             videoId="6f0c1382-ddd8-40f8-b4d4-f7e3a684f3e0"
+                            posterImage={posterBogeyBros}
                             title="How We Doubled BogeyBros Email Revenue in 90 Days"
                             subtitle="Ryan Rizos · Co-Founder & CEO, BogeyBros"
                             author="Ryan Rizos"
@@ -661,6 +672,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         <BunnyVideo
                             libraryId="609841"
                             videoId="8d955164-4635-4902-899a-2ab1a15bb575"
+                            posterImage={posterCanvas}
                             title="Canvas Cultures: From $100k to $1.5M/Month"
                             subtitle="Joshua Tatum · Founder, Canvas Cultures"
                             author="Joshua Tatum"
@@ -814,6 +826,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         <BunnyVideo
                             libraryId="609841"
                             videoId="e03c0f11-df01-4783-9ac8-4fc493747dd7"
+                            posterImage={posterNightbuddy}
                             title="How Nightbuddy Went From 10% to 40% Email Revenue in 60 Days"
                             subtitle="David Indlekofer · Owner, Nightbuddy"
                             author="David Indlekofer"
@@ -962,6 +975,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                         <BunnyVideo
                             libraryId="609841"
                             videoId="c841d495-e31a-40eb-abc8-3b548bb1c0ed"
+                            posterImage={posterValley}
                             title="How Valley Eyewear Nearly Doubled Klaviyo Revenue"
                             subtitle="Michael Crawley · Director, Valley Eyewear"
                             author="Michael Crawley"
@@ -1175,13 +1189,15 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                             <div
                                 class="rounded-2xl overflow-hidden border border-white/10 bg-gray-900"
                             >
-                                <img
-                                    src="/klaviyo-proof/nuhr-home-before-bfcm.png"
+                                <Image
+                                    src={imgNuhrBefore}
                                     alt="Nuhr Home Klaviyo dashboard before e2 - Nov 2025 BFCM showing 31.58% attributed revenue"
-                                    width={1360}
-                                    height={534}
+                                    widths={[480, 800, 1360]}
+                                    sizes="(max-width: 1024px) 100vw, 600px"
+                                    quality={70}
                                     class="w-full h-auto object-contain object-top bg-white"
                                     loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                         </div>
@@ -1196,13 +1212,15 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                             <div
                                 class="rounded-2xl overflow-hidden border border-rose-500/30 bg-gray-900"
                             >
-                                <img
-                                    src="/klaviyo-proof/nuhr-home-after-march.png"
+                                <Image
+                                    src={imgNuhrAfter}
                                     alt="Nuhr Home Klaviyo dashboard after e2 - Feb-Mar 2026 showing 47.48% attributed revenue"
-                                    width={2334}
-                                    height={1032}
+                                    widths={[480, 800, 1200]}
+                                    sizes="(max-width: 1024px) 100vw, 600px"
+                                    quality={70}
                                     class="w-full h-auto object-contain object-top bg-white"
                                     loading="lazy"
+                                    decoding="async"
                                 />
                             </div>
                         </div>
@@ -1360,11 +1378,12 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                                 Klaviyo Growth Overview · Full year
                             </span>
                             <div class="rounded-2xl overflow-hidden border border-white/10 bg-white">
-                                <img
-                                    src="/klaviyo-proof/art-brand-growth-overview.png"
+                                <Image
+                                    src={imgArtBrandOverview}
                                     alt="Klaviyo growth overview for anonymous art brand — A$4,073,670 total revenue, A$1.54M attributed at 37.77%, +>999% YoY. Jun 2025 tooltip shows A$252K attributed (54%)"
-                                    width={820}
-                                    height={500}
+                                    widths={[480, 720, 906]}
+                                    sizes="(max-width: 1024px) 100vw, 600px"
+                                    quality={70}
                                     class="w-full h-auto object-contain object-top"
                                     loading="lazy"
                                     decoding="async"

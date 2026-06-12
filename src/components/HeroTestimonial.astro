@@ -1,5 +1,8 @@
 ---
+import { Image } from "astro:assets";
 import BunnyVideo from "./video/BunnyVideo.astro";
+import posterOodie from "../assets/video-posters/oodie-davie-fogarty.jpg";
+import imgSharkTank from "../assets/brand/shark-tank-logo.png";
 ---
 
 <section
@@ -46,8 +49,9 @@ import BunnyVideo from "./video/BunnyVideo.astro";
             <p
                 class="text-sm md:text-base text-slate-600 max-w-2xl leading-relaxed"
             >
-                "He drove over 25 million for The Oodie with SMS. Ton of energy,
-                an uplifter rather than a drainer... Highly recommend."
+                "He [Jason] drove over 25 million for The Oodie with SMS. Ton
+                of energy, an uplifter rather than a drainer... Highly
+                recommend."
             </p>
         </div>
 
@@ -85,7 +89,7 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                     <BunnyVideo
                         libraryId="609841"
                         videoId="8a35383c-c3c5-48dc-8e96-6e1d396d16e4"
-                        posterUrl="https://vz-e4e7db1f-2fb.b-cdn.net/8a35383c-c3c5-48dc-8e96-6e1d396d16e4/thumbnail_c90083a6.jpg"
+                        posterImage={posterOodie}
                         title="How We Built $25M in SMS Revenue for The Oodie"
                         subtitle="Davie Fogarty · Founder, The Oodie"
                         author="Davie Fogarty"
@@ -106,23 +110,16 @@ import BunnyVideo from "./video/BunnyVideo.astro";
                     class="font-semibold tracking-tight text-slate-800 shrink-0"
                     >As seen on:</span
                 >
-                <picture
-                    class="inline-flex shrink-0 translate-y-[0.06em]"
-                >
-                    <source
-                        srcset="/brand/shark-tank-logo.webp"
-                        type="image/webp"
-                    />
-                    <img
-                        src="/brand/shark-tank-logo.png"
-                        alt="Shark Tank"
-                        width="142"
-                        height="118"
-                        loading="lazy"
-                        decoding="async"
-                        class="h-[2.1rem] sm:h-[2.4rem] w-auto max-w-[8.75rem] sm:max-w-[9.5rem] object-contain object-center"
-                    />
-                </picture>
+                <Image
+                    src={imgSharkTank}
+                    alt="Shark Tank"
+                    widths={[64, 96, 142]}
+                    sizes="47px"
+                    quality={70}
+                    loading="lazy"
+                    decoding="async"
+                    class="inline-flex shrink-0 translate-y-[0.06em] h-[2.1rem] sm:h-[2.4rem] w-auto max-w-[8.75rem] sm:max-w-[9.5rem] object-contain object-center"
+                />
                 <span
                     class="font-medium text-slate-400 shrink-0 select-none"
                     aria-hidden="true">&mdash;</span

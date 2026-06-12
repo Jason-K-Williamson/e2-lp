@@ -193,10 +193,18 @@ const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min
     // in a fresh autoplay-with-sound iframe, which mobile blocks → double-tap.
     let mutedPlayer: PlayerJsInstance | null = null;
 
+    // Treat anything that isn't confirmed 4g as slow. The old 2g-only check
+    // let struggling 3g / weak-4g connections (typical FB in-app browser on
+    // cellular) start muted autoplay while the page was still loading —
+    // a PostHog replay showed the load event dragging to 23s because video
+    // segments competed with images. Browsers without the Network
+    // Information API (Safari/Firefox) report no effectiveType and keep
+    // autoplay. Click-to-play always works regardless.
     const connection = (navigator as any).connection;
+    const effectiveType: string = connection?.effectiveType ?? "";
     const slowConnection =
       Boolean(connection?.saveData) ||
-      /(^|-)2g$/.test(connection?.effectiveType ?? "");
+      (effectiveType !== "" && effectiveType !== "4g");
 
     const setPhase = (phase: "poster" | "playing-muted" | "playing-sound") => {
       vsl.dataset.phase = phase;
@@ -363,20 +371,37 @@ const PLAYERJS_SRC = "https://assets.mediadelivery.net/playerjs/player-0.1.0.min
       restartWithSound();
     });
 
-    if ("IntersectionObserver" in window && !slowConnection) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (!entry.isIntersecting) return;
-            if (vsl.dataset.phase !== "poster") return;
-            load(false);
-          });
-        },
-        { threshold: 0.45, rootMargin: "80px 0px" },
-      );
-      observer.observe(vsl);
-    } else if (!slowConnection) {
-      load(false);
+    // Muted autoplay waits for the window load event: the hero is above the
+    // fold, so the observer fires instantly — starting iframe + player JS +
+    // video segments while images/fonts are still downloading. Deferring to
+    // load keeps initial render fast; an explicit click still plays
+    // immediately at any time.
+    const startAutoplay = () => {
+      if (vsl.dataset.phase !== "poster") return; // user already clicked
+
+      if ("IntersectionObserver" in window) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              if (vsl.dataset.phase !== "poster") return;
+              load(false);
+            });
+          },
+          { threshold: 0.45, rootMargin: "80px 0px" },
+        );
+        observer.observe(vsl);
+      } else {
+        load(false);
+      }
+    };
+
+    if (!slowConnection) {
+      if (document.readyState === "complete") {
+        startAutoplay();
+      } else {
+        window.addEventListener("load", startAutoplay, { once: true });
+      }
     }
   }
 </script>
