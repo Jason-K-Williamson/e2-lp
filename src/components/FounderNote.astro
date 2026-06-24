@@ -11,6 +11,12 @@ import { APPLY_URL } from "../lib/apply-url";
 import imgJason from "../assets/images/jason-k-williamson.png";
 import imgVoid from "../assets/brand-logos/void.webp";
 
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = APPLY_URL } = Astro.props;
+
 const marqueeItems = [
   "Jason K Williamson",
   "$25M+ SMS for The Oodie",
@@ -165,7 +171,7 @@ const marqueeItems = [
 
       <div data-animate style="transition-delay: 0.4s">
         <a
-          href={APPLY_URL}
+          href={ctaHref}
           data-apply-cta="founder-note"
           class="group inline-flex items-center justify-center gap-2 px-7 sm:px-8 py-3.5 min-h-[52px] bg-e2-black text-white rounded-full font-bold text-sm sm:text-base hover:bg-gray-900 transition-all duration-300 shadow-xl shadow-black/10 hover:shadow-2xl hover:shadow-black/15"
         >

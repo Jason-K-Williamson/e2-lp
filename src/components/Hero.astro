@@ -3,6 +3,7 @@ import { DEFAULT_VARIANT } from "../lib/supabase";
 import { APPLY_URL } from "../lib/apply-url";
 import LogoCloud from "./ui/LogoCloud.astro";
 import VslVideo from "./video/VslVideo.astro";
+import BookingWidget from "./BookingWidget.astro";
 
 interface Props {
   badge?: string;
@@ -16,6 +17,10 @@ interface Props {
   ctaHelper?: string;
   trustTitle?: string;
   trustSubtitle?: string;
+  /** Override CTA destination (e.g. #booking on /booking). */
+  ctaHref?: string;
+  /** Show booking widget instead of VSL. */
+  showBookingWidget?: boolean;
 }
 
 const {
@@ -28,6 +33,8 @@ const {
   ctaHelper = "",
   trustTitle = "Trusted By USA & Australia's Leading D2C Brands",
   trustSubtitle = "Join 750+ brands who've scaled their email & SMS with e2",
+  ctaHref = APPLY_URL,
+  showBookingWidget = false,
 } = Astro.props;
 
 const secondaryCta = ctaSecondary?.trim() ?? "";
@@ -118,37 +125,35 @@ const editProps = (field: string) =>
       {subheadline}
     </p>
 
-    <!-- CTA Group — full-width stacked on mobile (max tap surface + higher CVR) -->
-    <div
-      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mb-2 sm:mb-2.5"
-    >
-      <a
-        href={APPLY_URL}
-        id="hero-cta-primary"
-        data-apply-cta="hero"
-        class="group w-full sm:w-auto px-6 sm:px-9 py-3.5 sm:py-3 min-h-[52px] h-auto bg-e2-black text-white rounded-full font-bold text-base sm:text-lg leading-snug text-center hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
-        {...editProps("hero_cta_primary")}
-      >
-        <span class="relative z-10">{ctaPrimary}</span>
-        <span
-          class="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        ></span>
-      </a>
-      {
-        secondaryCta && (
+    <!-- CTA Group — hidden when booking widget is in hero (calendar is the CTA) -->
+    {
+      !showBookingWidget && (
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto mb-2 sm:mb-2.5">
           <a
-            href="#how-it-works"
-            class="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-3 min-h-[52px] h-auto bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-base sm:text-lg leading-snug text-center hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
-            {...editProps("hero_cta_secondary")}
+            href={ctaHref}
+            id="hero-cta-primary"
+            data-apply-cta="hero"
+            class="group w-full sm:w-auto px-6 sm:px-9 py-3.5 sm:py-3 min-h-[52px] h-auto bg-e2-black text-white rounded-full font-bold text-base sm:text-lg leading-snug text-center hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20 flex items-center justify-center gap-2 relative overflow-hidden cursor-pointer"
+            {...editProps("hero_cta_primary")}
           >
-            {secondaryCta}
+            <span class="relative z-10">{ctaPrimary}</span>
+            <span class="absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           </a>
-        )
-      }
-    </div>
+          {secondaryCta && (
+            <a
+              href="#how-it-works"
+              class="w-full sm:w-auto px-6 sm:px-7 py-3.5 sm:py-3 min-h-[52px] h-auto bg-white text-e2-black border border-gray-200 rounded-full font-semibold text-base sm:text-lg leading-snug text-center hover:bg-gray-50 hover:shadow-lg transition-all duration-300 flex items-center justify-center cursor-pointer"
+              {...editProps("hero_cta_secondary")}
+            >
+              {secondaryCta}
+            </a>
+          )}
+        </div>
+      )
+    }
 
     {
-      ctaHelper && (
+      !showBookingWidget && ctaHelper && (
         <p class="text-xs sm:text-sm text-gray-600 max-w-md mx-auto mb-4 sm:mb-5 leading-relaxed">
           {ctaHelper}
         </p>
@@ -159,8 +164,13 @@ const editProps = (field: string) =>
          already carries the same client brands; avoids a duplicate logo bar). -->
     <div class="mt-2 sm:mt-4"></div>
 
-    <!-- VSL video — Bunny.net, lazy-loaded + muted autoplay on scroll -->
-    <VslVideo />
+    {
+      showBookingWidget ? (
+        <BookingWidget />
+      ) : (
+        <VslVideo />
+      )
+    }
 
     <!-- Below VSL social proof row -->
     <div class="mt-7 sm:mt-8 w-full max-w-3xl">

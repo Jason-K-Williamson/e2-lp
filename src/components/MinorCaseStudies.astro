@@ -5,6 +5,12 @@
  */
 import { APPLY_URL } from "../lib/apply-url";
 
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = APPLY_URL } = Astro.props;
+
 const cases = [
   {
     client: "OTAA",
@@ -602,7 +608,7 @@ const cases = [
 
   <div class="text-center pb-16">
     <a
-      href={APPLY_URL}
+      href={ctaHref}
       data-apply-cta="case-studies"
       class="inline-flex items-center gap-2 px-9 py-4 bg-white text-gray-950 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform duration-300 shadow-2xl"
     >

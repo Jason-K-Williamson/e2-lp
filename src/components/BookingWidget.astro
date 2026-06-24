@@ -1,0 +1,43 @@
+---
+import { BOOKING_WIDGET_SRC } from "../lib/booking";
+
+interface Props {
+  id?: string;
+}
+
+const { id = "booking" } = Astro.props;
+const iframeId = "UeTUe8KeTweznApI0B99_1782300156244";
+---
+
+<div
+  id={id}
+  class="booking-widget w-full mx-auto shrink-0 scroll-mt-28 md:w-[900px] md:max-w-[900px]"
+>
+  <div
+    class="rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden shadow-2xl shadow-black/20 border border-white/50 bg-white w-full"
+  >
+    <iframe
+      src={BOOKING_WIDGET_SRC}
+      style="width: 100%; border: none; overflow: hidden; min-height: 720px;"
+      scrolling="no"
+      id={iframeId}
+      title="Book a strategy call with e2 Agency"
+    ></iframe>
+  </div>
+</div>
+
+<script
+  is:inline
+  src="https://link.e2.agency/js/form_embed.js"
+  type="text/javascript"
+></script>
+
+<style>
+  @media (min-width: 768px) {
+    .booking-widget,
+    .booking-widget iframe {
+      width: 900px;
+      max-width: 900px;
+    }
+  }
+</style>

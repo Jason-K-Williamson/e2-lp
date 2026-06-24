@@ -13,6 +13,7 @@ interface Props {
     subheading?: string;
     ctaLabel?: string;
     ctaHelper?: string;
+    ctaHref?: string;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
     subheading = DEFAULT_VARIANT.finalcta_subheading,
     ctaLabel = "See If You Qualify →",
     ctaHelper = "Takes 2 minutes. No contracts. Results guaranteed.",
+    ctaHref = APPLY_URL,
 } = Astro.props;
 
 const isAdmin = !!(Astro.locals as any).isAdmin;
@@ -107,7 +109,7 @@ const editProps = (field: string) =>
 
             <div class="text-center">
                 <a
-                    href={APPLY_URL}
+                    href={ctaHref}
                     data-apply-cta="final-cta"
                     class="group inline-flex items-center justify-center gap-2 w-full sm:w-auto px-10 py-4 min-h-[56px] bg-e2-black text-white rounded-full font-bold text-lg hover:bg-gray-900 transition-all duration-300 shadow-2xl shadow-black/20"
                 >

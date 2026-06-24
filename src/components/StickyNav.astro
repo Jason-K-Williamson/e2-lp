@@ -9,9 +9,16 @@ import StrategyCallStatus from "./StrategyCallStatus.astro";
 
 interface Props {
   ctaLabel?: string;
+  ctaHref?: string;
+  /** Element id to hide sticky nav when in view (default: qualify). */
+  hideAnchorId?: string;
 }
 
-const { ctaLabel = "See If You Qualify →" } = Astro.props;
+const {
+  ctaLabel = "See If You Qualify →",
+  ctaHref = APPLY_URL,
+  hideAnchorId = "qualify",
+} = Astro.props;
 ---
 
 <div
@@ -53,7 +60,7 @@ const { ctaLabel = "See If You Qualify →" } = Astro.props;
 
     <!-- CTA — always full, 44px tap target -->
     <a
-      href={APPLY_URL}
+      href={ctaHref}
       data-apply-cta="sticky-nav"
       class="flex-shrink-0 px-5 sm:px-6 py-2.5 bg-e2-black text-white text-sm font-bold rounded-full hover:bg-gray-900 transition-colors duration-200 whitespace-nowrap cursor-pointer"
       style="min-height: 44px; display: flex; align-items: center;"
@@ -64,18 +71,18 @@ const { ctaLabel = "See If You Qualify →" } = Astro.props;
 </div>
 
 
-<script>
+<script define:vars={{ hideAnchorId }}>
   const nav = document.getElementById("sticky-nav");
-  const qualify = document.getElementById("qualify");
+  const hideTarget = document.getElementById(hideAnchorId);
 
   if (nav) {
-    let qualifyVisible = false;
+    let anchorVisible = false;
 
-    if (qualify) {
+    if (hideTarget) {
       const observer = new IntersectionObserver(
         ([entry]) => {
-          qualifyVisible = entry.isIntersecting;
-          if (qualifyVisible) {
+          anchorVisible = entry.isIntersecting;
+          if (anchorVisible) {
             nav.classList.add("opacity-0", "translate-y-10");
           } else if (window.scrollY > 500) {
             nav.classList.remove("opacity-0", "translate-y-10");
@@ -83,13 +90,13 @@ const { ctaLabel = "See If You Qualify →" } = Astro.props;
         },
         { threshold: 0.05 }
       );
-      observer.observe(qualify);
+      observer.observe(hideTarget);
     }
 
     window.addEventListener(
       "scroll",
       () => {
-        if (qualifyVisible) return;
+        if (anchorVisible) return;
         if (window.scrollY > 500) {
           nav.classList.remove("opacity-0", "translate-y-10");
         } else {

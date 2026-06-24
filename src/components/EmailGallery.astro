@@ -5,6 +5,12 @@
  */
 import { APPLY_URL } from "../lib/apply-url";
 
+interface Props {
+  ctaHref?: string;
+}
+
+const { ctaHref = APPLY_URL } = Astro.props;
+
 const emails = [
     {
         src: "/edm-designs/bruce-bolt.webp",
@@ -115,7 +121,7 @@ const emails = [
                     Every email built from scratch. No templates.
                 </p>
                 <a
-                    href={APPLY_URL}
+                    href={ctaHref}
                     data-apply-cta="email-gallery"
                     class="min-h-11 px-6 py-3 rounded-xl bg-white text-e2-black font-bold text-sm hover:scale-[1.02] transition-transform inline-flex items-center justify-center"
                 >
