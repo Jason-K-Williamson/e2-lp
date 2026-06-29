@@ -62,7 +62,7 @@
             </button>
         </div>
 
-        <!-- Official snippet: myformflow.io/embed/widget.js mounts the iframe here -->
+        <!-- Official snippet: apply.e2.agency/embed/widget.js mounts the iframe here -->
         <div class="px-4 pt-2 pb-8">
             <div
                 id="formflow-embed"
@@ -116,7 +116,7 @@
             document.body.style.overflow = "hidden";
         }
 
-        /** Load myformflow widget.js once; keeps ~1.4MB off initial page / Lighthouse unless user opens modal. */
+        /** Load Formflow widget.js once; keeps ~1.4MB off initial page / Lighthouse unless user opens modal. */
         function ensureFormflowWidget(done) {
             if (window.__formflowWidgetReady) {
                 done();
@@ -126,7 +126,7 @@
             if (window.__formflowWidgetLoading) return;
             window.__formflowWidgetLoading = true;
             var s = document.createElement("script");
-            s.src = "https://myformflow.io/embed/widget.js";
+            s.src = "https://apply.e2.agency/embed/widget.js";
             s.async = true;
             s.onload = function () {
                 window.__formflowWidgetReady = true;

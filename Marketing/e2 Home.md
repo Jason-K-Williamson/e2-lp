@@ -5,7 +5,7 @@ Klaviyo Email Marketing THAT KNOCKS YOUR SOCKS OFF.
 
 Unlock the secret weapon 1,000+ successful Shopify Brands use to skyrocket sales — and it's NOT just running more ads!
 
-[BOOK A CALL](https://myformflow.io/e2-agency/e2-agency-application-v3)
+[BOOK A CALL](https://apply.e2.agency/e2-agency-application-v3)
 
 ---
 
